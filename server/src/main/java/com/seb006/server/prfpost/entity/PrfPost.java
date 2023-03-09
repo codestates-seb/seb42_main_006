@@ -1,6 +1,7 @@
 package com.seb006.server.prfpost.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.seb006.server.audit.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class PrfPost {
+public class PrfPost extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
