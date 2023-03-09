@@ -1,20 +1,46 @@
 package com.seb006.server.prfpost.controller;
 
+import com.seb006.server.prfpost.dto.PrfPostDto;
+import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.prfpost.mapper.PrfPostMapper;
+import com.seb006.server.prfpost.service.PrfPostService;
+import com.seb006.server.url.entity.Urls;
+import com.seb006.server.url.service.UrlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 //@CrossOrigin
 @RestController
 @RequestMapping("/prf-posts")
 public class PrfPostController {
+    private final PrfPostMapper prfPostMapper;
+    private final PrfPostService prfPostService;
+    private final UrlService urlService;
+
+    public PrfPostController(PrfPostMapper prfPostMapper, PrfPostService prfPostService, UrlService urlService) {
+        this.prfPostMapper = prfPostMapper;
+        this.prfPostService = prfPostService;
+        this.urlService = urlService;
+    }
+
     // 게시글 생성
     @PostMapping
-    public ResponseEntity postPrfPost(){
+    public ResponseEntity postPrfPost(@RequestBody PrfPostDto.Post postDto){
+        PrfPost result = prfPostService.createPrfPost(prfPostMapper.postDtoToPrfPost(postDto));
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        List<Urls> resultUrls = urlService.createUrls(result.getUrls());
+
+        resultUrls.forEach(u -> {
+            System.out.println(u.getId());
+            System.out.println(u.getUrl());
+            System.out.println(u.getPrfPost());
+        });
+
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     // 게시글 리스트

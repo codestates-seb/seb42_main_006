@@ -1,4 +1,4 @@
-package com.seb006.server.audit;
+package com.seb006.server.global.audit;
 
 import lombok.Getter;
 import lombok.Setter;

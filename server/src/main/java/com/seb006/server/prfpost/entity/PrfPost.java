@@ -1,7 +1,8 @@
 package com.seb006.server.prfpost.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.seb006.server.audit.Auditable;
+import com.seb006.server.global.audit.Auditable;
+import com.seb006.server.url.entity.Urls;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,6 @@ public class PrfPost extends Auditable {
     // urls를 Set으로 해야할까? 아니면 중복이 불가능하게 validation을 설정해야할까 고민
     @OneToMany(mappedBy = "prfPost")
     @JsonBackReference
-    private List<Url> urls = new ArrayList<>();
+    private List<Urls> urls = new ArrayList<>();
 
 }
