@@ -1,13 +1,27 @@
+import GlobalStyle from "./style/GlobalStyles";
+import Header from "./conponent/Header";
+import Nav from "./conponent/Nav";
+import Example from "./page/Example";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 
-const Jjmang = styled.div`
-  height: 100px;
-  width: 100px;
-  background-color: red;
+const MainWrapper = styled.div`
+  display: flex;
 `;
 
 function App() {
-  return <Jjmang className="App">dddd1231231231</Jjmang>;
+  return (
+    <BrowserRouter>
+      <GlobalStyle />
+      <Header />
+      <MainWrapper>
+        <Nav></Nav>
+        <Routes>
+          <Route path="/example" element={<Example />}></Route>
+        </Routes>
+      </MainWrapper>
+    </BrowserRouter>
+  );
 }
 
 export default App;
