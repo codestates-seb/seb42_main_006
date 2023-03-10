@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 //@CrossOrigin
@@ -31,16 +32,11 @@ public class PrfPostController {
     @PostMapping
     public ResponseEntity postPrfPost(@RequestBody PrfPostDto.Post postDto){
         PrfPost result = prfPostService.createPrfPost(prfPostMapper.postDtoToPrfPost(postDto));
-
         List<Urls> resultUrls = urlService.createUrls(result.getUrls());
 
-        resultUrls.forEach(u -> {
-            System.out.println(u.getId());
-            System.out.println(u.getUrl());
-            System.out.println(u.getPrfPost());
-        });
+        PrfPostDto.Response response = prfPostMapper.prfPostToResponseDto(result);
 
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     // 게시글 리스트
@@ -63,13 +59,17 @@ public class PrfPostController {
 
     // 게시글 상세보기
     @GetMapping("/{post-id}")
-    public ResponseEntity getPrfPost(){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity getPrfPost(@PathVariable("post-id") long postId){
+        PrfPost result = prfPostService.getPrfPost(postId);
+        PrfPostDto.Response response = prfPostMapper.prfPostToResponseDto(result);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 게시글 삭제
     @DeleteMapping("/{post-id}")
-    public ResponseEntity deletePrfPost(){
+    public ResponseEntity deletePrfPost(@PathVariable("post-id") long postId){
+        prfPostService.deletePrfPost(postId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -33,7 +33,7 @@ public class PrfPost extends Auditable {
     private String tags;
 
     // urls를 Set으로 해야할까? 아니면 중복이 불가능하게 validation을 설정해야할까 고민
-    @OneToMany(mappedBy = "prfPost")
+    @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<Urls> urls = new ArrayList<>();
 

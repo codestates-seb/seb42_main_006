@@ -16,4 +16,15 @@ public class PrfPostService {
     public PrfPost createPrfPost(PrfPost prfPost){
         return prfPostRepository.save(prfPost);
     }
+
+    public PrfPost getPrfPost(long postId){
+        // null 인 경우
+        // post가 삭제된 경우 - validation 처리
+
+        return prfPostRepository.findById(postId).get();
+    }
+
+    public void deletePrfPost(long postId){
+        prfPostRepository.deleteById(postId);
+    }
 }

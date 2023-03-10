@@ -2,6 +2,7 @@ package com.seb006.server.prfpost.mapper;
 
 import com.seb006.server.prfpost.dto.PrfPostDto;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.url.dto.UrlDto;
 import com.seb006.server.url.entity.Urls;
 import org.mapstruct.Mapper;
 
@@ -44,5 +45,32 @@ public interface PrfPostMapper {
 //    default PrfPost patchDtoToPrfPost(PrfPostDto.Patch patchDto){
 //
 //    }
-//    // Entity -> Response
+
+    // Entity -> Response
+    default PrfPostDto.Response prfPostToResponseDto(PrfPost prfPost){
+        if(prfPost==null){
+            return null;
+        }
+        else{
+            PrfPostDto.Response response = new PrfPostDto.Response();
+            response.setId(prfPost.getId());
+            response.setTitle(prfPost.getTitle());
+            response.setCategory(prfPost.getCategory());
+            response.setContent(prfPost.getContent());
+            response.setTags(prfPost.getTags());
+
+            response.setUrls(prfPost.getUrls().stream()
+                    .map(url ->{
+                        UrlDto urlDto = new UrlDto();
+                        urlDto.setUrl(url.getUrl());
+                        return urlDto;
+                    })
+                    .collect(Collectors.toList()));
+
+            response.setCreateAt(prfPost.getCreatedAt());
+            response.setModifiedAt(prfPost.getModifiedAt());
+
+            return response;
+        }
+    }
 }
