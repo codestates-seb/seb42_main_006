@@ -1,6 +1,8 @@
 package com.seb006.server.auth.config;
 
 import com.seb006.server.auth.filter.JwtAuthenticationFilter;
+import com.seb006.server.auth.handler.MemberAuthenticationFailureHandler;
+import com.seb006.server.auth.handler.MemberAuthenticationSuccessHandler;
 import com.seb006.server.auth.jwt.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,6 +70,8 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             builder.addFilter(jwtAuthenticationFilter);
         }
