@@ -36,7 +36,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final class CustomUserDetails extends Member implements UserDetails {
         CustomUserDetails(Member member) {
             setId(member.getId());
-            setNickName(member.getNickName());
             setEmail(member.getEmail());
             setPassword(member.getPassword());
             setRoles(member.getRoles());

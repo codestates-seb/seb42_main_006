@@ -3,6 +3,7 @@ package com.seb006.server.member.service;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional
+@Service
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
@@ -27,6 +28,7 @@ public class MemberService {
 
     public Member createMember(Member member) {
         checkExistEmail(member.getEmail());
+
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 

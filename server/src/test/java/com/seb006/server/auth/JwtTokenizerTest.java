@@ -1,5 +1,6 @@
 package com.seb006.server.auth;
 
+import com.seb006.server.auth.jwt.JwtTokenizer;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeAll;
