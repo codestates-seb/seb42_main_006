@@ -47,14 +47,21 @@ public class PrfPostController {
                                       @Positive @RequestParam(defaultValue = "1") int sorting,
                                       @RequestParam(required = false) String category,
                                       @RequestParam(required = false) String tagName){
+
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 게시글 수정
     @PatchMapping("/{post-id}")
-    public ResponseEntity patchPrfPost(){
+    public ResponseEntity patchPrfPost(@PathVariable("post-id") long postId,
+                                       @RequestBody PrfPostDto.Patch patchDto){
+        PrfPost result = prfPostService.updatePrfPost(postId, patchDto);
+        List<Urls> resultUrls = urlService.createUrls(result.getUrls());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        PrfPostDto.Response response = prfPostMapper.prfPostToResponseDto(result);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 게시글 상세보기

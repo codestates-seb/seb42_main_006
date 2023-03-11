@@ -41,10 +41,6 @@ public interface PrfPostMapper {
         }
     }
 
-//    // PatchDto -> Entity
-//    default PrfPost patchDtoToPrfPost(PrfPostDto.Patch patchDto){
-//
-//    }
 
     // Entity -> Response
     default PrfPostDto.Response prfPostToResponseDto(PrfPost prfPost){
