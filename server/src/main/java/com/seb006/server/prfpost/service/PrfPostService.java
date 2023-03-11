@@ -5,6 +5,10 @@ import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.prfpost.repository.PrfPostRepository;
 import com.seb006.server.url.entity.Urls;
 import com.seb006.server.url.repository.UrlRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +31,16 @@ public class PrfPostService {
 
     public PrfPost getPrfPost(long postId){
         return verifiedPrfPost(postId);
+    }
+
+    // 전체 리스트 가져오기 - 태그, 카테고리 필터링 X
+    public Page<PrfPost> getAllPrfPosts(int page, int size, int sorting){
+        // 인기순 정렬(좋아요 순)
+        if(sorting == 2){
+            // TODO: 좋아요 구현하고 나서 작성하기
+        }
+        // 최신순 정렬
+        return prfPostRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
     public PrfPost updatePrfPost(long postId, PrfPostDto.Patch patchDto){

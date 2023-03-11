@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PrfPostMapper {
-
     // PostDto -> Entity
     default PrfPost postDtoToPrfPost(PrfPostDto.Post postDto){
         if(postDto==null){
@@ -41,7 +40,6 @@ public interface PrfPostMapper {
         }
     }
 
-
     // Entity -> Response
     default PrfPostDto.Response prfPostToResponseDto(PrfPost prfPost){
         if(prfPost==null){
@@ -69,4 +67,6 @@ public interface PrfPostMapper {
             return response;
         }
     }
+
+    List<PrfPostDto.Response> prfPostsToResponseDtos(List<PrfPost> prfPosts);
 }
