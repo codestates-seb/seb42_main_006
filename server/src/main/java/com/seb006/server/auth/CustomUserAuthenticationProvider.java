@@ -1,5 +1,6 @@
 package com.seb006.server.auth;
 
+import com.seb006.server.auth.userdetails.CustomUserDetailsService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Optional;
 
 public class CustomUserAuthenticationProvider implements AuthenticationProvider {

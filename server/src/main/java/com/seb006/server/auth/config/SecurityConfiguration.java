@@ -2,6 +2,8 @@ package com.seb006.server.auth.config;
 
 import com.seb006.server.auth.filter.JwtAuthenticationFilter;
 import com.seb006.server.auth.filter.JwtVerificationFilter;
+import com.seb006.server.auth.handler.MemberAccessDeniedHandler;
+import com.seb006.server.auth.handler.MemberAuthenticationEntryPoint;
 import com.seb006.server.auth.handler.MemberAuthenticationFailureHandler;
 import com.seb006.server.auth.handler.MemberAuthenticationSuccessHandler;
 import com.seb006.server.auth.jwt.JwtTokenizer;
@@ -45,6 +47,10 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
+                .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize

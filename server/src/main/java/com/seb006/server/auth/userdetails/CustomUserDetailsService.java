@@ -1,4 +1,4 @@
-package com.seb006.server.auth;
+package com.seb006.server.auth.userdetails;
 
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import com.seb006.server.member.entity.Member;
