@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/members")
@@ -22,7 +24,7 @@ public class MemberController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity postMember(@RequestBody MemberDto.Post requestBody) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
         Member createMember = memberService.createMember(memberMapper.memberPostToMember(requestBody));
         MemberDto.Response response = memberMapper.memberToResponseDto(createMember);
 
@@ -32,7 +34,7 @@ public class MemberController {
     }
 
     @PostMapping("/email-check")
-    public ResponseEntity validateEmail(@RequestBody MemberDto.Email email) {
+    public ResponseEntity validateEmail(@Valid @RequestBody MemberDto.Email email) {
         log.info(email.getEmail());
         memberService.checkExistEmail(email.getEmail());
 
