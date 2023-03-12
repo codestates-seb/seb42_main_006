@@ -1,7 +1,7 @@
-package com.seb006.server.prfPostComment.service;
+package com.seb006.server.prfpostcomment.service;
 
-import com.seb006.server.prfPostComment.entity.PrfPostComment;
-import com.seb006.server.prfPostComment.repository.PrfPostCommentRepository;
+import com.seb006.server.prfpostcomment.entity.PrfPostComment;
+import com.seb006.server.prfpostcomment.repository.PrfPostCommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

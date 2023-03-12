@@ -1,4 +1,4 @@
-package com.seb006.server.prfPostComment.entity;
+package com.seb006.server.prfpostcomment.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

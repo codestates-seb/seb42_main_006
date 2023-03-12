@@ -1,4 +1,4 @@
-package com.seb006.server.prfPostComment.dto;
+package com.seb006.server.prfpostcomment.dto;
 
 import lombok.Builder;
 import lombok.Getter;

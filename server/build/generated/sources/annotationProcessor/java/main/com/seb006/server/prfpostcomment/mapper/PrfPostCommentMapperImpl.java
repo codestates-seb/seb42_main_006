@@ -1,9 +1,9 @@
-package com.seb006.server.prfPostComment.mapper;
+package com.seb006.server.prfpostcomment.mapper;
 
-import com.seb006.server.prfPostComment.dto.PrfPostCommentPatchDto;
-import com.seb006.server.prfPostComment.dto.PrfPostCommentPostDto;
-import com.seb006.server.prfPostComment.dto.PrfPostCommentResponseDto;
-import com.seb006.server.prfPostComment.entity.PrfPostComment;
+import com.seb006.server.prfpostcomment.dto.PrfPostCommentPatchDto;
+import com.seb006.server.prfpostcomment.dto.PrfPostCommentPostDto;
+import com.seb006.server.prfpostcomment.dto.PrfPostCommentResponseDto;
+import com.seb006.server.prfpostcomment.entity.PrfPostComment;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-03-09T16:51:20+0900",
+    date = "2023-03-10T01:24:47+0900",
     comments = "version: 1.5.1.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.6.1.jar, environment: Java 11.0.17 (Azul Systems, Inc.)"
 )
 @Component
