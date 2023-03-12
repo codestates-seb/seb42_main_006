@@ -69,7 +69,7 @@ const IconSort = styled.div`
   width: 60px;
 `;
 
-export default function Posts() {
+export default function Collect() {
   return (
     <Content>
       <Sort>
@@ -86,22 +86,22 @@ export default function Posts() {
                 title=""
                 width="100px"
                 height="100px"
-                radius="5px"
+                radius="100px"
                 fontWeight={400}
                 fontColor=""
                 btnType=""
-                iconType="noneImg"
+                iconType="profile"
                 border="none"
                 handleClick={() => console.log("click")}
               />
             </div>
           </div>
           <PostDetail>
-            <Title>성수동에 뇨끼바 라는 뇨끼집</Title>
+            <Title>성수동 뇨끼바 가실분 구합니다.</Title>
             <Tag title="맛집"></Tag>
             <Summary>
-              성수동에 기념일로 여자친구랑 뇨끼바를 갔습니다. 뇨끼 전문집이여서
-              그런지 너무 맛있었네요 추천드립니다 한번 가보세요 ...
+              서수동에 유명한 뇨끼바 있다고 게시판에 확인 했습니다. 2023/03/31
+              가실분 구합니다. 같이하기 눌러주시고 댓글 달아주세요~ ....
             </Summary>
           </PostDetail>
           <IconSort>
