@@ -47,6 +47,7 @@ const PostDetail = styled.div`
   margin-left: 0px; /* 왼쪽 여백을 20px로 설정 */
   margin-bottom: 20px;
   margin-top: 10px;
+  padding-bottom: 5px;
 `;
 
 const Title = styled.div`
@@ -97,12 +98,12 @@ export default function Posts() {
             </div>
           </div>
           <PostDetail>
-            <Title>성수동에 뇨끼바 라는 뇨끼집</Title>
-            <Tag title="맛집"></Tag>
+            <Title>[성수동] 뇨끼바 라는 뇨끼 전문집</Title>
             <Summary>
               성수동에 기념일로 여자친구랑 뇨끼바를 갔습니다. 뇨끼 전문집이여서
               그런지 너무 맛있었네요 추천드립니다 한번 가보세요 ...
             </Summary>
+            <Tag title="맛집"></Tag>
           </PostDetail>
           <IconSort>
             <IconBtn

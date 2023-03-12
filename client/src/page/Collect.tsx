@@ -47,6 +47,7 @@ const PostDetail = styled.div`
   margin-left: 0px; /* 왼쪽 여백을 20px로 설정 */
   margin-bottom: 20px;
   margin-top: 10px;
+  padding-bottom: 5px;
 `;
 
 const Title = styled.div`
@@ -59,7 +60,7 @@ const Summary = styled.div`
   font-size: 13px;
   color: #5a5959;
   margin-bottom: 5px;
-  height: 70px;
+  height: 60px;
   margin-top: 5px;
 `;
 
@@ -98,11 +99,11 @@ export default function Collect() {
           </div>
           <PostDetail>
             <Title>성수동 뇨끼바 가실분 구합니다.</Title>
-            <Tag title="맛집"></Tag>
             <Summary>
               서수동에 유명한 뇨끼바 있다고 게시판에 확인 했습니다. 2023/03/31
               가실분 구합니다. 같이하기 눌러주시고 댓글 달아주세요~ ....
             </Summary>
+            <Tag title="맛집"></Tag>
           </PostDetail>
           <IconSort>
             <IconBtn
