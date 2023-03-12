@@ -70,6 +70,14 @@ const IconSort = styled.div`
   width: 60px;
 `;
 
+const AddPosition = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+`;
+
 export default function Posts() {
   return (
     <Content>
@@ -133,6 +141,20 @@ export default function Posts() {
           </IconSort>
         </PostsSort>
       </PostsContent>
+      <AddPosition>
+        <IconBtn
+          title=""
+          width="30px"
+          height="30px"
+          radius="100px"
+          fontWeight={400}
+          fontColor=""
+          btnType="full"
+          iconType="add"
+          border="none"
+          handleClick={() => console.log("click")}
+        />
+      </AddPosition>
     </Content>
   );
 }
