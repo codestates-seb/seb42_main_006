@@ -1,6 +1,6 @@
 package com.seb006.server.prfpost.controller;
 
-import com.seb006.server.global.response.PaginationResponse;
+import com.seb006.server.global.response.MultiResponseDto;
 import com.seb006.server.prfpost.dto.PrfPostDto;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.prfpost.mapper.PrfPostMapper;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 //@CrossOrigin
@@ -51,16 +50,16 @@ public class PrfPostController {
         List<PrfPost> allPrfPost = pageInfo.getContent();
         List<PrfPostDto.Response> result = prfPostMapper.prfPostsToResponseDtos(allPrfPost);
 
-        return new ResponseEntity<>(new PaginationResponse<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
     }
 
     // 게시글 리스트 - 태그, 카테고리 필터링 O
     @GetMapping
-    public ResponseEntity getPrfPosts(@Positive @RequestParam(defaultValue = "1") int page,
-                                      @Positive @RequestParam(defaultValue = "10") int size,
-                                      @Positive @RequestParam(defaultValue = "1") int sorting,
-                                      @RequestParam(required = false) String category,
-                                      @RequestParam(required = false) String tagName){
+    public ResponseEntity getPrfPostsWithFilter(@Positive @RequestParam(defaultValue = "1") int page,
+                                                @Positive @RequestParam(defaultValue = "10") int size,
+                                                @Positive @RequestParam(defaultValue = "1") int sorting,
+                                                @RequestParam(required = false) String category,
+                                                @RequestParam(required = false) String tagName){
 
 
         return new ResponseEntity<>(HttpStatus.OK);

@@ -1,5 +1,10 @@
 package com.seb006.server.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.prfpostcomment.entity.PrfPostComment;
+import com.seb006.server.recruitpost.entity.RecruitPost;
+import com.seb006.server.url.entity.Urls;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,4 +61,11 @@ public class Member implements Principal {
         ROLE_ADMIN
     }
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @JsonBackReference
+    private List<PrfPost> prfPosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @JsonBackReference
+    private List<RecruitPost> recruitPosts = new ArrayList<>();
 }

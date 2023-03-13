@@ -1,5 +1,8 @@
 package com.seb006.server.recruitpost.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.seb006.server.member.entity.Member;
+import com.seb006.server.prfpost.entity.PrfPost;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,9 +39,17 @@ public class RecruitPost {
 
     private String age;
 
-    //회원<-> 모집글
+    //회원 <-> 모집글
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     //게시글<->모집글
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "prf_post_id")
+    private PrfPost prfPost;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
