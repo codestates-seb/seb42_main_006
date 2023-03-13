@@ -3,7 +3,6 @@ package com.seb006.server.member.service;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +37,28 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
 
         return savedMember;
+    }
+
+    public Member findMember(long id) {
+        Member member = checkExistMember(id);
+
+        return member;
+    }
+
+    public Member checkExistMember(long id) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+
+        // 유효하지 않은 id인 경우 exception
+        return optionalMember.orElseThrow(() ->
+                new RuntimeException("MEMBER_NOT_FOUND"));
+    }
+
+    public Member findVerifiedMember(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        // 유효하지 않은 email인 경우 exception
+        return optionalMember.orElseThrow(() ->
+                new RuntimeException("MEMBER_NOT_FOUND"));
     }
 
     public void checkExistEmail(String email) {
