@@ -1,6 +1,6 @@
 package com.seb006.server.recruitpost.controller;
 
-import com.seb006.server.dto.MultiResponseDto;
+import com.seb006.server.global.response.MultiResponseDto;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
 import com.seb006.server.recruitpost.entity.RecruitPost;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 

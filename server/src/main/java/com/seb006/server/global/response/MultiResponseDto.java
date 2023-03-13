@@ -1,4 +1,4 @@
-package com.seb006.server.dto;
+package com.seb006.server.global.response;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

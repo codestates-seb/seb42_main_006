@@ -1,13 +1,13 @@
 package com.seb006.server.prfpostcomment.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.seb006.server.member.entity.Member;
+import com.seb006.server.prfpost.entity.PrfPost;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
@@ -22,6 +22,14 @@ public class PrfPostComment {
     private String content;
 
     //멤버 연관관계 매핑
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     //게시글 연관관계 매핑
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "prf_post_id")
+    private PrfPost prfPost;
 }
