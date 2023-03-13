@@ -16,9 +16,6 @@ module.exports = {
         "text-blue": "#5452CE",
         "text-placeholder-gray": "#585757",
       },
-      boxShadow: {
-        input: "0 0 4px 1px #ff3366",
-      },
     },
   },
   plugins: [],
