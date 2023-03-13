@@ -70,6 +70,13 @@ const IconSort = styled.div`
   width: 60px;
 `;
 
+const UserIcon = styled.div`
+  svg {
+    width: 90px;
+    height: 90px;
+  }
+`;
+
 export default function Collect() {
   return (
     <Content>
@@ -82,7 +89,7 @@ export default function Collect() {
       <PostsContent>
         <PostsSort>
           <div>
-            <div>
+            <UserIcon>
               <IconBtn
                 title=""
                 width="100px"
@@ -95,7 +102,7 @@ export default function Collect() {
                 border="none"
                 handleClick={() => console.log("click")}
               />
-            </div>
+            </UserIcon>
           </div>
           <PostDetail>
             <Title>성수동 뇨끼바 가실분 구합니다.</Title>
