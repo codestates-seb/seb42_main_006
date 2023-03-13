@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 interface StyleProp {
   width: string;
@@ -18,11 +18,25 @@ const Button = styled.button<StyleProp>`
     props.btnType === "full" ? "#ff3366" : "transparent"};
   color: ${(props) => (props.fontColor === "pink" ? "#ff3366" : "#ffffff")};
   border: 2px solid #ff3366;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    border-color: #ff7799;
+    ${(props) =>
+      props.btnType === "full"
+        ? css`
+            background-color: #ff7799;
+          `
+        : css`
+            color: #ff7799;
+          `}
+  }
 `;
 
 interface prop extends StyleProp {
   title: string;
   handleClick: () => any;
+  style?: React.CSSProperties;
 }
 
 export function StyledBtn({
@@ -34,6 +48,7 @@ export function StyledBtn({
   fontColor,
   btnType,
   handleClick,
+  style,
 }: prop) {
   return (
     <Button
@@ -44,6 +59,7 @@ export function StyledBtn({
       fontColor={fontColor}
       btnType={btnType}
       onClick={handleClick}
+      style={style}
     >
       {title}
     </Button>

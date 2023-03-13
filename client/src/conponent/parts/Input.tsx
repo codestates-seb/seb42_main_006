@@ -15,7 +15,7 @@ const InputWrapper = styled.div<InputWrapperProp>`
   background-color: #282828;
   border: 2px solid #4a4a4a;
   border-radius: 4px;
-  padding: 0 8px;
+  padding: 2px 8px;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   max-width: 900px;
@@ -67,7 +67,7 @@ export function ButtonInput({
       <StyledBtn
         title={title}
         width="10%"
-        height=""
+        height="90%"
         radius="4px"
         btnType="full"
         fontColor="white"
@@ -84,8 +84,73 @@ interface DefaultInputProp extends InputWrapperProp {
 
 export function DefaultInput({ width, height, placeholder }: DefaultInputProp) {
   return (
-    <InputWrapper width={width} height={height} placeholder={placeholder}>
+    <InputWrapper width={width} height={height}>
       <input type="text" placeholder={placeholder} />
     </InputWrapper>
+  );
+}
+
+const ValidInputWrapper = styled(InputWrapper)`
+  margin-bottom: 5px;
+
+  & ~ span {
+    color: red;
+    padding-left: 10px;
+  }
+`;
+
+interface ValidInputProp extends InputWrapperProp {
+  placeholder: string;
+  errorMsg: string;
+  value: string;
+  valid: boolean;
+  type?: string;
+  disable?: boolean;
+  setValue: (x: string) => void;
+  setValid: (x: boolean) => void;
+  validFn: (x: string) => boolean;
+}
+
+export function ValidInput({
+  width,
+  height,
+  placeholder,
+  type,
+  value,
+  setValue,
+  valid,
+  setValid,
+  errorMsg,
+  validFn,
+  disable,
+}: ValidInputProp) {
+  return (
+    <div>
+      <ValidInputWrapper width={width} height={height}>
+        {disable === true ? (
+          <input
+            value={value}
+            type={type || "text"}
+            placeholder={placeholder}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setValue(e.target.value)
+            }
+            onBlur={() => setValid(validFn(value))}
+            disabled
+          />
+        ) : (
+          <input
+            value={value}
+            type={type || "text"}
+            placeholder={placeholder}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setValue(e.target.value)
+            }
+            onBlur={() => setValid(validFn(value))}
+          />
+        )}
+      </ValidInputWrapper>
+      {!valid && <span>{errorMsg}</span>}
+    </div>
   );
 }
