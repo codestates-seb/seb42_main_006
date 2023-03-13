@@ -1,7 +1,10 @@
 import GlobalStyle from "./style/GlobalStyles";
+import NotFound from "./page/NotFound";
 import Header from "./conponent/Header";
 import Nav from "./conponent/Nav";
 import Example from "./page/Example";
+import Signup from "./page/Signup";
+import Login from "./page/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import Posts from "./page/Posts";
@@ -11,6 +14,11 @@ const MainWrapper = styled.div`
   display: flex;
 `;
 
+const ContentWrapper = styled.div`
+  width: 100%;
+  min-height: calc(100vh - 3.5rem);
+`;
+
 function App() {
   return (
     <BrowserRouter>
@@ -18,11 +26,16 @@ function App() {
       <Header />
       <MainWrapper>
         <Nav></Nav>
-        <Routes>
-          <Route path="/example" element={<Example />}></Route>
-          <Route path="/posts" element={<Posts />}></Route>
-          <Route path="/collect" element={<Collect />}></Route>
-        </Routes>
+        <ContentWrapper>
+          <Routes>
+            <Route path="/example" element={<Example />}></Route>
+            <Route path="/posts" element={<Posts />}></Route>
+            <Route path="/collect" element={<Collect />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </ContentWrapper>
       </MainWrapper>
     </BrowserRouter>
   );

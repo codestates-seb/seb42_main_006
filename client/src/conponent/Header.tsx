@@ -1,5 +1,8 @@
 import logo from "../img/logo.svg";
+
+import { useNavigate } from "react-router";
 import styled from "styled-components";
+
 import { SearchInput } from "./parts/Input";
 import { StyledBtn } from "./parts/Button";
 
@@ -23,6 +26,8 @@ const BtnWrapper = styled.div`
 `;
 
 export default function Header() {
+  const navigate = useNavigate();
+
   return (
     <HeaderStyle>
       <img src={logo} alt="logo" />
@@ -40,7 +45,7 @@ export default function Header() {
           fontWeight={400}
           fontColor="white"
           btnType="full"
-          handleClick={() => console.log("click")}
+          handleClick={() => navigate("/login")}
         ></StyledBtn>
         <StyledBtn
           title="SIGN UP"
@@ -50,7 +55,7 @@ export default function Header() {
           fontWeight={400}
           fontColor="pink"
           btnType="empty"
-          handleClick={() => console.log("click")}
+          handleClick={() => navigate("/signup")}
         ></StyledBtn>
       </BtnWrapper>
     </HeaderStyle>
