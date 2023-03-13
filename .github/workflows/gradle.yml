@@ -18,6 +18,8 @@ defaults:
 env:
   S3_BUCKET_NAME: mohae-dev-deploy
   PROJECT_NAME: server
+  CODE_DEPLOY_APPLICATION_NAME: mohae-dev
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: mohae-dev-group
 
 
 jobs:
@@ -57,6 +59,13 @@ jobs:
 
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME.zip
+      
+    - name: Code Deploy
+      run: >
+        aws deploy create-deployment --application-name $CODE_DEPLOY_APPLICATION_NAME
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME.zip
         
 #     - name: Build with Gradle
 #       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
