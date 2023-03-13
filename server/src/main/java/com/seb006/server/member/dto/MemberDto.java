@@ -1,5 +1,6 @@
 package com.seb006.server.member.dto;
 
+import com.seb006.server.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -42,5 +43,7 @@ public class MemberDto {
         private String email;
 
         private String nickName;
+
+        private String memberStatus;
     }
 }
