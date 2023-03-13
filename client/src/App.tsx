@@ -7,6 +7,8 @@ import Signup from "./page/Signup";
 import Login from "./page/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
+import Posts from "./page/Posts";
+import Collect from "./page/Collect";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -27,8 +29,10 @@ function App() {
         <ContentWrapper>
           <Routes>
             <Route path="/example" element={<Example />}></Route>
+            <Route path="/posts" element={<Posts />}></Route>
+            <Route path="/collect" element={<Collect />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
-            <Route path="login" element={<Login />}></Route>
+            <Route path="/login" element={<Login />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>
