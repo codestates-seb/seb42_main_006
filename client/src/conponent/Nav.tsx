@@ -7,12 +7,14 @@ const Content = styled.div`
   font-weight: bold;
   color: white;
   width: 160px;
-  max-height: calc(100vh - 56px);
+  height: calc(100vh - 70px);
   background-color: #222222;
   border-radius: 0 15px 0 0;
   padding-top: 10px;
   position: sticky;
   top: 70px;
+  left: -160px;
+  padding-left: 10px;
 `;
 
 export default function Nav() {
