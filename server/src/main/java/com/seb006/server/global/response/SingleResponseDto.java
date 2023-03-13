@@ -1,4 +1,4 @@
-package com.seb006.server.dto;
+package com.seb006.server.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
