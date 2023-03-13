@@ -62,14 +62,16 @@ public class PrfPostController {
 
     // 게시글 리스트 - 태그, 카테고리 필터링 O
     @GetMapping
-    public ResponseEntity getPrfPostsWithFilter(@Positive @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity getPrfPostsWithKeyword(@Positive @RequestParam(defaultValue = "1") int page,
                                                 @Positive @RequestParam(defaultValue = "10") int size,
                                                 @Positive @RequestParam(defaultValue = "1") int sorting,
-                                                @RequestParam(required = false) String category,
-                                                @RequestParam(required = false) String tagName){
+                                                @RequestParam(required = false, defaultValue = "") String category,
+                                                @RequestParam(required = false, defaultValue = "") String tagName){
+        Page<PrfPost> pageInfo = prfPostService.findPrfPostsWithKeyword(page-1, size, sorting, category, tagName);
+        List<PrfPost> allPrfPost = pageInfo.getContent();
+        List<PrfPostDto.Response> result = prfPostMapper.prfPostsToResponseDtos(allPrfPost);
 
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
     }
 
     // 게시글 수정

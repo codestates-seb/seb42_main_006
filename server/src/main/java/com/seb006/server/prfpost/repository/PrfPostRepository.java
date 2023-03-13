@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PrfPostRepository extends JpaRepository<PrfPost, Long> {
     Page<PrfPost> findAll(Pageable pageable);
+    Page<PrfPost> findByCategoryContainingAndTagsContaining(Pageable pageable, String category, String tagName);
 }

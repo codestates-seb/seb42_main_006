@@ -45,6 +45,14 @@ public class PrfPostService {
         return prfPostRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
+    // 전체 리스트 가져오기 - 태그, 카테고리 필터링 X
+    public Page<PrfPost> findPrfPostsWithKeyword(int page, int size, int sorting, String category, String tagName){
+        if(category.isBlank() && tagName.isBlank()){ // 태그, 카테고리가 모두 없는 경우
+            return getAllPrfPosts(page, size, sorting);
+        }
+        return prfPostRepository.findByCategoryContainingAndTagsContaining(PageRequest.of(page, size, Sort.by("id").descending()), category, tagName);
+    }
+
     public PrfPost updatePrfPost(long postId, PrfPostDto.Patch patchDto){
         // 수정할 게시글이 있는지 확인
         PrfPost verifiedPost = verifiedPrfPost(postId);
