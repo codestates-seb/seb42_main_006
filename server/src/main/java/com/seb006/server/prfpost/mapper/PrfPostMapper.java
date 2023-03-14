@@ -2,7 +2,9 @@ package com.seb006.server.prfpost.mapper;
 
 import com.seb006.server.prfpost.dto.PrfPostDto;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.prfpostcomment.dto.PrfPostCommentResponseDto;
 import com.seb006.server.url.dto.UrlDto;
+import com.seb006.server.url.dto.UrlResponseDto;
 import com.seb006.server.url.entity.Urls;
 import org.mapstruct.Mapper;
 
@@ -48,6 +50,7 @@ public interface PrfPostMapper {
         else{
             PrfPostDto.Response response = new PrfPostDto.Response();
             response.setId(prfPost.getId());
+            response.setMemberName(prfPost.getMember().getNickName());
             response.setTitle(prfPost.getTitle());
             response.setCategory(prfPost.getCategory());
             response.setContent(prfPost.getContent());
@@ -55,7 +58,8 @@ public interface PrfPostMapper {
 
             response.setUrls(prfPost.getUrls().stream()
                     .map(url ->{
-                        UrlDto urlDto = new UrlDto();
+                        UrlResponseDto urlDto = new UrlResponseDto();
+                        urlDto.setId(url.getId());
                         urlDto.setUrl(url.getUrl());
                         return urlDto;
                     })
@@ -67,6 +71,45 @@ public interface PrfPostMapper {
             return response;
         }
     }
+
+    // Entity -> DetailResponse
+    default PrfPostDto.DetailResponse prfPostToDetailResponseDto(PrfPost prfPost){
+        if(prfPost==null){
+            return null;
+        }
+        else{
+            PrfPostDto.DetailResponse response = new PrfPostDto.DetailResponse();
+            response.setId(prfPost.getId());
+            response.setMemberName(prfPost.getMember().getNickName());
+            response.setTitle(prfPost.getTitle());
+            response.setCategory(prfPost.getCategory());
+            response.setContent(prfPost.getContent());
+            response.setTags(prfPost.getTags());
+            response.setComments(prfPost.getComments().stream()
+                    .map(comment -> {
+                        PrfPostCommentResponseDto.PrfPostCommentResponseDtoBuilder prfPostCommentResponseDto = PrfPostCommentResponseDto.builder();
+                        prfPostCommentResponseDto.id(comment.getId());
+                        prfPostCommentResponseDto.content(comment.getContent());
+                        return prfPostCommentResponseDto.build();
+                    })
+                    .collect(Collectors.toList()));
+
+            response.setUrls(prfPost.getUrls().stream()
+                    .map(url ->{
+                        UrlResponseDto urlDto = new UrlResponseDto();
+                        urlDto.setId(url.getId());
+                        urlDto.setUrl(url.getUrl());
+                        return urlDto;
+                    })
+                    .collect(Collectors.toList()));
+
+            response.setCreateAt(prfPost.getCreatedAt());
+            response.setModifiedAt(prfPost.getModifiedAt());
+
+            return response;
+        }
+    }
+
 
     List<PrfPostDto.Response> prfPostsToResponseDtos(List<PrfPost> prfPosts);
 }
