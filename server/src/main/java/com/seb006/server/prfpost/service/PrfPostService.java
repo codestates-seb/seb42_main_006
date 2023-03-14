@@ -49,8 +49,10 @@ public class PrfPostService {
     public Page<PrfPost> findPrfPostsWithKeyword(int page, int size, int sorting, String category, String tagName){
         if(category.isBlank() && tagName.isBlank()){ // 태그, 카테고리가 모두 없는 경우
             return getAllPrfPosts(page, size, sorting);
+        } else if (category.isBlank()) {  // 카테고리가 없는 경우
+            return prfPostRepository.findByTagsContaining(PageRequest.of(page, size, Sort.by("id").descending()),tagName);
         }
-        return prfPostRepository.findByCategoryContainingAndTagsContaining(PageRequest.of(page, size, Sort.by("id").descending()), category, tagName);
+        return prfPostRepository.findByCategoryEqualsAndTagsContaining(PageRequest.of(page, size, Sort.by("id").descending()), category, tagName);
     }
 
     public PrfPost updatePrfPost(long postId, PrfPostDto.Patch patchDto){
