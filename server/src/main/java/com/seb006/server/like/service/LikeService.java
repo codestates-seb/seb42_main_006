@@ -25,6 +25,8 @@ public class LikeService {
 
     // 게시글 좋아요
     public PrfPostLike addPrfPostLike(Member member, PrfPost prfPost){
+        checkExistPrfPostLike(member, prfPost); // 이미 좋아요한 경우
+
         PrfPostLike prfPostLike = new PrfPostLike(member, prfPost);
         prfPost.likeCountUp();
 
@@ -54,4 +56,9 @@ public class LikeService {
         // TODO: count--
     }
 
+    public void checkExistPrfPostLike(Member member, PrfPost prfPost){
+        if (prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost).isPresent()){
+            throw new BusinessLogicException(ExceptionCode.PRFPOSTLIKE_EXISTS);
+        }
+    }
 }
