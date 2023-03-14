@@ -17,6 +17,7 @@ public class RecruitPostService {
     private final RecruitPostRepository recruitPostRepository;
 
     public RecruitPostService(RecruitPostRepository recruitPostRepository) {
+
         this.recruitPostRepository = recruitPostRepository;
     }
 

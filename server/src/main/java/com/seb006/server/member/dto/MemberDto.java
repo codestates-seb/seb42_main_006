@@ -2,6 +2,7 @@ package com.seb006.server.member.dto;
 
 import com.seb006.server.member.entity.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -37,6 +38,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class Response {
         private long id;
 

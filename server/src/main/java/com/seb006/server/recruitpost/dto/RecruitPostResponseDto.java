@@ -1,9 +1,11 @@
 package com.seb006.server.recruitpost.dto;
 
+import com.seb006.server.member.entity.Member;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -27,10 +29,20 @@ public class RecruitPostResponseDto {
 
     private RecruitPost.RecruitStatus recruitStatus;
 
-    private LocalDate dueDate;
+    private String dueDate;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime modifiedAt;
+
+    private String nickName;
 
     private String age;
 
     private String tags;
+
+    public void setMember(Member member){
+        this.nickName= member.getNickName();
+    }
 
 }

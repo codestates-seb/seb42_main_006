@@ -76,7 +76,7 @@ public class PrfPostService {
     }
 
     // 존재하는 게시글인지 확인
-    private PrfPost verifiedPrfPost(long postId){
+    public PrfPost verifiedPrfPost(long postId){
         // TODO: exception 처리하기
         return prfPostRepository.findById(postId).orElse(null);
     }
