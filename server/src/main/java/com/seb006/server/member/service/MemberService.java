@@ -42,9 +42,8 @@ public class MemberService {
         return savedMember;
     }
 
-    public Member findMember(long id) {
-        Member member = checkExistMember(id);
-
+    public Member findMember(String email) {
+        Member member = findVerifiedMember(email);
         return member;
     }
 
