@@ -28,4 +28,9 @@ public class PrfPostLike extends Auditable {
     @JsonManagedReference
     @JoinColumn(name = "prf_post_id")
     private PrfPost prfPost;
+
+    public PrfPostLike(Member member, PrfPost prfPost){
+        this.member =member;
+        this.prfPost=prfPost;
+    }
 }
