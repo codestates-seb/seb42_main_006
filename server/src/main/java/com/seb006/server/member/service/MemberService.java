@@ -1,6 +1,8 @@
 package com.seb006.server.member.service;
 
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ public class MemberService {
 
     public Member createMember(Member member) {
         checkExistEmail(member.getEmail());
+        checkExistNickName(member.getNickName());
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
@@ -39,32 +42,38 @@ public class MemberService {
         return savedMember;
     }
 
-    public Member findMember(long id) {
-        Member member = checkExistMember(id);
-
+    public Member findMember(String email) {
+        Member member = findVerifiedMember(email);
         return member;
     }
 
     public Member checkExistMember(long id) {
         Optional<Member> optionalMember = memberRepository.findById(id);
 
-        // 유효하지 않은 id인 경우 exception
+        // 전달받은 id를 가진 회원이 존재하지 않는 경우 exception
         return optionalMember.orElseThrow(() ->
-                new RuntimeException("MEMBER_NOT_FOUND"));
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     public Member findVerifiedMember(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
-        // 유효하지 않은 email인 경우 exception
+        // 전달받은 email을 가진 회원이 존재하지 않는 경우 exception
         return optionalMember.orElseThrow(() ->
-                new RuntimeException("MEMBER_NOT_FOUND"));
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     public void checkExistEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
         if (optionalMember.isPresent())
-            throw new RuntimeException("MEMBER_EXISTS");
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_EXISTS);
+    }
+
+    private void checkExistNickName(String nickName) {
+        Optional<Member> optionalMember = memberRepository.findByNickName(nickName);
+
+        if (optionalMember.isPresent())
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_EXISTS);
     }
 }

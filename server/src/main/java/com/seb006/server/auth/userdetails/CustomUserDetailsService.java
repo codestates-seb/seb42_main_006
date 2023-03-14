@@ -1,10 +1,11 @@
 package com.seb006.server.auth.userdetails;
 
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         Member findMember  = optionalMember.orElseThrow(() ->
-                new RuntimeException("MEMBER_NOT_FOUND"));      // TODO: error response 생성
+                new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return new CustomUserDetails(findMember);
     }
@@ -38,6 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             setId(member.getId());
             setEmail(member.getEmail());
             setPassword(member.getPassword());
+            setNickName(member.getNickName());
             setRoles(member.getRoles());
         }
 

@@ -1,6 +1,7 @@
 package com.seb006.server.prfpostcomment.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.seb006.server.global.audit.Auditable;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class PrfPostComment {
+public class PrfPostComment extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

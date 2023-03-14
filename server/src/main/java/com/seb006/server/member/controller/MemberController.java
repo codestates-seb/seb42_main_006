@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -39,5 +40,13 @@ public class MemberController {
         memberService.checkExistEmail(email.getEmail());
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity getMember(Principal principal) {
+        Member findMember = memberService.findMember(principal.getName());
+        MemberDto.Response response = memberMapper.memberToResponseDto(findMember);
+
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

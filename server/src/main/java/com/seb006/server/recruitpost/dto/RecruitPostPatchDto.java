@@ -11,8 +11,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class RecruitPostPatchDto {
 
-    private Long prfPostId;
-
     private Long id;
 
     private String title;

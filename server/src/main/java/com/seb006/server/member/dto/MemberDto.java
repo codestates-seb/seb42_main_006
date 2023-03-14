@@ -1,10 +1,13 @@
 package com.seb006.server.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 public class MemberDto {
     @Getter
@@ -16,7 +19,7 @@ public class MemberDto {
         private String email;
 
         @NotBlank
-        @Pattern(regexp = "^[A-Za-z0-9]{8,20}$",
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$",
                 message = "비밀번호는 숫자, 문자를 포함하여 8~20자리여야 합니다.")
         private String password;
 
@@ -36,11 +39,20 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class Response {
         private long id;
 
         private String email;
 
         private String nickName;
+
+        private String memberStatus;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+        private LocalDateTime createdAt;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+        private LocalDateTime modifiedAt;
     }
 }

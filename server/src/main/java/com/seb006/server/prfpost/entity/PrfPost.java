@@ -47,5 +47,5 @@ public class PrfPost extends Auditable {
 
     @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
     @JsonBackReference
-    private List<PrfPostComment> prfPostComments = new ArrayList<>();
+    private List<PrfPostComment> comments = new ArrayList<>();
 }
