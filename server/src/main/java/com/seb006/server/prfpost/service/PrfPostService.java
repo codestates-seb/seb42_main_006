@@ -90,7 +90,7 @@ public class PrfPostService {
         prfPostRepository.deleteById(postId);
     }
     // 존재하는 게시글인지 확인
-    private PrfPost verifiedPrfPost(long postId){
+    public PrfPost verifiedPrfPost(long postId){
         // TODO: 존재하지 않으면 exception 처리하기
         return prfPostRepository.findById(postId).orElse(null);
     }

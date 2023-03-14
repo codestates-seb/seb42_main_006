@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface RecruitPostRepository extends JpaRepository<RecruitPost,Long> {
 
-    Optional<List<RecruitPost>> findByTagsContainingOrTitleContaining(String keyword);
+    Optional<List<RecruitPost>> findByTagsContaining(String keyword);
 
     Optional<List<RecruitPost>> findByCategoryContaining(String keyword);
 }
