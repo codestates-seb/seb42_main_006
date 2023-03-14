@@ -8,5 +8,9 @@ public class PrfPostLikeDto {
     @Getter
     public static class Response{
         int likeCount;
+
+        public Response(int likeCount){
+            this.likeCount = likeCount;
+        }
     }
 }

@@ -15,4 +15,5 @@ public interface PrfPostRepository extends JpaRepository<PrfPost, Long> {
     // 카테고리 + 키워드 검색
     @Query("select p from PrfPost p where p.category=:category and (p.tags like %:keyword% or p.title like %:keyword%)")
     Page<PrfPost> findByCategoryAndKeyword(Pageable pageable, String category, String keyword);
+
 }

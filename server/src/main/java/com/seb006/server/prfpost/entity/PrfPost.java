@@ -9,6 +9,7 @@ import com.seb006.server.url.entity.Urls;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class PrfPost extends Auditable {
     @Column(nullable = false)
     private String tags;
 
+    @Column(nullable = false)
+    private Integer likeCount = 0;
+
     // urls를 Set으로 해야할까? 아니면 중복이 불가능하게 validation을 설정해야할까 고민
     @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
     @JsonBackReference
@@ -48,4 +52,12 @@ public class PrfPost extends Auditable {
     @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<PrfPostComment> comments = new ArrayList<>();
+
+    public void likeCountUp() {
+        this.likeCount++;
+    }
+    public void likeCountDown() {
+        this.likeCount--;
+    }
+
 }

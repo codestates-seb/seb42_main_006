@@ -29,4 +29,9 @@ public class RecruitPostLike extends Auditable {
     @JsonManagedReference
     @JoinColumn(name = "recruit_post_id")
     private RecruitPost recruitPost;
+
+    public RecruitPostLike(Member member, RecruitPost recruitPost){
+        this.member =member;
+        this.recruitPost=recruitPost;
+    }
 }
