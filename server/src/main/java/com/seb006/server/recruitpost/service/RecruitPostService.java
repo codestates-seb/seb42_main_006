@@ -65,7 +65,7 @@ public class RecruitPostService {
         switch (type){
 
             case "2":{
-                Optional<List<RecruitPost>> optionalRecruitPosts = recruitPostRepository.findByTagsContainingOrTitleContaining(keyword);
+                Optional<List<RecruitPost>> optionalRecruitPosts = recruitPostRepository.findByTagsContaining(keyword);
                 return optionalRecruitPosts.orElseThrow(()->
                         new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
             }
