@@ -2,6 +2,7 @@ package com.seb006.server.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -38,6 +39,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class Response {
         private long id;
 

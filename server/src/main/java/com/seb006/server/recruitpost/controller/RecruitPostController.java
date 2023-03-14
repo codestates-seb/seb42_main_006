@@ -1,6 +1,8 @@
 package com.seb006.server.recruitpost.controller;
 
 import com.seb006.server.global.response.MultiResponseDto;
+import com.seb006.server.member.entity.Member;
+import com.seb006.server.member.service.MemberService;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
 import com.seb006.server.recruitpost.entity.RecruitPost;
@@ -13,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/recruit-posts")
@@ -23,16 +27,22 @@ public class RecruitPostController {
 
     private final RecruitPostService service;
 
+    private final MemberService memberService;
+
     private final RecruitPostMapper mapper;
 
-    public RecruitPostController(RecruitPostService service, RecruitPostMapper mapper) {
+
+    public RecruitPostController(RecruitPostService service, MemberService memberService, RecruitPostMapper mapper) {
         this.service = service;
+        this.memberService = memberService;
         this.mapper = mapper;
     }
 
     @PostMapping
-    public ResponseEntity postRecruitPost(@RequestBody RecruitPostDto recruitPostDto){
-        RecruitPost recruitPost = service.createRecruitPost(mapper.recruitPostDtoToRecruitPost(recruitPostDto));
+    public ResponseEntity postRecruitPost(Principal principal,
+                                          @RequestBody RecruitPostDto recruitPostDto){
+        Member member = memberService.findVerifiedMember(principal.getName());
+        RecruitPost recruitPost = service.createRecruitPost(member,mapper.recruitPostDtoToRecruitPost(recruitPostDto));
 
         URI location = UriCreator.createUri(RECRUITPOST_DEFAULT_URL,recruitPost.getId());
 
@@ -56,17 +66,29 @@ public class RecruitPostController {
 
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity getRecruitPosts(@RequestParam int page,
-                                          @RequestParam int size){
-        Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size);
+                                          @RequestParam int size,
+                                          @RequestParam int sorting){
+        Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size,sorting);
         List<RecruitPost> recruitPosts = recruitPostPage.getContent();
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts),recruitPostPage),
                 HttpStatus.OK);
     }
+    //모집글 삭제
+    @DeleteMapping("/{recruit-post-id}")
+    public ResponseEntity deleteRecruitPost(@PathVariable("recruit-post-id")long id){
+        service.deleteRecruitPost(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
     //모집글 리스트 보기(태그)
+    @GetMapping("/search")
+    public ResponseEntity searchTagCategory(@RequestParam(value = "type") String type,
+                                            @RequestParam(value = "keyword") String keyword){
+        return ResponseEntity.ok(mapper.recruitPostsToRecruitPostResponseDtos(service.searchTagRecruitPosts(type,keyword)));
+    }
 
     //모집글 리스트 (카테고리)
 

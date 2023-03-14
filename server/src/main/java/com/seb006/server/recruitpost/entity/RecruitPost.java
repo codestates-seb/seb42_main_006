@@ -1,6 +1,7 @@
 package com.seb006.server.recruitpost.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.seb006.server.global.audit.Auditable;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-public class RecruitPost {
+public class RecruitPost extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +33,13 @@ public class RecruitPost {
 
     private int currentNumber;
 
+
     //모집기간
-    private LocalDate dueDate;
+    //private long startTimeMill;
+    // long endTimeMill;
+
+    //모집기간
+    private String dueDate;
 
     private String tags;
 
