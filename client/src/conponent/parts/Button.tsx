@@ -19,6 +19,7 @@ const Button = styled.button<StyleProp>`
   color: ${(props) => (props.fontColor === "pink" ? "#ff3366" : "#ffffff")};
   border: 2px solid #ff3366;
   transition: 0.3s ease-in-out;
+  font-size: 1rem;
 
   &:hover {
     border-color: #ff7799;

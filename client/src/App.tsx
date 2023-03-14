@@ -5,6 +5,7 @@ import Nav from "./conponent/Nav";
 import Example from "./page/Example";
 import Signup from "./page/Signup";
 import Login from "./page/Login";
+import AddPost from "./page/AddPost";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import Posts from "./page/Posts";
@@ -33,6 +34,7 @@ function App() {
             <Route path="/collect" element={<Collect />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/addpost" element={<AddPost />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>

@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 import { ValidInput } from "../conponent/parts/Input";
 import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
+import { request } from "../function/request";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,6 +58,46 @@ function Signup() {
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [passwordRepeatValid, setPasswordRepeatValid] = useState(true);
   const [emailCheck, setEmailCheck] = useState<boolean>();
+
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    if (emailCheck) {
+      if (
+        emailCheck &&
+        emailValid &&
+        nickValid &&
+        passwordValid &&
+        passwordRepeatValid
+      ) {
+        request
+          .post("/members/sign-up", { email, password, nickName: nickname })
+          .then((res) => {
+            if (res.status === 201) {
+              navigate("/login");
+            }
+          })
+          .then((err) => {});
+      }
+    } else {
+      if (email.length > 0 && emailValid) {
+        request
+          .post("/members/email-check", { email })
+          .then((res) => {
+            if (res.status === 200) {
+              setEmailCheck(true);
+            }
+          })
+          .catch((err) => {
+            if (err.response.status === 409) {
+              console.log(err);
+              setEmailCheck(false);
+              setEmailValid(false);
+            }
+          });
+      }
+    }
+  };
 
   return (
     <Wrapper>
@@ -127,10 +169,7 @@ function Signup() {
             height="40px"
             title={emailCheck ? "Sign Up" : "Continue"}
             radius="4px"
-            handleClick={() => {
-              setEmailCheck((prev) => !prev);
-              setEmailValid(false);
-            }}
+            handleClick={handleSubmit}
             btnType={emailCheck ? "full" : "empty"}
             fontColor={emailCheck ? "white" : "pink"}
             fontWeight={600}
