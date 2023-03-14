@@ -1,5 +1,8 @@
 package com.seb006.server.recruitpost.service;
 
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
+import com.seb006.server.member.entity.Member;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.repository.RecruitPostRepository;
 import org.springframework.data.domain.Page;
@@ -8,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -21,7 +25,10 @@ public class RecruitPostService {
         this.recruitPostRepository = recruitPostRepository;
     }
 
-    public RecruitPost createRecruitPost(RecruitPost recruitPost){
+    public RecruitPost createRecruitPost(Member member,RecruitPost recruitPost){
+
+        recruitPost.setMember(member);
+
         return recruitPostRepository.save(recruitPost);
     }
 
@@ -49,13 +56,28 @@ public class RecruitPostService {
         return findVerifiedRecruitPost(id);
     }
     // 모집글 리스트 보기 최신순
-    public Page<RecruitPost> findRecruitPosts(int page, int size) {
+    public Page<RecruitPost> findRecruitPosts(int page, int size, int sorting) {
         return recruitPostRepository.findAll(PageRequest.of(page,size,
                 Sort.by("id").descending()));
     }
-    //태그이름별 리스트
+    //태그,카테고리 검색
+    public List<RecruitPost> searchTagRecruitPosts(String type, String keyword){
+        switch (type){
 
-    //카테고리별 리스트
+            case "2":{
+                Optional<List<RecruitPost>> optionalRecruitPosts = recruitPostRepository.findByTagsContainingOrTitleContaining(keyword);
+                return optionalRecruitPosts.orElseThrow(()->
+                        new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
+            }
+            case "3":{
+                Optional<List<RecruitPost>> optionalRecruitPosts = recruitPostRepository.findByCategoryContaining(keyword);
+                return optionalRecruitPosts.orElseThrow(()->
+                        new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
+            }
+        }
+        return null;
+    }
+
 
     public void deleteRecruitPost(long id){
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);

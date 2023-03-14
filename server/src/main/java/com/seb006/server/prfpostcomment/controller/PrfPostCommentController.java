@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/prf-comments")
@@ -36,9 +37,11 @@ public class PrfPostCommentController {
     }
 
     @PostMapping("/{prf-post-id}")
-    public ResponseEntity postPrfPostComment(@PathVariable("prf-post-id") long prfPostId,
+    public ResponseEntity postPrfPostComment(Principal principal,
+                                             @PathVariable("prf-post-id") long prfPostId,
                                              @RequestBody PrfPostCommentPostDto prfPostCommentPostDto){
-        PrfPostComment prfPostComment = service.createPrfPostComment(mapper.prfPostCommentPostDtoToPrfPostComment(prfPostId,prfPostCommentPostDto));
+        Member member = memberService.findVerifiedMember(principal.getName());
+        PrfPostComment prfPostComment = service.createPrfPostComment(member,mapper.prfPostCommentPostDtoToPrfPostComment(prfPostId,prfPostCommentPostDto));
         URI location = UriCreator.createUri(PRFPOSTCOMMENT_DEFAULT_URL,prfPostComment.getId());
 
         return ResponseEntity.created(location).build();

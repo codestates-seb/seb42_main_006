@@ -14,7 +14,7 @@ public class RecruitPostDto {
 
     private Long prfPostId;
 
-    private Long memberId;
+    //private Long memberId;
     //private String nickName;
 
     private String title;

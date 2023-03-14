@@ -27,11 +27,11 @@ public class PrfPostCommentService {
         this.memberService = memberService;
     }
 
-    public PrfPostComment createPrfPostComment(PrfPostComment prfPostComment){
+    public PrfPostComment createPrfPostComment(Member member,PrfPostComment prfPostComment){
 
         PrfPost prfPost = prfPostService.verifiedPrfPost(prfPostComment.getPrfPost().getId());
 
-        Member member = memberService.findVerifiedMember(prfPostComment.getMember().getEmail());
+        //Member member = memberService.findVerifiedMember(prfPostComment.getMember().getEmail());
 
         prfPostComment.setPrfPost(prfPost);
         prfPostComment.setMember(member);
