@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import Posts from "./page/Posts";
 import Collect from "./page/Collect";
+import CollectDeatail from "./page/CollectDeatail";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ function App() {
             <Route path="/collect" element={<Collect />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>
