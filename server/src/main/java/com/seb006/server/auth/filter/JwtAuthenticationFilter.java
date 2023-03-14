@@ -6,6 +6,7 @@ import com.seb006.server.auth.jwt.JwtTokenizer;
 import com.seb006.server.member.entity.Member;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -38,7 +39,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
-        return authenticationManager.authenticate(authenticationToken);
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        validateAccount(authentication);
+
+        return authentication;
     }
 
     @Override
@@ -80,5 +84,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
         return refreshToken;
+    }
+
+    private void validateAccount(Authentication authentication) {
+        // 회원 상태가 'QUIT' 이면, 인증 거부
+        Member member = (Member) authentication.getPrincipal();
+
+        if (member.getMemberStatus() == Member.MemberStatus.QUIT)
+            throw new DisabledException("Member who has already resigned");
     }
 }

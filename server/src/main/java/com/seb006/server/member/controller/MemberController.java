@@ -42,6 +42,13 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping
+    public ResponseEntity deleteMember(Principal principal) {
+        memberService.deleteMember(principal.getName());
+
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/mypage")
     public ResponseEntity getMember(Principal principal) {
         Member findMember = memberService.findMember(principal.getName());

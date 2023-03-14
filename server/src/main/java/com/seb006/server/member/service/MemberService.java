@@ -47,6 +47,13 @@ public class MemberService {
         return member;
     }
 
+    public void deleteMember(String email) {
+        Member member = findVerifiedMember(email);
+
+        member.setMemberStatus(Member.MemberStatus.QUIT);
+        memberRepository.save(member);
+    }
+
     public Member checkExistMember(long id) {
         Optional<Member> optionalMember = memberRepository.findById(id);
 
