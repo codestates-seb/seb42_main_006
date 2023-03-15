@@ -5,7 +5,7 @@ interface prop {
 }
 
 const StyledSpan = styled.span`
-  padding: 4px 8px;
+  padding: 2px 4px;
   background-color: #ff3366;
   border: 2px solid #ff3366;
   border-radius: 4px;

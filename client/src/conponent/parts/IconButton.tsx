@@ -58,6 +58,7 @@ export default function IconBtn({
   btnType,
   border,
   handleClick,
+  style,
 }: prop) {
   const iconTypeHandler = (iconType: string) => {
     switch (iconType) {
@@ -104,6 +105,7 @@ export default function IconBtn({
       btnType={btnType}
       border={border}
       onClick={handleClick}
+      style={style}
     >
       {iconTypeHandler(iconType)} {title}
     </Button>
