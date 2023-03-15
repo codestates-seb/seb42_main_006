@@ -47,6 +47,13 @@ public class MemberService {
         return member;
     }
 
+    public void deleteMember(String email) {
+        Member member = findVerifiedMember(email);
+
+        member.setMemberStatus(Member.MemberStatus.QUIT);
+        memberRepository.save(member);
+    }
+
     public Member checkExistMember(long id) {
         Optional<Member> optionalMember = memberRepository.findById(id);
 
@@ -57,6 +64,11 @@ public class MemberService {
 
     public Member findVerifiedMember(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        // 조회한 회원이 존재한다면 상태값을 확인해준다
+        if (optionalMember.isPresent()) {
+            checkMemberStatus(optionalMember.get());
+        }
 
         // 전달받은 email을 가진 회원이 존재하지 않는 경우 exception
         return optionalMember.orElseThrow(() ->
@@ -75,5 +87,11 @@ public class MemberService {
 
         if (optionalMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_NICKNAME_EXISTS);
+    }
+
+    private void checkMemberStatus(Member member) {
+        // 탈퇴한 회원이면 exception
+        if (member.getMemberStatus() == Member.MemberStatus.QUIT)
+            throw new BusinessLogicException(ExceptionCode.MEMBER_QUIT);
     }
 }
