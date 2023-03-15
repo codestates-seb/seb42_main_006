@@ -10,7 +10,9 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -25,7 +27,10 @@ public class MemberPostsService {
 
     public Page<PrfPost> findMyPrfPosts(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
-        List<PrfPost> prfPosts = findMember.getPrfPosts();
+
+        List<PrfPost> prfPosts = findMember.getPrfPosts().stream()
+                .sorted(Comparator.comparing(PrfPost::getId).reversed())
+                .collect(Collectors.toList());
 
         Page<PrfPost> prfPostLikePage
                 = new CustomPagination<PrfPost>().pagination(prfPosts, page, size);
@@ -35,7 +40,10 @@ public class MemberPostsService {
 
     public Page<RecruitPost> findMyRecruitPosts(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
-        List<RecruitPost> recruitPosts = findMember.getRecruitPosts();
+
+        List<RecruitPost> recruitPosts = findMember.getRecruitPosts().stream()
+                .sorted(Comparator.comparing(RecruitPost::getId).reversed())
+                .collect(Collectors.toList());
 
         Page<RecruitPost> recruitPostPage
                 = new CustomPagination<RecruitPost>().pagination(recruitPosts, page, size);
@@ -45,7 +53,10 @@ public class MemberPostsService {
 
     public Page<PrfPostLike> findMyPrfPostsLike(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
-        List<PrfPostLike> prfPostLikes = findMember.getPrfPostLikes();
+
+        List<PrfPostLike> prfPostLikes = findMember.getPrfPostLikes().stream()
+                .sorted(Comparator.comparing(PrfPostLike::getId).reversed())
+                .collect(Collectors.toList());
 
         Page<PrfPostLike> prfPostLikePage
                 = new CustomPagination<PrfPostLike>().pagination(prfPostLikes, page, size);

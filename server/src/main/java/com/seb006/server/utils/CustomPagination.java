@@ -12,7 +12,8 @@ public class CustomPagination<T> {
     private int size;
 
     public Page<T> pagination(List<T> data, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size);
+
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), data.size());
 
