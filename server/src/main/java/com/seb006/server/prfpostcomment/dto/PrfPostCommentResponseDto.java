@@ -22,6 +22,7 @@ public class PrfPostCommentResponseDto {
     private LocalDateTime modifiedAt;
 
     //유저 정보
+    private Long memberId;
     private String nickname;
 
     public void setMember(Member member){

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
@@ -98,9 +99,13 @@ public class RecruitPostController {
         return new ResponseEntity<>(new MultiResponseDto<RecruitPostResponseDto>(result, recruitPostPage), HttpStatus.OK);
     }
 
-
-
     //모집글 닫기
+    @PatchMapping("/{recruit-post-id}/close")
+    public ResponseEntity closeRecruitPost (@PathVariable("recruit-post-id") long id) {
+        service.closeRecruitPost(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     //모집 실패
 
