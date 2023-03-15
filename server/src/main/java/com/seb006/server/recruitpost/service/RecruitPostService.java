@@ -1,7 +1,6 @@
 package com.seb006.server.recruitpost.service;
 
-import com.seb006.server.global.exception.BusinessLogicException;
-import com.seb006.server.global.exception.ExceptionCode;
+import com.seb006.server.global.Sorting;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.repository.RecruitPostRepository;
@@ -19,10 +18,12 @@ import java.util.Optional;
 public class RecruitPostService {
 
     private final RecruitPostRepository recruitPostRepository;
+    private final Sorting sort;
 
-    public RecruitPostService(RecruitPostRepository recruitPostRepository) {
+    public RecruitPostService(RecruitPostRepository recruitPostRepository, Sorting sort) {
 
         this.recruitPostRepository = recruitPostRepository;
+        this.sort = sort;
     }
 
     public RecruitPost createRecruitPost(Member member,RecruitPost recruitPost){
@@ -57,17 +58,21 @@ public class RecruitPostService {
     }
     // 모집글 리스트 보기 최신순
     public Page<RecruitPost> findRecruitPosts(int page, int size, int sorting) {
-        return recruitPostRepository.findAll(PageRequest.of(page,size,
-                Sort.by("id").descending()));
+        List<Sort.Order> orders = sort.getOrders(sorting);
+
+        return recruitPostRepository.findAll(PageRequest.of(page,size, Sort.by(orders)));
     }
+
     //태그,카테고리 검색
     public Page<RecruitPost> searchRecruitPosts(int page, int size, int sorting, String category, String keyword){
+        List<Sort.Order> orders = sort.getOrders(sorting);
+
         if(category.isBlank() && keyword.isBlank()) { // 태그 카테고리 X
-            return findRecruitPosts(page, size, sorting);
+            return recruitPostRepository.findAll(PageRequest.of(page, size, Sort.by(orders)));
         } else if (category.isBlank()) {  // 카테고리X
-            return recruitPostRepository.findByTagsContainingOrTitleContaining(PageRequest.of(page, size, Sort.by("id").descending()),keyword, keyword);
+            return recruitPostRepository.findByTagsContainingOrTitleContaining(PageRequest.of(page, size, Sort.by(orders)),keyword, keyword);
         }
-        return recruitPostRepository.findByCategoryAndKeyword(PageRequest.of(page, size, Sort.by("id").descending()), category, keyword);
+        return recruitPostRepository.findByCategoryAndKeyword(PageRequest.of(page, size, Sort.by(orders)), category, keyword);
     }
 
 
