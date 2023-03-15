@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seb006.server.global.audit.Auditable;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpostcomment.entity.PrfPostComment;
+import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.url.entity.Urls;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,4 +49,6 @@ public class PrfPost extends Auditable {
     @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<PrfPostComment> comments = new ArrayList<>();
+    
+
 }

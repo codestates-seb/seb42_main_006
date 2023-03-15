@@ -5,6 +5,7 @@ import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.service.MemberService;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
+import com.seb006.server.recruitpost.dto.RecruitPostResponseDto;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.mapper.RecruitPostMapper;
 import com.seb006.server.recruitpost.service.RecruitPostService;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/recruit-posts")
@@ -83,14 +84,21 @@ public class RecruitPostController {
         service.deleteRecruitPost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    //모집글 리스트 보기(태그)
-    @GetMapping("/search")
-    public ResponseEntity searchTagCategory(@RequestParam(value = "type") String type,
-                                            @RequestParam(value = "keyword") String keyword){
-        return ResponseEntity.ok(mapper.recruitPostsToRecruitPostResponseDtos(service.searchTagRecruitPosts(type,keyword)));
+    //모집글 리스트 보기(태그,카테고리)
+    @GetMapping
+    public ResponseEntity searchRecruitPosts( @RequestParam(defaultValue = "1") int page,
+                                              @RequestParam(defaultValue = "10") int size,
+                                              @RequestParam(defaultValue = "1") int sorting,
+                                              @RequestParam(required = false, defaultValue = "") String category,
+                                              @RequestParam(required = false, defaultValue = "") String keyword){
+        Page<RecruitPost> recruitPostPage = service.searchRecruitPosts(page-1, size, sorting, category, keyword);
+        List<RecruitPost> recruitPostList = recruitPostPage.getContent();
+        List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPostList);
+
+        return new ResponseEntity<>(new MultiResponseDto<RecruitPostResponseDto>(result, recruitPostPage), HttpStatus.OK);
     }
 
-    //모집글 리스트 (카테고리)
+
 
     //모집글 닫기
 
