@@ -10,6 +10,7 @@ public enum ExceptionCode {
     PRFPOSTLIKE_NOT_FOUND(404, "해당 게시글에 좋아요를 하지 않았습니다."),
     PRFPOSTLIKE_EXISTS(409, "이미 좋아요한 게시글입니다.");
 
+    RECRUITPOST_NOT_FOUND(404, "모집글이 존재하지 않습니다.");
     @Getter
     private int status;
 
