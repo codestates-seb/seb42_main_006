@@ -74,4 +74,11 @@ public class Member extends Auditable implements Principal {
             prfPost.setMember(this);
         }
     }
+
+    public void setRecruitPosts(RecruitPost recruitPost) {
+        this.recruitPosts.add(recruitPost);
+        if (recruitPost.getMember() != this) {
+            recruitPost.setMember(this);
+        }
+    }
 }

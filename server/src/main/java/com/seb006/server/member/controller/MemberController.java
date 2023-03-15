@@ -7,6 +7,7 @@ import com.seb006.server.member.mapper.MemberMapper;
 import com.seb006.server.member.service.MemberPostsService;
 import com.seb006.server.member.service.MemberService;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.recruitpost.entity.RecruitPost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,6 +91,14 @@ public class MemberController {
     public ResponseEntity getMyPrfPosts(Principal principal) {
         List<PrfPost> prfPosts =  memberPostsService.findMyPrfPosts(principal.getName());
         List<MemberPostsDto> response = memberMapper.prfPostsToMemberPostsDtos(prfPosts);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/recruit-posts")
+    public ResponseEntity getMyRecruitPosts(Principal principal) {
+        List<RecruitPost> recruitPosts = memberPostsService.findMyRecruitPosts(principal.getName());
+        List<MemberPostsDto> response = memberMapper.recruitPostsToMemberPostsDtos(recruitPosts);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

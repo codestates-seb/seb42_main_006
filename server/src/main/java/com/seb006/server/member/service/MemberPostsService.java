@@ -3,6 +3,7 @@ package com.seb006.server.member.service;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,12 @@ public class MemberPostsService {
         Member findMember = memberService.findVerifiedMember(email);
 
         return findMember.getPrfPosts();
+    }
+
+    public List<RecruitPost> findMyRecruitPosts(String email) {
+        Member findMember = memberService.findVerifiedMember(email);
+
+        return findMember.getRecruitPosts();
     }
 
 }

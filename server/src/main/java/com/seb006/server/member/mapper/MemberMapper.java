@@ -4,6 +4,7 @@ import com.seb006.server.member.dto.MemberDto;
 import com.seb006.server.member.dto.MemberPostsDto;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,5 +21,5 @@ public interface MemberMapper {
 
     List<MemberPostsDto> prfPostsToMemberPostsDtos(List<PrfPost> prfPosts);
 
-
+    List<MemberPostsDto> recruitPostsToMemberPostsDtos(List<RecruitPost> recruitPosts);
 }
