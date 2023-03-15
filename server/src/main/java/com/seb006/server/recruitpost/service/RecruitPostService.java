@@ -42,6 +42,8 @@ public class RecruitPostService {
                 .ifPresent(category-> findRecruitPost.setCategory(category));
         Optional.ofNullable(recruitPost.getContent())
                 .ifPresent(content -> findRecruitPost.setContent(content));
+        Optional.ofNullable(recruitPost.getRecruitStatus())
+                .ifPresent(recruitStatus -> findRecruitPost.setRecruitStatus(recruitStatus));
         Optional.ofNullable(recruitPost.getRecruitNumber())
                 .ifPresent(recruitNumber -> findRecruitPost.setRecruitNumber(recruitNumber));
         Optional.ofNullable(recruitPost.getAge())
@@ -89,7 +91,14 @@ public class RecruitPostService {
         return findRecruitPost;
     }
 
+    //모집글 닫기
+    public void closeRecruitPost (long id) {
+        RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
 
+        findRecruitPost.setRecruitStatus(RecruitPost.RecruitStatus.CLOSE);
 
+        recruitPostRepository.save(findRecruitPost);
+
+    }
 
 }
