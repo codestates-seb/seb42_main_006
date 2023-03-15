@@ -173,7 +173,7 @@ export default function CollectDeatail() {
             <TagRight>
               <StyledBtn
                 title="게시물 보러가기"
-                width="100px"
+                width="110px"
                 height="30px"
                 radius="50px"
                 fontWeight={400}
