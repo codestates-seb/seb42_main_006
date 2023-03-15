@@ -11,6 +11,8 @@ import styled from "styled-components";
 import Posts from "./page/Posts";
 import Collect from "./page/Collect";
 import CollectDeatail from "./page/CollectDeatail";
+import Mypage from "./page/Mypage";
+import Main from "./page/Main";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -37,6 +39,8 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/addpost" element={<AddPost />}></Route>
             <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
+            <Route path="/" element={<Main />}></Route>
+            <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>

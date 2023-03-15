@@ -22,7 +22,7 @@ export default function Nav() {
   const navigate = useNavigate();
   return (
     <Content>
-      <PageButton title="Main" handleClick={() => navigate("/*")}></PageButton>
+      <PageButton title="Main" handleClick={() => navigate("/")}></PageButton>
       <PageButton
         title="Story"
         handleClick={() => navigate("/posts")}
@@ -33,7 +33,7 @@ export default function Nav() {
       ></PageButton>
       <PageButton
         title="My page"
-        handleClick={() => navigate("/*")}
+        handleClick={() => navigate("/mypage")}
       ></PageButton>
     </Content>
   );
