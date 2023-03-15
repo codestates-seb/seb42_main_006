@@ -60,11 +60,11 @@ public class Member extends Auditable implements Principal {
         ROLE_ADMIN
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<PrfPost> prfPosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<RecruitPost> recruitPosts = new ArrayList<>();
 }

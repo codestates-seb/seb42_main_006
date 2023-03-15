@@ -42,6 +42,7 @@ public class MemberService {
         return savedMember;
     }
 
+    @Transactional(readOnly = true)
     public Member findMember(String email) {
         Member member = findVerifiedMember(email);
         return member;
@@ -68,6 +69,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     public Member checkExistMember(long id) {
         Optional<Member> optionalMember = memberRepository.findById(id);
 
@@ -76,6 +78,7 @@ public class MemberService {
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public Member findVerifiedMember(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
@@ -89,6 +92,7 @@ public class MemberService {
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public void checkExistEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
