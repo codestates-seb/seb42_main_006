@@ -1,5 +1,6 @@
 import PageButton from "./parts/PageButton";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 
 const Content = styled.div`
   display: flex;
@@ -18,23 +19,21 @@ const Content = styled.div`
 `;
 
 export default function Nav() {
+  const navigate = useNavigate();
   return (
     <Content>
-      <PageButton
-        title="Main"
-        handleClick={(e: any) => console.log(e.target.textContent)}
-      ></PageButton>
+      <PageButton title="Main" handleClick={() => navigate("/")}></PageButton>
       <PageButton
         title="Story"
-        handleClick={(e: any) => console.log(e.target.textContent)}
+        handleClick={() => navigate("/posts")}
       ></PageButton>
       <PageButton
         title="Together"
-        handleClick={(e: any) => console.log(e.target.textContent)}
+        handleClick={() => navigate("/collect")}
       ></PageButton>
       <PageButton
         title="My page"
-        handleClick={(e: any) => console.log(e.target.textContent)}
+        handleClick={() => navigate("/mypage")}
       ></PageButton>
     </Content>
   );

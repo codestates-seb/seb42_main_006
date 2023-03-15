@@ -7,5 +7,5 @@ export const validFn = (type: string) => {
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/,
   };
 
-  return (x: string) => emailReg[type].test(x);
+  return (x: string): boolean => emailReg[type].test(x);
 };

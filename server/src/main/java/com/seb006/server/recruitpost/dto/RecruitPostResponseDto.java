@@ -41,6 +41,8 @@ public class RecruitPostResponseDto {
 
     private String tags;
 
+    private Integer likeCount;
+
     public void setMember(Member member){
         this.nickName= member.getNickName();
     }

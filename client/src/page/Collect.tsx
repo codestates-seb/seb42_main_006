@@ -1,6 +1,7 @@
 import IconBtn from "../conponent/parts/IconButton";
 import Tag from "../conponent/parts/Tag";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 
 const Content = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ const PostDetail = styled.div`
   margin-bottom: 20px;
   margin-top: 10px;
   padding-bottom: 5px;
+  cursor: pointer;
 `;
 
 const Title = styled.div`
@@ -70,7 +72,15 @@ const IconSort = styled.div`
   width: 60px;
 `;
 
+const UserIcon = styled.div`
+  svg {
+    width: 90px;
+    height: 90px;
+  }
+`;
+
 export default function Collect() {
+  const Navigate = useNavigate();
   return (
     <Content>
       <Sort>
@@ -82,7 +92,7 @@ export default function Collect() {
       <PostsContent>
         <PostsSort>
           <div>
-            <div>
+            <UserIcon>
               <IconBtn
                 title=""
                 width="100px"
@@ -95,9 +105,9 @@ export default function Collect() {
                 border="none"
                 handleClick={() => console.log("click")}
               />
-            </div>
+            </UserIcon>
           </div>
-          <PostDetail>
+          <PostDetail onClick={() => Navigate("/collectdeatail")}>
             <Title>성수동 뇨끼바 가실분 구합니다.</Title>
             <Summary>
               서수동에 유명한 뇨끼바 있다고 게시판에 확인 했습니다. 2023/03/31

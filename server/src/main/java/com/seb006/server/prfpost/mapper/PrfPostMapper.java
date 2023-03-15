@@ -93,6 +93,9 @@ public interface PrfPostMapper {
                         PrfPostCommentResponseDto.PrfPostCommentResponseDtoBuilder prfPostCommentResponseDto = PrfPostCommentResponseDto.builder();
                         prfPostCommentResponseDto.id(comment.getId());
                         prfPostCommentResponseDto.content(comment.getContent());
+                        prfPostCommentResponseDto.createdAt(comment.getCreatedAt());
+                        prfPostCommentResponseDto.modifiedAt(comment.getModifiedAt());
+                        prfPostCommentResponseDto.nickname(comment.getMember().getNickName());
                         return prfPostCommentResponseDto.build();
                     })
                     .collect(Collectors.toList()));

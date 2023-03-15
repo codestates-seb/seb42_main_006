@@ -33,32 +33,45 @@ public class LikeService {
         return prfPostLikeRepository.save(prfPostLike);
     }
 
-    // 모집글 좋아요
-    public RecruitPostLike addRecruitPostLike(Member member, RecruitPost recruitPost){
-        //RecruitPostLike recruitPostLike = new RecruitPostLike(member, recruitPost);
-        // TODO: count++
-
-        //return recruitPostLikeRepository.save(recruitPostLike);
-        return null;
-    }
-
     // 게시글 좋아요 취소
     public void cancelPrfPostLike(Member member, PrfPost prfPost){
+        prfPost.likeCountDown();
         PrfPostLike prfPostLike = prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost)
-                        .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRFPOSTLIKE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRFPOSTLIKE_NOT_FOUND));
 
         prfPostLikeRepository.delete(prfPostLike);
-        prfPost.likeCountDown();
+    }
+
+    // 모집글 좋아요
+    public RecruitPostLike addRecruitPostLike(Member member, RecruitPost recruitPost){
+        checkExistRecruitPostLike(member, recruitPost); // 이미 좋아요한 경우
+
+        recruitPost.likeCountUp();
+        RecruitPostLike recruitPostLike = new RecruitPostLike(member, recruitPost);
+
+        return recruitPostLikeRepository.save(recruitPostLike);
     }
 
     // 모집글 좋아요 취소
     public void cancelRecruitPostLike(Member member, RecruitPost recruitPost){
-        // TODO: count--
+        recruitPost.likeCountDown();
+
+        RecruitPostLike recruitPostLike = recruitPostLikeRepository.findByMemberAndRecruitPost(member, recruitPost)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
+        recruitPostLikeRepository.delete(recruitPostLike);
     }
 
+    // 이미 존재하는 게시글인지 확인
     public void checkExistPrfPostLike(Member member, PrfPost prfPost){
         if (prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost).isPresent()){
             throw new BusinessLogicException(ExceptionCode.PRFPOSTLIKE_EXISTS);
+        }
+    }
+
+    // 이미 존재하는 모잡글인지 확인
+    public void checkExistRecruitPostLike(Member member, RecruitPost recruitPost){
+        if (recruitPostLikeRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()){
+            throw new BusinessLogicException(ExceptionCode.RECRUITPOSTLIKE_EXISTS);
         }
     }
 }

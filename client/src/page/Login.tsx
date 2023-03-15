@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 import { ValidInput } from "../conponent/parts/Input";
 import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
+import { request } from "../function/request";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,6 +54,27 @@ function Login() {
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(true);
 
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (emailValid && passwordValid) {
+      request
+        .post("/members/login", {
+          username: email,
+          password,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            sessionStorage.setItem("auth", res.headers["authorization"]);
+            sessionStorage.setItem("user", JSON.stringify(res.data));
+            navigate("/posts");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   return (
     <Wrapper>
       <Background>
@@ -89,9 +112,7 @@ function Login() {
             height="40px"
             title={"Sign Up"}
             radius="4px"
-            handleClick={() => {
-              console.log("login");
-            }}
+            handleClick={handleLogin}
             btnType={"full"}
             fontColor={"white"}
             fontWeight={600}
