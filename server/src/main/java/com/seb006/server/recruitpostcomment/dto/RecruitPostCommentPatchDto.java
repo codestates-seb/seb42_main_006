@@ -1,2 +1,3 @@
-package com.seb006.server.recruitpostcomment.dto;public class RecruitPostCommentPatchDto {
+package com.seb006.server.recruitpostcomment.dto;
+public class RecruitPostCommentPatchDto {
 }

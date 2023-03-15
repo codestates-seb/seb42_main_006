@@ -1,2 +1,3 @@
-package com.seb006.server.recruitpostcomment.service;public class RecruitPostCommentService {
+package com.seb006.server.recruitpostcomment.service;
+public class RecruitPostCommentService {
 }

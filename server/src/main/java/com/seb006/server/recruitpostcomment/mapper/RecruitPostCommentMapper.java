@@ -1,2 +1,3 @@
-package com.seb006.server.recruitpostcomment.mapper;public class RecruitPostCommentMapper {
+package com.seb006.server.recruitpostcomment.mapper;
+public class RecruitPostCommentMapper {
 }
