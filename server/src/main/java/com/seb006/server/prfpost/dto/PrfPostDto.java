@@ -42,6 +42,7 @@ public class PrfPostDto {
         private String category;
         private String content;
         private String tags;
+        private Integer likeCount;
         private List<UrlResponseDto> urls;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -60,6 +61,7 @@ public class PrfPostDto {
         private String category;
         private String content;
         private String tags;
+        private Integer likeCount;
         private List<UrlResponseDto> urls;
         private List<PrfPostCommentResponseDto> comments;
 
