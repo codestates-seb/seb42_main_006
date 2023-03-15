@@ -4,6 +4,7 @@ import com.seb006.server.auth.jwt.JwtTokenizer;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,7 +39,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
             request.setAttribute("exception", ee);
-        } catch (Exception e) {
+        } catch (DisabledException de) {
+            request.setAttribute("exception", de);
+        }catch (Exception e) {
             request.setAttribute("exception", e);
         }
 

@@ -23,8 +23,10 @@ public class RecruitPost extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String category;
 
     private String content;
@@ -41,6 +43,7 @@ public class RecruitPost extends Auditable {
     //모집기간
     private String dueDate;
 
+    @Column(nullable = false)
     private String tags;
 
     private String age;
