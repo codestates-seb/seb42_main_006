@@ -56,4 +56,25 @@ public class MemberController {
 
         return new ResponseEntity(response, HttpStatus.OK);
     }
+
+    @PatchMapping("/edit/nickname")
+    public ResponseEntity patchNickName(@Valid @RequestBody MemberDto.Patch requestBody,
+                                        Principal principal) {
+        requestBody.setEmail(principal.getName());
+
+        Member updateMember = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
+        MemberDto.Response response = memberMapper.memberToResponseDto(updateMember);
+
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/edit/password")
+    public ResponseEntity patchPassword(@Valid @RequestBody MemberDto.Patch requestBody, Principal principal) {
+        requestBody.setEmail(principal.getName());
+
+        Member updateMember = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
+        MemberDto.Response response = memberMapper.memberToResponseDto(updateMember);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 public interface MemberMapper {
     Member memberPostToMember(MemberDto.Post requestBody);
 
+    Member memberPatchToMember(MemberDto.Patch requestBody);
+
     @Mapping(source = "memberStatus.status", target = "memberStatus")
     MemberDto.Response memberToResponseDto(Member member);
 }
