@@ -7,8 +7,11 @@ import {
   Textarea,
   TagInput,
 } from "../conponent/parts/InputNoH";
+import MapSearch from "../conponent/MapSearch";
 import Tag from "../conponent/parts/Tag";
+import { StyledBtn } from "../conponent/parts/Button";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const Background = styled.div`
   margin: 24px auto;
@@ -63,10 +66,18 @@ const FormWrapper = styled.div`
   }
 `;
 
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+`;
+
 function AddPost() {
   const [curCategory, setCurCategory] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string[]>([]);
+
+  const navigate = useNavigate();
 
   const handleAddTags = (x: string) => {
     setTags((prev) => [...prev, x]);
@@ -111,6 +122,12 @@ function AddPost() {
             ></ButtonInput>
           </>
         )}
+        {curCategory === "맛집" && (
+          <>
+            <span>Location</span>
+            <MapSearch></MapSearch>
+          </>
+        )}
         <span>Body</span>
         <Textarea
           width="100%"
@@ -129,6 +146,28 @@ function AddPost() {
           ))}
         </TagInput>
       </FormWrapper>
+      <BtnWrapper>
+        <StyledBtn
+          title="Submit"
+          width="100px"
+          height="36px"
+          radius="1000px"
+          fontWeight={400}
+          fontColor="white"
+          btnType="full"
+          handleClick={() => console.log(body)}
+        ></StyledBtn>
+        <StyledBtn
+          title="Cancel"
+          width="100px"
+          height="36px"
+          radius="1000px"
+          fontWeight={400}
+          fontColor="pink"
+          btnType="empty"
+          handleClick={() => navigate("/posts")}
+        ></StyledBtn>
+      </BtnWrapper>
     </Background>
   );
 }

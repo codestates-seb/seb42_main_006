@@ -50,7 +50,7 @@ export function SearchInput({ width, placeholder }: searchInputProp) {
 interface buttonInputProp extends InputWrapperProp {
   title: string;
   placeholder: string;
-  handleClick: () => void;
+  handleClick: (x: string) => void;
   style?: React.CSSProperties;
 }
 
@@ -61,9 +61,17 @@ export function ButtonInput({
   handleClick,
   style,
 }: buttonInputProp) {
+  const [value, setValue] = useState("");
   return (
     <InputWrapper width={width} style={style}>
-      <input type="text" placeholder={placeholder} />
+      <input
+        type="text"
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
+        placeholder={placeholder}
+      />
       <StyledBtn
         title={title}
         width="10%"
@@ -71,8 +79,8 @@ export function ButtonInput({
         radius="4px"
         btnType="full"
         fontColor="white"
-        fontWeight={300}
-        handleClick={handleClick}
+        fontWeight={400}
+        handleClick={() => handleClick(value)}
       ></StyledBtn>
     </InputWrapper>
   );
