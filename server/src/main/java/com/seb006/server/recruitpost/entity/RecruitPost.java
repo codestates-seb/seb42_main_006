@@ -70,7 +70,8 @@ public class RecruitPost extends Auditable {
     public enum RecruitStatus {
 
         ACTIVE(1,"모집 중"),
-        EXPIRED(2,"모집 완료");
+        CLOSE(2,"모집글 닫기"),
+        EXPIRED(3,"모집 실패");
 
         @Getter
         public int statusNumber;

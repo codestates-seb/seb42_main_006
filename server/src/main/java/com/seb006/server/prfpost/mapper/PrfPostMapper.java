@@ -50,6 +50,7 @@ public interface PrfPostMapper {
         else{
             PrfPostDto.Response response = new PrfPostDto.Response();
             response.setId(prfPost.getId());
+            response.setMemberId(prfPost.getMember().getId());
             response.setMemberName(prfPost.getMember().getNickName());
             response.setTitle(prfPost.getTitle());
             response.setCategory(prfPost.getCategory());
@@ -81,6 +82,7 @@ public interface PrfPostMapper {
         else{
             PrfPostDto.DetailResponse response = new PrfPostDto.DetailResponse();
             response.setId(prfPost.getId());
+            response.setMemberId(prfPost.getMember().getId());
             response.setMemberName(prfPost.getMember().getNickName());
             response.setTitle(prfPost.getTitle());
             response.setCategory(prfPost.getCategory());

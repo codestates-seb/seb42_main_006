@@ -40,8 +40,9 @@ public interface PrfPostCommentMapper {
         PrfPostCommentResponseDto prfPostCommentResponseDto = new PrfPostCommentResponseDto();
         
         prfPostCommentResponseDto.setId(prfPostComment.getId());
-        prfPostCommentResponseDto.setContent(prfPostComment.getContent());
+        prfPostCommentResponseDto.setMemberId(prfPostComment.getMember().getId());
         prfPostCommentResponseDto.setNickname(prfPostComment.getMember().getNickName());
+        prfPostCommentResponseDto.setContent(prfPostComment.getContent());
         prfPostCommentResponseDto.setCreatedAt(prfPostComment.getCreatedAt());
         prfPostCommentResponseDto.setModifiedAt(prfPostComment.getModifiedAt());
         

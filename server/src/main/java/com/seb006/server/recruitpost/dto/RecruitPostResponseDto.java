@@ -35,6 +35,7 @@ public class RecruitPostResponseDto {
 
     private LocalDateTime modifiedAt;
 
+    private long memberId;
     private String nickName;
 
     private String age;
@@ -44,7 +45,9 @@ public class RecruitPostResponseDto {
     private Integer likeCount;
 
     public void setMember(Member member){
+
         this.nickName= member.getNickName();
+        this.memberId = member.getId();
     }
 
 }

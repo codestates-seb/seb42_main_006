@@ -1,5 +1,6 @@
 package com.seb006.server.prfpost.service;
 
+import com.seb006.server.global.Sorting;
 import com.seb006.server.global.exception.BusinessLogicException;
 import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
@@ -8,10 +9,10 @@ import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.prfpost.repository.PrfPostRepository;
 import com.seb006.server.url.entity.Urls;
 import com.seb006.server.url.repository.UrlRepository;
-import com.seb006.server.url.service.UrlService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +23,14 @@ import java.util.stream.Collectors;
 public class PrfPostService {
     private final PrfPostRepository prfPostRepository;
     private final UrlRepository urlRepository;
+    private final Sorting sort;
 
-    public PrfPostService(PrfPostRepository prfPostRepository, UrlRepository urlRepository) {
+    public PrfPostService(PrfPostRepository prfPostRepository, UrlRepository urlRepository, Sorting sort) {
         this.prfPostRepository = prfPostRepository;
         this.urlRepository = urlRepository;
+        this.sort = sort;
     }
+
 
     public PrfPost createPrfPost(Member member, PrfPost prfPost){
         prfPost.setMember(member);
@@ -39,22 +43,21 @@ public class PrfPostService {
 
     // 전체 리스트 가져오기 - 태그, 카테고리 필터링 X
     public Page<PrfPost> getAllPrfPosts(int page, int size, int sorting){
-        // 인기순 정렬(좋아요 순)
-        if(sorting == 2){
-            // TODO: 좋아요 구현하고 나서 작성하기
-        }
-        // 최신순 정렬
-        return prfPostRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
+        List<Order> orders = sort.getOrders(sorting);
+
+        return prfPostRepository.findAll(PageRequest.of(page, size, Sort.by(orders)));
     }
 
 
     public Page<PrfPost> findPrfPostsWithKeyword(int page, int size, int sorting, String category, String keyword){
+        List<Order> orders = sort.getOrders(sorting);
+
         if(category.isBlank() && keyword.isBlank()){ // 태그, 카테고리가 모두 없는 경우
-            return getAllPrfPosts(page, size, sorting);
+            return prfPostRepository.findAll(PageRequest.of(page, size, Sort.by(orders)));
         } else if (category.isBlank()) {  // 카테고리가 없는 경우
-            return prfPostRepository.findByTagsContainingOrTitleContaining(PageRequest.of(page, size, Sort.by("id").descending()),keyword, keyword);
+            return prfPostRepository.findByTagsContainingOrTitleContaining(PageRequest.of(page, size, Sort.by(orders)),keyword, keyword);
         }
-        return prfPostRepository.findByCategoryAndKeyword(PageRequest.of(page, size, Sort.by("id").descending()), category, keyword);
+        return prfPostRepository.findByCategoryAndKeyword(PageRequest.of(page, size, Sort.by(orders)), category, keyword);
     }
 
     public PrfPost updatePrfPost(long postId, PrfPostDto.Patch patchDto){
