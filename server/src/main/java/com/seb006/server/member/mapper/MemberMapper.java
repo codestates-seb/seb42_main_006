@@ -1,5 +1,6 @@
 package com.seb006.server.member.mapper;
 
+import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.member.dto.MemberDto;
 import com.seb006.server.member.dto.MemberPostsDto;
 import com.seb006.server.member.entity.Member;
@@ -9,6 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
@@ -22,4 +24,12 @@ public interface MemberMapper {
     List<MemberPostsDto> prfPostsToMemberPostsDtos(List<PrfPost> prfPosts);
 
     List<MemberPostsDto> recruitPostsToMemberPostsDtos(List<RecruitPost> recruitPosts);
+
+    default List<MemberPostsDto> prfPostsLikeToMemberPostDtos(List<PrfPostLike> prfPostLikes) {
+        List<PrfPost> prfPosts = prfPostLikes.stream()
+                .map(prfPostLike -> prfPostLike.getPrfPost())
+                .collect(Collectors.toList());
+
+        return prfPostsToMemberPostsDtos(prfPosts);
+    }
 }

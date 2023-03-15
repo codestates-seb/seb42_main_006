@@ -2,6 +2,7 @@ package com.seb006.server.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.seb006.server.global.audit.Auditable;
+import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import lombok.Getter;
@@ -68,6 +69,10 @@ public class Member extends Auditable implements Principal {
     @JsonBackReference
     private List<RecruitPost> recruitPosts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<PrfPostLike> prfPostLikes = new ArrayList<>();
+
     public void setPrfPosts(PrfPost prfPost) {
         this.prfPosts.add(prfPost);
         if (prfPost.getMember() != this) {
@@ -79,6 +84,13 @@ public class Member extends Auditable implements Principal {
         this.recruitPosts.add(recruitPost);
         if (recruitPost.getMember() != this) {
             recruitPost.setMember(this);
+        }
+    }
+
+    public void setPrfPostLikes(PrfPostLike prfPostLike) {
+        this.prfPostLikes.add(prfPostLike);
+        if (prfPostLike.getMember() != this) {
+            prfPostLike.setMember(this);
         }
     }
 }

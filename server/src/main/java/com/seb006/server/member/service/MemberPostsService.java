@@ -1,5 +1,6 @@
 package com.seb006.server.member.service;
 
+import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
 import com.seb006.server.prfpost.entity.PrfPost;
@@ -30,6 +31,12 @@ public class MemberPostsService {
         Member findMember = memberService.findVerifiedMember(email);
 
         return findMember.getRecruitPosts();
+    }
+
+    public List<PrfPostLike> findMyPrfPostsLike(String email) {
+        Member findMember = memberService.findVerifiedMember(email);
+
+        return findMember.getPrfPostLikes();
     }
 
 }

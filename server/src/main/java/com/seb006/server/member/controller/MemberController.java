@@ -1,5 +1,6 @@
 package com.seb006.server.member.controller;
 
+import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.member.dto.MemberDto;
 import com.seb006.server.member.dto.MemberPostsDto;
 import com.seb006.server.member.entity.Member;
@@ -101,5 +102,13 @@ public class MemberController {
         List<MemberPostsDto> response = memberMapper.recruitPostsToMemberPostsDtos(recruitPosts);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/prf-posts-like")
+    public ResponseEntity getMyPrfPostsLike(Principal principal) {
+        List<PrfPostLike> prfPostLikes = memberPostsService.findMyPrfPostsLike(principal.getName());
+        List<MemberPostsDto> response = memberMapper.prfPostsLikeToMemberPostDtos(prfPostLikes);
+
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }
