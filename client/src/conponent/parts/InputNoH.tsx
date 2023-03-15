@@ -225,6 +225,7 @@ export function TagInput({
       deleteTags();
     }
   };
+
   return (
     <InputWrapper width={width}>
       {children}
