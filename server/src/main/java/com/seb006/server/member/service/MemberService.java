@@ -47,6 +47,20 @@ public class MemberService {
         return member;
     }
 
+    public Member updateMember(Member member) {
+        Member findMember = findVerifiedMember(member.getEmail());
+
+        Optional.ofNullable(member.getNickName())
+                .ifPresent(nickName -> findMember.setNickName(nickName));
+        Optional.ofNullable(member.getPassword())
+                .ifPresent(password ->
+                        findMember.setPassword(passwordEncoder.encode(password)));
+
+        Member saveMember = memberRepository.save(findMember);
+
+        return saveMember;
+    }
+
     public void deleteMember(String email) {
         Member member = findVerifiedMember(email);
 

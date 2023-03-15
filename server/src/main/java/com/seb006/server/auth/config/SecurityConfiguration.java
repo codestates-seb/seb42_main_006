@@ -57,6 +57,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/members/mypage").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/members/edit/**").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/members").permitAll()
                         .anyRequest().permitAll()
                 );
