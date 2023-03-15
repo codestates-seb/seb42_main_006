@@ -1,5 +1,6 @@
 package com.seb006.server.recruitpost.mapper;
 
+import com.seb006.server.member.dto.MemberDto;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
@@ -7,6 +8,7 @@ import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
 import com.seb006.server.recruitpost.dto.RecruitPostResponseDto;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -49,6 +51,7 @@ public interface RecruitPostMapper {
         recruitPostResponseDto.setDueDate(recruitPost.getDueDate());
         recruitPostResponseDto.setCreatedAt(recruitPost.getCreatedAt());
         recruitPostResponseDto.setModifiedAt(recruitPost.getModifiedAt());
+        recruitPostResponseDto.setMemberId(recruitPost.getMember().getId());
         recruitPostResponseDto.setNickName(recruitPost.getMember().getNickName());
         recruitPostResponseDto.setAge(recruitPost.getAge());
         recruitPostResponseDto.setTags(recruitPost.getTags());
@@ -57,6 +60,5 @@ public interface RecruitPostMapper {
         return recruitPostResponseDto;
     }
     List<RecruitPostResponseDto> recruitPostsToRecruitPostResponseDtos(List<RecruitPost> recruitPosts);
-
 
 }
