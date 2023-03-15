@@ -65,9 +65,9 @@ function Login() {
         })
         .then((res) => {
           console.log(res);
-          sessionStorage.setItem("auth", res.headers["authorization"]);
-          sessionStorage.setItem("user", JSON.stringify(res.data));
           if (res.status === 200) {
+            sessionStorage.setItem("auth", res.headers["authorization"]);
+            sessionStorage.setItem("user", JSON.stringify(res.data));
             navigate("/posts");
           }
         })
