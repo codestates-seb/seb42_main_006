@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+
 import IconBtn from "../conponent/parts/IconButton";
 import Tag from "../conponent/parts/Tag";
 import styled from "styled-components";
@@ -79,6 +81,8 @@ const AddPosition = styled.div`
 `;
 
 export default function Posts() {
+  const navigate = useNavigate();
+
   return (
     <Content>
       <Sort>
@@ -152,7 +156,7 @@ export default function Posts() {
           btnType="full"
           iconType="add"
           border="none"
-          handleClick={() => console.log("click")}
+          handleClick={() => navigate("/addpost")}
         />
       </AddPosition>
     </Content>
