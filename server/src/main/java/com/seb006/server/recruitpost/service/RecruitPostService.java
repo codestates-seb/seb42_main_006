@@ -61,21 +61,13 @@ public class RecruitPostService {
                 Sort.by("id").descending()));
     }
     //태그,카테고리 검색
-    public List<RecruitPost> searchTagRecruitPosts(String type, String keyword){
-        switch (type){
-
-            case "2":{
-                Optional<List<RecruitPost>> optionalRecruitPosts = recruitPostRepository.findByTagsContaining(keyword);
-                return optionalRecruitPosts.orElseThrow(()->
-                        new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
-            }
-            case "3":{
-                Optional<List<RecruitPost>> optionalRecruitPosts = recruitPostRepository.findByCategoryContaining(keyword);
-                return optionalRecruitPosts.orElseThrow(()->
-                        new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
-            }
+    public Page<RecruitPost> searchRecruitPosts(int page, int size, int sorting, String category, String keyword){
+        if(category.isBlank() && keyword.isBlank()) { // 태그 카테고리 X
+            return findRecruitPosts(page, size, sorting);
+        } else if (category.isBlank()) {  // 카테고리X
+            return recruitPostRepository.findByTagsContainingOrTitleContaining(PageRequest.of(page, size, Sort.by("id").descending()),keyword, keyword);
         }
-        return null;
+        return recruitPostRepository.findByCategoryAndKeyword(PageRequest.of(page, size, Sort.by("id").descending()), category, keyword);
     }
 
 

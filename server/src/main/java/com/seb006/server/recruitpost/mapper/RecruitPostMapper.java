@@ -20,8 +20,6 @@ public interface RecruitPostMapper {
         prfPost.setId(recruitPostDto.getPrfPostId());
 
         Member member = new Member();
-        //member.setId(recruitPostDto.getMemberId());
-        //member.setNickName(recruitPostDto.getNickName());
 
         recruitPost.setPrfPost(prfPost);
         recruitPost.setMember(member);
