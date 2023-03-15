@@ -67,4 +67,11 @@ public class Member extends Auditable implements Principal {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<RecruitPost> recruitPosts = new ArrayList<>();
+
+    public void setPrfPosts(PrfPost prfPost) {
+        this.prfPosts.add(prfPost);
+        if (prfPost.getMember() != this) {
+            prfPost.setMember(this);
+        }
+    }
 }

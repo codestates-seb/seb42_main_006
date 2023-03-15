@@ -1,9 +1,12 @@
 package com.seb006.server.member.controller;
 
 import com.seb006.server.member.dto.MemberDto;
+import com.seb006.server.member.dto.MemberPostsDto;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.mapper.MemberMapper;
+import com.seb006.server.member.service.MemberPostsService;
 import com.seb006.server.member.service.MemberService;
+import com.seb006.server.prfpost.entity.PrfPost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,16 +14,21 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/members")
 public class MemberController {
     private final MemberService memberService;
+    private final MemberPostsService memberPostsService;
     private final MemberMapper memberMapper;
 
-    public MemberController(MemberService memberService, MemberMapper memberMapper) {
+    public MemberController(MemberService memberService,
+                            MemberPostsService memberPostsService,
+                            MemberMapper memberMapper) {
         this.memberService = memberService;
+        this.memberPostsService = memberPostsService;
         this.memberMapper = memberMapper;
     }
 
@@ -74,6 +82,14 @@ public class MemberController {
 
         Member updateMember = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
         MemberDto.Response response = memberMapper.memberToResponseDto(updateMember);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/prf-post")
+    public ResponseEntity getMyPrfPosts(Principal principal) {
+        List<PrfPost> prfPosts =  memberPostsService.findMyPrfPosts(principal.getName());
+        List<MemberPostsDto> response = memberMapper.prfPostsToMemberPostsDtos(prfPosts);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
