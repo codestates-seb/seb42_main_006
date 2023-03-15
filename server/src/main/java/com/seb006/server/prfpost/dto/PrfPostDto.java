@@ -37,6 +37,7 @@ public class PrfPostDto {
     @Getter
     public static class Response{
         private long id;
+        private long memberId;
         private String memberName;
         private String title;
         private String category;
@@ -56,6 +57,7 @@ public class PrfPostDto {
     @Getter
     public static class DetailResponse{
         private long id;
+        private long memberId;
         private String memberName;
         private String title;
         private String category;
