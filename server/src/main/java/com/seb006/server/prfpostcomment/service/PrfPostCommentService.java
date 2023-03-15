@@ -29,7 +29,7 @@ public class PrfPostCommentService {
 
     public PrfPostComment createPrfPostComment(Member member,PrfPostComment prfPostComment){
 
-        PrfPost prfPost = prfPostService.verifiedPrfPost(prfPostComment.getPrfPost().getId());
+        PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostComment.getPrfPost().getId());
 
         //Member member = memberService.findVerifiedMember(prfPostComment.getMember().getEmail());
 
