@@ -48,6 +48,9 @@ public class RecruitPost extends Auditable {
 
     private String age;
 
+    @Column(nullable = false)
+    private Integer likeCount = 0;
+
     //회원 <-> 모집글
     @ManyToOne
     @JsonManagedReference
@@ -81,7 +84,11 @@ public class RecruitPost extends Auditable {
         }
     }
 
-
-
+    public void likeCountUp() {
+        this.likeCount++;
+    }
+    public void likeCountDown() {
+        this.likeCount--;
+    }
 
 }
