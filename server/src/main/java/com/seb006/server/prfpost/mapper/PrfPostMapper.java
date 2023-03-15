@@ -55,6 +55,7 @@ public interface PrfPostMapper {
             response.setCategory(prfPost.getCategory());
             response.setContent(prfPost.getContent());
             response.setTags(prfPost.getTags());
+            response.setLikeCount(prfPost.getLikeCount());
 
             response.setUrls(prfPost.getUrls().stream()
                     .map(url ->{
@@ -85,6 +86,8 @@ public interface PrfPostMapper {
             response.setCategory(prfPost.getCategory());
             response.setContent(prfPost.getContent());
             response.setTags(prfPost.getTags());
+            response.setLikeCount(prfPost.getLikeCount());
+
             response.setComments(prfPost.getComments().stream()
                     .map(comment -> {
                         PrfPostCommentResponseDto.PrfPostCommentResponseDtoBuilder prfPostCommentResponseDto = PrfPostCommentResponseDto.builder();
