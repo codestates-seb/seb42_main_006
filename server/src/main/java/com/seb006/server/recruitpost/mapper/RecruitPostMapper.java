@@ -52,6 +52,7 @@ public interface RecruitPostMapper {
         recruitPostResponseDto.setNickName(recruitPost.getMember().getNickName());
         recruitPostResponseDto.setAge(recruitPost.getAge());
         recruitPostResponseDto.setTags(recruitPost.getTags());
+        recruitPostResponseDto.setLikeCount(recruitPost.getLikeCount());
 
         return recruitPostResponseDto;
     }
