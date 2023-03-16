@@ -1,14 +1,19 @@
 package com.seb006.server.recruitpost.mapper;
 
+import com.seb006.server.member.dto.MemberDto;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.recruitpost.dto.RecruitPostDetailResponseDto;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
 import com.seb006.server.recruitpost.dto.RecruitPostResponseDto;
 import com.seb006.server.recruitpost.entity.RecruitPost;
+import com.seb006.server.recruitpostcomment.dto.RecruitPostCommentResponseDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface RecruitPostMapper {
@@ -49,6 +54,7 @@ public interface RecruitPostMapper {
         recruitPostResponseDto.setDueDate(recruitPost.getDueDate());
         recruitPostResponseDto.setCreatedAt(recruitPost.getCreatedAt());
         recruitPostResponseDto.setModifiedAt(recruitPost.getModifiedAt());
+        recruitPostResponseDto.setMemberId(recruitPost.getMember().getId());
         recruitPostResponseDto.setNickName(recruitPost.getMember().getNickName());
         recruitPostResponseDto.setAge(recruitPost.getAge());
         recruitPostResponseDto.setTags(recruitPost.getTags());
@@ -56,7 +62,42 @@ public interface RecruitPostMapper {
 
         return recruitPostResponseDto;
     }
-    List<RecruitPostResponseDto> recruitPostsToRecruitPostResponseDtos(List<RecruitPost> recruitPosts);
 
+    default RecruitPostDetailResponseDto recruitPostToRecruitDetailResponseDto(RecruitPost recruitPost){
+
+        RecruitPostDetailResponseDto recruitPostDetailResponseDto = new RecruitPostDetailResponseDto();
+        recruitPostDetailResponseDto.setId(recruitPost.getId());
+        recruitPostDetailResponseDto.setMemberId(recruitPost.getMember().getId());
+        recruitPostDetailResponseDto.setNickName(recruitPost.getMember().getNickName());
+        recruitPostDetailResponseDto.setTitle(recruitPost.getTitle());
+        recruitPostDetailResponseDto.setCategory(recruitPost.getCategory());
+        recruitPostDetailResponseDto.setContent(recruitPost.getContent());
+        recruitPostDetailResponseDto.setRecruitNumber(recruitPost.getRecruitNumber());
+        recruitPostDetailResponseDto.setCurrentNumber(recruitPost.getCurrentNumber());
+        recruitPostDetailResponseDto.setRecruitStatus(recruitPost.getRecruitStatus());
+        recruitPostDetailResponseDto.setDueDate(recruitPost.getDueDate());
+        recruitPostDetailResponseDto.setAge(recruitPost.getAge());
+        recruitPostDetailResponseDto.setTags(recruitPost.getTags());
+        recruitPostDetailResponseDto.setLikeCount(recruitPost.getLikeCount());
+
+        recruitPostDetailResponseDto.setComments(recruitPost.getComments().stream()
+                .map(comment-> {
+                    RecruitPostCommentResponseDto.RecruitPostCommentResponseDtoBuilder recruitPostCommentResponseDto = RecruitPostCommentResponseDto.builder();
+                    recruitPostCommentResponseDto.id(comment.getId());
+                    recruitPostCommentResponseDto.content(comment.getContent());
+                    recruitPostCommentResponseDto.createdAt(comment.getCreatedAt());
+                    recruitPostCommentResponseDto.modifiedAt(comment.getModifiedAt());
+                    recruitPostCommentResponseDto.memberId(comment.getMember().getId());
+                    recruitPostCommentResponseDto.nickname(comment.getMember().getNickName());
+
+                    return recruitPostCommentResponseDto.build();
+                })
+                .collect(Collectors.toList()));
+        recruitPostDetailResponseDto.setCreatedAt(recruitPost.getCreatedAt());
+        recruitPostDetailResponseDto.setModifiedAt(recruitPost.getModifiedAt());
+
+        return recruitPostDetailResponseDto;
+    }
+    List<RecruitPostResponseDto> recruitPostsToRecruitPostResponseDtos(List<RecruitPost> recruitPosts);
 
 }

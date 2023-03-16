@@ -1,14 +1,14 @@
-interface Props {
-  width: string;
-  height: string;
-}
+const MainDefaultValue: { width: string; height: string } = {
+  width: "3.5rem",
+  height: "3.5rem",
+};
 
-export function MovieIcon({ width, height }: Props) {
+export function MovieIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -19,12 +19,12 @@ export function MovieIcon({ width, height }: Props) {
   );
 }
 
-export function MusicIcon({ width, height }: Props) {
+export function MusicIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -35,12 +35,12 @@ export function MusicIcon({ width, height }: Props) {
   );
 }
 
-export function FoodIcon({ width, height }: Props) {
+export function FoodIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -51,12 +51,12 @@ export function FoodIcon({ width, height }: Props) {
   );
 }
 
-export function FlowerIcon({ width, height }: Props) {
+export function FlowerIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 256 256"
     >
       <path
@@ -67,12 +67,12 @@ export function FlowerIcon({ width, height }: Props) {
   );
 }
 
-export function RobotIcon({ width, height }: Props) {
+export function RobotIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -83,12 +83,12 @@ export function RobotIcon({ width, height }: Props) {
   );
 }
 
-export function ShareIcon({ width, height }: Props) {
+export function ShareIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 48 48"
     >
       <g fill="none" stroke="#ff3366" strokeWidth="4">
@@ -103,12 +103,12 @@ export function ShareIcon({ width, height }: Props) {
   );
 }
 
-export function MatchIcon({ width, height }: Props) {
+export function MatchIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -119,12 +119,12 @@ export function MatchIcon({ width, height }: Props) {
   );
 }
 
-export function RecomIcon({ width, height }: Props) {
+export function RecomIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path

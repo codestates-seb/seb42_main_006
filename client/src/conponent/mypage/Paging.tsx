@@ -1,6 +1,6 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { PrevIcon, NextIcon } from "../../icons/MyIcon";
-import { useState } from "react";
 
 const PagingBox = styled.div`
   display: flex;
@@ -14,40 +14,49 @@ const PagingBox = styled.div`
   button.active {
     color: #ff3366;
   }
-  ul {
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    li {
-      display: flex;
-      width: 2.5rem;
-      height: 2.5rem;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #5a5959;
-      border-radius: 1000px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      &:hover {
-        background-color: #3c3c3c;
-        border-color: #3c3c3c;
-      }
-    }
-    li.active {
-      background-color: #ff3366;
-      border-color: #ff3366;
-    }
+`;
+
+const PagingList = styled.ul`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+`;
+interface PagingLiStyleProps {
+  isActive: boolean;
+}
+
+const PagingLi = styled.li<PagingLiStyleProps>`
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #5a5959;
+  border-radius: 1000px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background-color: ${(props) => (props.isActive ? "#ff3366" : null)};
+  border-color: ${(props) => (props.isActive ? "#ff3366" : null)};
+  &:hover {
+    background-color: ${(props) => (props.isActive ? "#ff3366" : "#3c3c3c")};
+    border-color: ${(props) => (props.isActive ? "#ff3366" : "#3c3c3c")};
   }
 `;
 
-interface Props {
+interface PagingLiProps {
   limit: number;
   total: number;
   url: string;
   setUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Paging({ limit, total = 1, url, setUrl }: Props) {
+export default function Paging({
+  limit,
+  total = 1,
+  url,
+  setUrl,
+}: PagingLiProps) {
   const [arr, setArr] = useState(
     Array.from(
       { length: limit > total ? total : limit },
@@ -101,17 +110,17 @@ export default function Paging({ limit, total = 1, url, setUrl }: Props) {
       >
         <PrevIcon />
       </button>
-      <ul>
-        {arr.map((el, idx) => (
-          <li
-            key={idx}
-            className={curr === el ? "active" : undefined}
+      <PagingList>
+        {arr.map((el) => (
+          <PagingLi
+            key={el}
+            isActive={curr === el ? true : false}
             onClick={() => handlePaging(el)}
           >
             {el}
-          </li>
+          </PagingLi>
         ))}
-      </ul>
+      </PagingList>
       <button
         className={curr === total ? undefined : "active"}
         onClick={curr === total ? undefined : handleNext}

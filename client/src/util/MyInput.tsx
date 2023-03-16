@@ -5,8 +5,6 @@ export default function useInput(
 ): [string, object, React.Dispatch<React.SetStateAction<string>>] {
   const [value, setValue] = useState(initial);
 
-  console.log(value);
-
   const bind = {
     value,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) =>

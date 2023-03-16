@@ -1,11 +1,13 @@
 package com.seb006.server.recruitpost.dto;
 
 import com.seb006.server.member.entity.Member;
+import com.seb006.server.prfpostcomment.dto.PrfPostCommentResponseDto;
 import com.seb006.server.recruitpost.entity.RecruitPost;
+import com.seb006.server.recruitpostcomment.dto.RecruitPostCommentResponseDto;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecruitPostResponseDto {
+public class RecruitPostDetailResponseDto {
 
     private Long id;
 
@@ -44,10 +46,13 @@ public class RecruitPostResponseDto {
 
     private Integer likeCount;
 
+    private List<RecruitPostCommentResponseDto> comments;
+
+
+
     public void setMember(Member member){
 
         this.nickName= member.getNickName();
         this.memberId = member.getId();
     }
-
 }

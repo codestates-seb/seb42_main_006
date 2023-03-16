@@ -1,9 +1,12 @@
 package com.seb006.server.recruitpost.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seb006.server.global.audit.Auditable;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
+import com.seb006.server.prfpostcomment.entity.PrfPostComment;
+import com.seb006.server.recruitpostcomment.entity.RecruitPostComment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +14,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -70,7 +75,8 @@ public class RecruitPost extends Auditable {
     public enum RecruitStatus {
 
         ACTIVE(1,"모집 중"),
-        EXPIRED(2,"모집 완료");
+        CLOSE(2,"모집글 닫기"),
+        EXPIRED(3,"모집 실패");
 
         @Getter
         public int statusNumber;
@@ -83,6 +89,10 @@ public class RecruitPost extends Auditable {
             this.statusDescription = statusDescription;
         }
     }
+
+    @OneToMany(mappedBy = "recruitPost", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<RecruitPostComment> comments = new ArrayList<>();
 
     public void likeCountUp() {
         this.likeCount++;

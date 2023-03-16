@@ -1,46 +1,35 @@
 import { useState } from "react";
-import styled from "styled-components";
-import Paging from "../conponent/mypage/Paging";
-import UserEdit from "../conponent/mypage/UserEdit";
 import { useFetch } from "../util/MyApi";
+import styled from "styled-components";
+import UserEdit from "../conponent/mypage/UserEdit";
+import Paging from "../conponent/mypage/Paging";
 
 const MypageWrap = styled.div`
   max-width: 1200px;
   width: 100%;
   margin: 4rem auto;
   color: #fff;
-  h3 {
-    font-size: 2.5rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    color: #3c3c3c;
-  }
-  ul {
-    display: flex;
-    li {
-      font-size: 0.85rem;
-    }
-  }
 `;
 
-const MyTab = styled.section`
+const MyTabList = styled.ul`
+  display: flex;
   margin-bottom: 3rem;
-  ul {
-    border-bottom: 1px solid #3c3c3c;
-    li {
-      padding: 0.85rem 0.8rem;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 400;
+  border-bottom: 1px solid #3c3c3c;
+`;
 
-      &:hover {
-        color: #ff3366;
-      }
-    }
-    li.active {
-      border-bottom: 2px solid #ff3366;
-      color: #ff3366;
-    }
+interface MyTabLiStyleProps {
+  isActive: boolean;
+}
+
+const MyTabLi = styled.li<MyTabLiStyleProps>`
+  padding: 0.85rem 0.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 400;
+  border-bottom: ${(props) => (props.isActive ? "2px solid #ff3366" : null)};
+  color: ${(props) => (props.isActive ? "#ff3366" : null)};
+  &:hover {
+    color: #ff3366;
   }
 `;
 
@@ -61,46 +50,52 @@ const MyBoard = styled.div`
 `;
 
 const MyBoardHead = styled.ul`
+  display: flex;
   padding: 1.15rem 0;
   border-bottom: 1px solid #5a5959;
-  li {
-    width: 94%;
-    text-align: center;
-    &:first-child {
-      width: 6%;
-    }
+`;
+
+const MyBoardHeadLi = styled.li`
+  width: 94%;
+  font-size: 0.85rem;
+  text-align: center;
+  &:first-child {
+    width: 6%;
   }
 `;
 
 const MyBoardBody = styled.ul`
   padding: 1.4rem 0 2rem;
   flex-direction: column;
-  li {
-    display: flex;
-    line-height: 2.15;
-    border-bottom: 1px dashed #151515;
-    cursor: pointer;
-    strong {
-      width: 6%;
-      text-align: center;
-    }
-    div {
-      overflow: hidden;
-      width: 94%;
-      padding: 0 0.5rem;
-      font-weight: 400;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      word-break: break-all;
-    }
-    &:hover {
-      color: #ff3366;
-    }
+`;
+
+interface MyBoardBodyLiStyleProps {
+  isNone?: boolean;
+}
+
+const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
+  display: flex;
+  padding-left: ${(props) => (props.isNone ? "2.5rem" : null)};
+  justify-content: ${(props) => (props.isNone ? "center" : null)};
+  font-size: 0.85rem;
+  line-height: 2.15;
+  border-bottom: 1px dashed #151515;
+  cursor: pointer;
+  strong {
+    width: 6%;
+    text-align: center;
   }
-  li.noList {
-    display: flex;
-    padding-left: 2.5rem;
-    justify-content: center;
+  div {
+    overflow: hidden;
+    width: 94%;
+    padding: 0 0.5rem;
+    font-weight: 400;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+  &:hover {
+    color: #ff3366;
   }
 `;
 
@@ -135,34 +130,32 @@ export default function Mypage() {
   return (
     <MypageWrap>
       <UserEdit />
-      <MyTab>
-        <ul>
-          {tabArray.map((el) => (
-            <li
-              key={el.title}
-              className={tab === el.title ? "active" : undefined}
-              onClick={() => handleTab(el.title, el.url)}
-            >
-              {el.title}
-            </li>
-          ))}
-        </ul>
-      </MyTab>
+      <MyTabList>
+        {tabArray.map((el) => (
+          <MyTabLi
+            key={el.title}
+            isActive={tab === el.title ? true : false}
+            onClick={() => handleTab(el.title, el.url)}
+          >
+            {el.title}
+          </MyTabLi>
+        ))}
+      </MyTabList>
       <section>
         <MypageTitle>{tab}</MypageTitle>
         <MyBoard>
           <MyBoardHead>
-            <li>글번호</li>
-            <li>제목</li>
+            <MyBoardHeadLi>글번호</MyBoardHeadLi>
+            <MyBoardHeadLi>제목</MyBoardHeadLi>
           </MyBoardHead>
           <MyBoardBody>
-            {pending ? <li className="noList">로딩중...</li> : null}
+            {pending ? <MyBoardBodyLi isNone>로딩중...</MyBoardBodyLi> : null}
             {list &&
               list.map((el, idx) => (
-                <li key={el.id}>
+                <MyBoardBodyLi key={el.id}>
                   <strong>{idx + 1}</strong>
                   <div>{el.title}</div>
-                </li>
+                </MyBoardBodyLi>
               ))}
           </MyBoardBody>
         </MyBoard>

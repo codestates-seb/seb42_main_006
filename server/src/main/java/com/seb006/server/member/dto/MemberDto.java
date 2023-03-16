@@ -38,6 +38,20 @@ public class MemberDto {
     }
 
     @Getter
+    public static class Patch {
+        private String email;
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$",
+                message = "비밀번호는 숫자, 문자를 포함하여 8~20자리여야 합니다.")
+        private String password;
+
+        private String nickName;
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+    }
+
+    @Getter
     @AllArgsConstructor
     @Builder
     public static class Response {
