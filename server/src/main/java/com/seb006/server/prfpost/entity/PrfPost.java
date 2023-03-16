@@ -46,7 +46,7 @@ public class PrfPost extends Auditable {
     @JsonBackReference
     private List<Urls> urls = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "member_id")
     private Member member;

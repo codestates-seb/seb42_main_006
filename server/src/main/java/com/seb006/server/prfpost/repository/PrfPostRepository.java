@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface PrfPostRepository extends JpaRepository<PrfPost, Long> {
     // 전체 리스트 가져오기
     Page<PrfPost> findAll(Pageable pageable);
+
     // 키워드 검색 (태그/제목)
     Page<PrfPost> findByTagsContainingOrTitleContaining(Pageable pageable, String keyword1, String keyword2);
 
