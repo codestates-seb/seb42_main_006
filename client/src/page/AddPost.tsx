@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import YoutubePlayer from "../conponent/parts/YoutubePlayer";
+import YoutubeList from "../conponent/parts/YoutubeList";
 import Selection from "../conponent/parts/Selection";
 import {
   DefaultInput,
@@ -12,6 +14,8 @@ import Tag from "../conponent/parts/Tag";
 import { StyledBtn } from "../conponent/parts/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+
+import { getVideoId } from "../function/youtubeApi";
 
 const Background = styled.div`
   margin: 24px auto;
@@ -72,11 +76,18 @@ const BtnWrapper = styled.div`
   gap: 10px;
 `;
 
+interface Iurls {
+  url: string;
+  thumbnail: string;
+  title: string;
+}
+
 function AddPost() {
   const [curCategory, setCurCategory] = useState("");
+  const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-
+  const [urls, setUrls] = useState<Iurls[]>([]);
   const navigate = useNavigate();
 
   const handleAddTags = (x: string) => {
@@ -84,6 +95,17 @@ function AddPost() {
   };
   const handleDeleteTags = () => {
     setTags((prev) => [...prev].slice(0, prev.length - 1));
+  };
+
+  const handleAddUrls = (x: string) => {
+    const url: Iurls = { url: "", thumbnail: "", title: "" };
+    getVideoId(x)
+      .then((res) => {
+        url.url = x;
+        url.thumbnail = res.items[0].snippet.thumbnails.medium.url;
+        url.title = res.items[0].snippet.title;
+      })
+      .then(() => setUrls((prev) => [url, ...prev]));
   };
 
   return (
@@ -101,14 +123,22 @@ function AddPost() {
       </Category>
       <FormWrapper>
         <span>Title</span>
-        <DefaultInput width="100%" placeholder="Title ..."></DefaultInput>
+        <DefaultInput
+          width="100%"
+          placeholder="Title ..."
+          value={title}
+          setValue={setTitle}
+        ></DefaultInput>
         {curCategory === "영화" && (
           <>
             <span>Movie Urls</span>
-            <DefaultInput
+            <ButtonInput
+              title="Add list"
               width="100%"
-              placeholder="Movie Urls ..."
-            ></DefaultInput>
+              placeholder="Urls ..."
+              handleClick={handleAddUrls}
+            ></ButtonInput>
+            {urls.length !== 0 && <YoutubePlayer item={urls[0]} />}
           </>
         )}
         {curCategory === "음악" && (
@@ -118,8 +148,9 @@ function AddPost() {
               title="Add list"
               width="100%"
               placeholder="Urls ..."
-              handleClick={() => console.log("input btn")}
+              handleClick={handleAddUrls}
             ></ButtonInput>
+            <YoutubeList list={urls} setList={setUrls}></YoutubeList>
           </>
         )}
         {curCategory === "맛집" && (
@@ -141,8 +172,8 @@ function AddPost() {
           addTags={handleAddTags}
           deleteTags={handleDeleteTags}
         >
-          {tags.map((x) => (
-            <Tag title={x} key={x}></Tag>
+          {tags.map((x, idx) => (
+            <Tag title={x} key={idx}></Tag>
           ))}
         </TagInput>
       </FormWrapper>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-import { ValidInput } from "../conponent/parts/Input";
+import { ValidInput } from "../conponent/parts/InputNoH";
 import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
@@ -62,7 +62,7 @@ function Signup() {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    if (emailCheck) {
+    if (emailCheck === true) {
       if (
         emailCheck &&
         emailValid &&
@@ -107,7 +107,6 @@ function Signup() {
           <span>Email</span>
           <ValidInput
             width="100%"
-            height="40px"
             placeholder="Email"
             value={email}
             setValue={setEmail}
@@ -121,12 +120,11 @@ function Signup() {
             validFn={(x) => validFn("email")(x)}
           ></ValidInput>
 
-          {emailCheck && (
+          {emailCheck === true && (
             <>
               <span>Nickname</span>
               <ValidInput
                 width="100%"
-                height="40px"
                 placeholder="Nickname"
                 value={nickname}
                 setValue={setNickname}
@@ -138,7 +136,6 @@ function Signup() {
               <span>Password</span>
               <ValidInput
                 width="100%"
-                height="40px"
                 placeholder="Password"
                 type="password"
                 value={password}
@@ -150,7 +147,6 @@ function Signup() {
               ></ValidInput>
               <ValidInput
                 width="100%"
-                height="40px"
                 placeholder="Password 확인"
                 type="password"
                 value={passwordRepeat}

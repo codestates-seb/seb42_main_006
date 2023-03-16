@@ -7,6 +7,7 @@ import {
   Retweet,
   LeftPlay,
   Play,
+  Stop,
   RightPlay,
   NoneImg,
   DownArrow,
@@ -78,6 +79,8 @@ export default function IconBtn({
         return <LeftPlay />;
       case "play":
         return <Play />;
+      case "stop":
+        return <Stop />;
       case "rightPlay":
         return <RightPlay />;
       case "noneImg":

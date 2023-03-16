@@ -19,6 +19,7 @@ const InputWrapper = styled.div<InputWrapperProp>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   max-width: 900px;
+  gap: 10px;
 
   &:focus-within {
     border-color: #ff3366;
@@ -30,6 +31,7 @@ const InputWrapper = styled.div<InputWrapperProp>`
     background-color: inherit;
     border: none;
 
+    font-size: 1rem;
     color: white;
   }
 `;
@@ -106,8 +108,8 @@ interface ValidInputProp extends InputWrapperProp {
   valid: boolean;
   type?: string;
   disable?: boolean;
-  setValue: (x: string) => void;
-  setValid: (x: boolean) => void;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValid: React.Dispatch<React.SetStateAction<boolean>>;
   validFn: (x: string) => boolean;
 }
 

@@ -53,7 +53,7 @@ function KakaoMap({ loc, mode }: MapComponentProp) {
     }
   });
 
-  return <Wrapper id="map">KakaoMap</Wrapper>;
+  return <Wrapper id="map"></Wrapper>;
 }
 
 export default KakaoMap;

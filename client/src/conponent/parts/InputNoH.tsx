@@ -80,7 +80,10 @@ export function ButtonInput({
         btnType="full"
         fontColor="white"
         fontWeight={400}
-        handleClick={() => handleClick(value)}
+        handleClick={() => {
+          handleClick(value);
+          setValue("");
+        }}
       ></StyledBtn>
     </InputWrapper>
   );
@@ -88,12 +91,29 @@ export function ButtonInput({
 
 interface DefaultInputProp extends InputWrapperProp {
   placeholder: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  onBlur?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function DefaultInput({ width, placeholder }: DefaultInputProp) {
+export function DefaultInput({
+  width,
+  placeholder,
+  value,
+  setValue,
+  onBlur,
+}: DefaultInputProp) {
   return (
     <InputWrapper width={width}>
-      <input type="text" placeholder={placeholder} />
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
+        onBlur={() => onBlur && onBlur(true)}
+      />
     </InputWrapper>
   );
 }
