@@ -26,7 +26,7 @@ public class Urls {
     @Column(nullable = false)
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "prf_post_id")
     private PrfPost prfPost;
