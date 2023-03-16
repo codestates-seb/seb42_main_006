@@ -101,10 +101,6 @@ const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
 
 export default function Mypage() {
   //테스트 링크 지워야 함
-  // `${process.env.REACT_APP_HOST_URL}/members/prf-post`
-  // `${process.env.REACT_APP_HOST_URL}/members/recruit-posts`
-  // `${process.env.REACT_APP_HOST_URL}/participations?member-id=N&page=X&size=Y`
-  // `${process.env.REACT_APP_HOST_URL}/members/prf-post-like`
   const tabArray = [
     {
       title: "작성한 게시글",
