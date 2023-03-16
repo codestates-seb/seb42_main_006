@@ -26,6 +26,8 @@ public class PrfPostCommentResponseDto {
     private String nickname;
 
     public void setMember(Member member){
+
         this.nickname = member.getNickName();
+        this.memberId = member.getId();
     }
 }
