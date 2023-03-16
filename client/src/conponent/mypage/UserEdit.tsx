@@ -1,9 +1,12 @@
 import { useState } from "react";
-import styled from "styled-components";
-import logo from "../../img/logo.svg";
-import { PenIcon, CloseIcon } from "../../icons/MyIcon";
-import useInput from "../../util/MyInput";
 import { useNavigate } from "react-router";
+import { useUserInfo, userDelete, userEdit } from "../../util/MyApi";
+import useInput from "../../util/MyInput";
+import { validFn } from "../../function/validFn";
+import styled from "styled-components";
+import { PenIcon, CloseIcon } from "../../icons/MyIcon";
+import logo from "../../img/logo.svg";
+import UserModal from "./UserModal";
 
 const MyInfo = styled.section`
   display: flex;
@@ -11,21 +14,23 @@ const MyInfo = styled.section`
   gap: 1.5rem;
   align-items: center;
   justify-content: center;
-  h4 {
+  .myBox {
+    min-width: 16rem;
+    flex-direction: column;
     display: flex;
-    margin-bottom: 0.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .editItem {
+    display: flex;
     gap: 0.4rem;
     align-items: center;
+  }
+  h4 {
+    margin-bottom: 0.5rem;
     font-size: 1.6rem;
     font-weight: 400;
-    input {
-      margin: 0;
-    }
-  }
-  h5 {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #3c3c3c;
   }
 `;
 
@@ -43,15 +48,29 @@ const MyProfile = styled.div`
   }
 `;
 
+const MyTitleSm = styled.h5`
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #3c3c3c;
+`;
+
 const MyEdit = styled.div`
+  position: relative;
   display: flex;
   gap: 0.33rem;
   align-items: center;
+  .validTxt {
+    position: absolute;
+    bottom: -1rem;
+    right: 0;
+    font-size: 0.7rem;
+    color: #fff;
+    white-space: nowrap;
+  }
 `;
 
 const MyInput = styled.input`
   width: 12rem;
-  margin: 0.5rem 0;
   padding: 0.33rem 0.5rem;
   background: #222;
   border: 1px solid #5a5959;
@@ -89,9 +108,17 @@ const MyBtn = styled.button`
 
 export default function UserEdit() {
   const navigate = useNavigate();
+
+  const [info] = useUserInfo(`/members/mypage`);
   const [edit, setEdit] = useState(false);
-  const [nickValue, nickBind, nickReset] = useInput("닉네임123");
+  const [modal, setModal] = useState(false);
+  const [alert, setAlert] = useState(false);
+
+  const [nickValue, nickBind, nickReset] = useInput("");
   const [passValue, passBind, passReset] = useInput("");
+  const [valid, setValid] = useState({ nickname: true, password: true });
+
+  console.log(info);
 
   const handleEdit = () => {
     setEdit(!edit);
@@ -99,57 +126,110 @@ export default function UserEdit() {
     passReset("");
   };
 
-  const editPassword = () => {
-    console.log(passValue);
-    passReset("");
+  const handleModal = () => {
+    setModal(!modal);
+  };
+  interface UserEdValidProps {
+    word: string;
+    label: string;
+  }
+
+  const handleValid = ({ word, label }: UserEdValidProps) => {
+    const validCheck = ({ word, label }: UserEdValidProps) => {
+      return validFn(label)(word);
+    };
+    const result = validCheck({ word, label });
+
+    label === "password"
+      ? (valid.password = result)
+      : (valid.nickname = result);
+
+    setValid(valid);
   };
 
   const editNickname = () => {
-    console.log(nickValue);
+    userEdit("/members/edit/nickname", { nickName: nickValue });
     setEdit(!edit);
     nickReset("닉네임123");
   };
 
+  const editPassword = () => {
+    userEdit("/members/edit/password", { password: passValue });
+    passReset("");
+  };
+
   const deleteAccount = () => {
-    console.log("회원 탈퇴");
-    navigate("/");
+    setAlert(!alert);
+    userDelete("/members");
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   return (
-    <MyInfo>
-      <MyProfile>
-        <img src={logo} alt="logo" />
-      </MyProfile>
-      <div>
-        <h4>
-          {edit ? (
-            <MyEdit>
-              <MyInput {...nickBind} />
-            </MyEdit>
-          ) : (
-            "닉네임123"
-          )}
-          <MyBtn onClick={edit ? editNickname : handleEdit}>
-            <PenIcon width="1.15rem" height="1.15rem" />
-          </MyBtn>
-          {edit ? (
-            <MyBtn onClick={handleEdit}>
-              <CloseIcon width="1.15rem" height="1.15rem" />
+    <>
+      <MyInfo>
+        <MyProfile>
+          <img src={logo} alt="logo" />
+        </MyProfile>
+        <div className="myBox">
+          <h4 className="editItem">
+            {edit ? (
+              <MyEdit>
+                <MyInput
+                  {...nickBind}
+                  onFocus={() =>
+                    handleValid({ word: nickValue, label: "nickname" })
+                  }
+                />
+                {valid.nickname ? null : (
+                  <div className="validTxt">닉네임을 확인해주세요!!</div>
+                )}
+              </MyEdit>
+            ) : (
+              "닉네임123"
+            )}
+            <MyBtn onClick={edit ? editNickname : handleEdit}>
+              <PenIcon />
             </MyBtn>
-          ) : null}
-        </h4>
+            {edit ? (
+              <MyBtn onClick={handleEdit}>
+                <CloseIcon />
+              </MyBtn>
+            ) : null}
+          </h4>
 
-        <h5>비밀번호 변경</h5>
-        <MyEdit>
-          <MyInput {...passBind} placeholder="비밀번호를 수정하세요" />
-          <MyBtn onClick={editPassword}>
-            <PenIcon width="1.15rem" height="1.15rem" />
+          <MyTitleSm>비밀번호 변경</MyTitleSm>
+          <div className="editItem">
+            <MyEdit>
+              <MyInput
+                type="password"
+                {...passBind}
+                onFocus={() =>
+                  handleValid({ word: passValue, label: "password" })
+                }
+                placeholder="비밀번호를 수정하세요"
+              />
+              {valid.password ? null : (
+                <div className="validTxt">비밀번호를 확인해주세요!!</div>
+              )}
+            </MyEdit>
+            <MyBtn onClick={valid ? editPassword : undefined}>
+              <PenIcon />
+            </MyBtn>
+          </div>
+          <MyBtn onClick={handleModal}>
+            <span>회원 탈퇴</span>
           </MyBtn>
-        </MyEdit>
-        <MyBtn onClick={deleteAccount}>
-          <span>회원 탈퇴</span>
-        </MyBtn>
-      </div>
-    </MyInfo>
+        </div>
+      </MyInfo>
+      {modal ? (
+        <UserModal
+          alert={alert}
+          handleModal={handleModal}
+          deleteAccount={deleteAccount}
+        />
+      ) : null}
+    </>
   );
 }

@@ -3,11 +3,11 @@ import { MovieIcon, MusicIcon, FoodIcon } from "../../icons/MainIcon";
 import { FlowerIcon, RobotIcon, ShareIcon } from "../../icons/MainIcon";
 import { MatchIcon, RecomIcon } from "../../icons/MainIcon";
 
-interface StyleProps {
+interface MainCateStyleProps {
   border?: boolean;
 }
 
-const MainCateItem = styled.div<StyleProps>`
+const MainCateItem = styled.div<MainCateStyleProps>`
   display: flex;
   width: 8rem;
   height: 8rem;
@@ -27,30 +27,46 @@ const MainLabel = styled.strong`
   font-weight: 400;
 `;
 
-interface Props extends StyleProps {
+interface MainCateProps extends MainCateStyleProps {
   iconType: string;
   label?: string;
 }
 
-export default function MainCategory({ iconType, border, label }: Props) {
+// type IconText =
+//   | "movie"
+//   | "music"
+//   | "food"
+//   | "flower"
+//   | "robot"
+//   | "share"
+//   | "match"
+//   | "recommend";
+
+export default function MainCategory({
+  iconType,
+  border,
+  label,
+}: MainCateProps) {
   const iconTypeHandler = (iconType: string) => {
     switch (iconType) {
       case "movie":
-        return <MovieIcon width="3.5rem" height="3.5rem" />;
+        return <MovieIcon />;
       case "music":
-        return <MusicIcon width="3.5rem" height="3.5rem" />;
+        return <MusicIcon />;
       case "food":
-        return <FoodIcon width="3.5rem" height="3.5rem" />;
+        return <FoodIcon />;
       case "flower":
-        return <FlowerIcon width="3.5rem" height="3.5rem" />;
+        return <FlowerIcon />;
       case "robot":
-        return <RobotIcon width="3.5rem" height="3.5rem" />;
+        return <RobotIcon />;
       case "share":
-        return <ShareIcon width="3.5rem" height="3.5rem" />;
+        return <ShareIcon />;
       case "match":
-        return <MatchIcon width="3.5rem" height="3.5rem" />;
+        return <MatchIcon />;
       case "recommend":
-        return <RecomIcon width="3.5rem" height="3.5rem" />;
+        return <RecomIcon />;
+      default:
+        return <MovieIcon />;
     }
   };
 

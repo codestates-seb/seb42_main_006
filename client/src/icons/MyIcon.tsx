@@ -1,14 +1,14 @@
-interface Props {
-  width: string;
-  height: string;
-}
+const MyDefaultValue: { width: string; height: string } = {
+  width: "1.15rem",
+  height: "1.15rem",
+};
 
-export function CloseIcon({ width, height }: Props) {
+export function CloseIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MyDefaultValue.width}
+      height={MyDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -19,12 +19,12 @@ export function CloseIcon({ width, height }: Props) {
   );
 }
 
-export function PenIcon({ width, height }: Props) {
+export function PenIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MyDefaultValue.width}
+      height={MyDefaultValue.height}
       viewBox="0 0 256 256"
     >
       <path
