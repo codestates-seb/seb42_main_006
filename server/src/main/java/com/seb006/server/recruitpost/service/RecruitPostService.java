@@ -1,6 +1,8 @@
 package com.seb006.server.recruitpost.service;
 
 import com.seb006.server.global.Sorting;
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.repository.RecruitPostRepository;
