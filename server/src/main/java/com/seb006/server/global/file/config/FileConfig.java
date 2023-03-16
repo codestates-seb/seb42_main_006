@@ -1,4 +1,4 @@
-package com.seb006.server.file.config;
+package com.seb006.server.global.file.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class S3config {
+public class FileConfig {
     @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
     @Value("${cloud.aws.credentials.secretKey}")

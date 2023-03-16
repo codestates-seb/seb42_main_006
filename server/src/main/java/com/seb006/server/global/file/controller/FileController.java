@@ -1,6 +1,6 @@
-package com.seb006.server.file.controller;
+package com.seb006.server.global.file.controller;
 
-import com.seb006.server.file.service.FileService;
+import com.seb006.server.global.file.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
