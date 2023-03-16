@@ -64,7 +64,7 @@ public class RecruitPostController {
     public ResponseEntity getRecruitPost(@PathVariable("recruit-post-id")long id){
         RecruitPost recruitPost = service.findRecruitPost(id);
 
-        return new ResponseEntity<>(mapper.recruitPostToRecruitPostResponseDto(recruitPost),HttpStatus.OK);
+        return new ResponseEntity<>(mapper.recruitPostToRecruitDetailResponseDto(recruitPost),HttpStatus.OK);
 
     }
 

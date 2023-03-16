@@ -1,5 +1,7 @@
 package com.seb006.server.prfpostcomment.service;
 
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.service.MemberService;
 import com.seb006.server.prfpost.entity.PrfPost;
@@ -65,7 +67,7 @@ public class PrfPostCommentService {
                 prfPostCommentRepository.findById(id);
         PrfPostComment findPrfPostComment =
                 optionalPrfPostComment.orElseThrow(() ->
-                        new RuntimeException("prfPostComment_NOT_FOUND"));
+                        new BusinessLogicException(ExceptionCode.PRFPOSTCOMMENT_NOT_FOUND));
         return findPrfPostComment;
     }
 
