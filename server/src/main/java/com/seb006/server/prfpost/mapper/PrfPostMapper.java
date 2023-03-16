@@ -31,6 +31,8 @@ public interface PrfPostMapper {
                 List<Urls> urls = postDto.getUrls().stream()
                         .map(eachUrl -> {
                             Urls url = new Urls();
+                            url.setTitle(eachUrl.getTitle());
+                            url.setThumbnail(eachUrl.getThumbnail());
                             url.setUrl(eachUrl.getUrl());
                             url.setPrfPost(prfPost);
                             return url;
@@ -62,6 +64,8 @@ public interface PrfPostMapper {
                     .map(url ->{
                         UrlResponseDto urlDto = new UrlResponseDto();
                         urlDto.setId(url.getId());
+                        urlDto.setTitle(url.getTitle());
+                        urlDto.setThumbnail(url.getThumbnail());
                         urlDto.setUrl(url.getUrl());
                         return urlDto;
                     })
@@ -107,6 +111,8 @@ public interface PrfPostMapper {
                     .map(url ->{
                         UrlResponseDto urlDto = new UrlResponseDto();
                         urlDto.setId(url.getId());
+                        urlDto.setTitle(url.getTitle());
+                        urlDto.setThumbnail(url.getThumbnail());
                         urlDto.setUrl(url.getUrl());
                         return urlDto;
                     })

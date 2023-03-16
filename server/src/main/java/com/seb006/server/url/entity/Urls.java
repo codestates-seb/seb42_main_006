@@ -17,10 +17,10 @@ public class Urls {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String thumbnail;
 
     @Column(nullable = false)
