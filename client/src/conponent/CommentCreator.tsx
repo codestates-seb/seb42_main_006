@@ -17,25 +17,6 @@ const ContentWapper = styled.div`
   color: white;
 `;
 
-const ReTweet = styled.textarea`
-  height: 10rem;
-  border: 1px solid #4a4a4a;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 1rem;
-  background-color: inherit;
-  color: white;
-  font-family: inherit;
-  font-size: 1rem;
-  width: 100%;
-  resize: none;
-  outline: none;
-
-  &:focus {
-    border-color: #f36;
-  }
-`;
-
 const SubmitBtn = styled.div`
   display: flex;
   justify-content: right;

@@ -1,16 +1,14 @@
 import styled from "styled-components";
-
-import YoutubePlayer from "../conponent/parts/YoutubePlayer";
-import YoutubeList from "../conponent/parts/YoutubeList";
+import MoviePreview from "../conponent/addPost/MoviePreview";
+import PlaylistMaker from "../conponent/addPost/PlaylistMaker";
 import Selection from "../conponent/parts/Selection";
 import {
   DefaultInput,
-  ButtonInput,
   Textarea,
   TagInput,
   FileInput,
 } from "../conponent/parts/InputNoH";
-import MapSearch from "../conponent/MapSearch";
+import MapSearch from "../conponent/addPost/MapSearch";
 import Tag from "../conponent/parts/Tag";
 import { StyledBtn } from "../conponent/parts/Button";
 import { useState } from "react";
@@ -37,18 +35,6 @@ const Category = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
 
-  > div {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1rem;
-    color: #ffffff;
-    > select {
-      font-size: 1rem;
-      color: #ffffff;
-    }
-  }
-
   > h1 {
     font-size: 2rem;
     color: #ffffff;
@@ -56,45 +42,33 @@ const Category = styled.div`
   }
 `;
 
+const CategoryWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #ffffff;
+`;
+
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
-  > span {
-    color: #ffffff;
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
 
   > div {
     margin-bottom: 20px;
   }
 `;
 
+const InputTitle = styled.span`
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 500;
+`;
+
 const BtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-`;
-
-const PlaylistWrapper = styled.div`
-  border: 2px solid #5a5959;
-  border-radius: 5px;
-  overflow: overlay;
-
-  min-height: 200px;
-  max-height: 200px;
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #ff3366;
-    border-radius: 1000px;
-  }
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    width: 30px; /*스크롤바 뒷 배경 색상*/
-  }
 `;
 
 interface Iurls {
@@ -110,6 +84,10 @@ function AddPost() {
   const [tags, setTags] = useState<string[]>([]);
   const [urls, setUrls] = useState<Iurls[]>([]);
   const [file, setfile] = useState<any>();
+  const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
+    lat: "",
+    lon: "",
+  });
   const navigate = useNavigate();
 
   const handleAddTags = (x: string) => {
@@ -134,17 +112,17 @@ function AddPost() {
     <Background>
       <Category>
         <h1>게시글 작성하기</h1>
-        <div>
-          <span>카테고리</span>
+        <CategoryWrapper>
+          <InputTitle>카테고리</InputTitle>
           <Selection
             width=""
             opt={["영화", "음악", "맛집"]}
             setCategory={setCurCategory}
           ></Selection>
-        </div>
+        </CategoryWrapper>
       </Category>
       <FormWrapper>
-        <span>제목</span>
+        <InputTitle>제목</InputTitle>
         <DefaultInput
           width="100%"
           placeholder="제목"
@@ -152,38 +130,17 @@ function AddPost() {
           setValue={setTitle}
         ></DefaultInput>
         {curCategory === "영화" && (
-          <>
-            <span>{curCategory} Urls</span>
-            <ButtonInput
-              title="Add list"
-              width="100%"
-              placeholder="Urls"
-              handleClick={handleAddUrls}
-            ></ButtonInput>
-            {urls.length !== 0 && <YoutubePlayer item={urls[0]} />}
-          </>
+          <MoviePreview urls={urls} handleAddUrls={handleAddUrls} />
         )}
         {curCategory === "음악" && (
-          <>
-            <span>플레이리스트</span>
-            <ButtonInput
-              title="Add list"
-              width="100%"
-              placeholder="Urls ..."
-              handleClick={handleAddUrls}
-            ></ButtonInput>
-            <PlaylistWrapper>
-              <YoutubeList list={urls} setList={setUrls}></YoutubeList>
-            </PlaylistWrapper>
-          </>
+          <PlaylistMaker
+            urls={urls}
+            setUrls={setUrls}
+            onAddList={handleAddUrls}
+          />
         )}
-        {curCategory === "맛집" && (
-          <>
-            <span>위치</span>
-            <MapSearch></MapSearch>
-          </>
-        )}
-        <span>내용</span>
+        {curCategory === "맛집" && <MapSearch setLatLon={setLatLon} />}
+        <InputTitle>내용</InputTitle>
         <Textarea
           width="100%"
           value={body}
@@ -191,7 +148,7 @@ function AddPost() {
           placeholder="내용을 입력해주세요."
           row={10}
         ></Textarea>
-        <span>태그</span>
+        <InputTitle>태그</InputTitle>
         <TagInput
           width="100%"
           addTags={handleAddTags}
@@ -203,7 +160,7 @@ function AddPost() {
         </TagInput>
         {curCategory === "맛집" && (
           <>
-            <span>사진</span>
+            <InputTitle>사진</InputTitle>
             <FileInput value={file} setValue={setfile}></FileInput>
           </>
         )}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import IconBtn from "../conponent/parts/IconButton";
-import Player from "../conponent/parts/Player";
-import Slide from "../conponent/parts/Slide";
+import Player from "../conponent/postDetail/music/Player";
+import Slide from "../conponent/postDetail/restaurant/Slide";
 import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
 

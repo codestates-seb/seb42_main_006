@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
-import IconBtn from "./IconButton";
+import IconBtn from "../../parts/IconButton";
 import { keyframes } from "styled-components";
 
 const Container = styled.div`
@@ -36,18 +36,18 @@ const ImgContainer = styled.div<ImgContainerProp>`
   border: 2px solid #5a5959;
   overflow: hidden;
   animation: ${(props) => (props.rotate ? "roti 5s linear infinite" : "none")};
-  /* transform-origin: 50% 50%; */
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
 
   @keyframes roti {
     100% {
       transform: rotate(360deg);
     }
   }
+`;
+
+const ThumbnailImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const marquee = keyframes`
@@ -65,12 +65,13 @@ const TitleWrapper = styled.div`
   font-size: 13px;
   overflow: hidden;
   width: 100%;
-  > div {
-    width: 100%;
-    white-space: nowrap;
-    animation: ${marquee} 15s linear infinite;
-    text-overflow: ellipsis;
-  }
+`;
+
+const Title = styled.div`
+  width: 100%;
+  white-space: nowrap;
+  animation: ${marquee} 15s linear infinite;
+  text-overflow: ellipsis;
 `;
 
 const RightContainer = styled.div`
@@ -183,12 +184,11 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
       <Container>
         <TopWrapper>
           <ImgContainer rotate={isPlaying}>
-            <img src={thumbnail} alt={title} />
+            <ThumbnailImg src={thumbnail} alt={title} />
           </ImgContainer>
           <RightContainer>
             <TitleWrapper>
-              <div>{title}</div>
-              {/* {title.slice(0, 20)} {title.length > 20 && "..."} */}
+              <Title>{title}</Title>
             </TitleWrapper>
             <PlayBtn>
               <IconBtn

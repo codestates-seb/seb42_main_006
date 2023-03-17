@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -16,9 +17,12 @@ const Wrapper = styled.div`
 export interface MapComponentProp {
   loc: string | { lat: string; lon: string };
   mode: "Search" | "Location";
+  setLatLon?: React.Dispatch<
+    React.SetStateAction<{ lat: string; lon: string }>
+  >;
 }
 
-function KakaoMap({ loc, mode }: MapComponentProp) {
+function KakaoMap({ loc, mode, setLatLon }: MapComponentProp) {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -40,6 +44,7 @@ function KakaoMap({ loc, mode }: MapComponentProp) {
           console.log(result);
           map.setCenter(new kakao.maps.LatLng(result[0].y, result[0].x));
           marker.setPosition(new kakao.maps.LatLng(result[0].y, result[0].x));
+          if (setLatLon) setLatLon({ lat: result[0].y, lon: result[0].x });
         }
       };
       if (typeof loc === "string" && loc.length !== 0) {
@@ -56,4 +61,4 @@ function KakaoMap({ loc, mode }: MapComponentProp) {
   return <Wrapper id="map"></Wrapper>;
 }
 
-export default KakaoMap;
+export default React.memo(KakaoMap);

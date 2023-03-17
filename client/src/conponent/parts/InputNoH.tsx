@@ -24,28 +24,28 @@ const InputWrapper = styled.div<InputWrapperProp>`
     background-color: transparent;
     border-color: #ff3366;
   }
+`;
 
-  > input {
-    flex: 1 1 auto;
-    outline: none;
-    background-color: transparent;
-    border: none;
-    font-size: 1rem;
+const SInput = styled.input`
+  flex: 1 1 auto;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
 
-    color: white;
-  }
+  color: white;
 
-  > input[type="file"] {
+  &[type="file"] {
     display: none;
   }
+`;
 
-  > label {
-    padding: 2px 8px;
-    background-color: #ff3366;
-    color: white;
-    font-weight: 400;
-    border-radius: 3px;
-  }
+const SLabel = styled.label`
+  padding: 2px 8px;
+  background-color: #ff3366;
+  color: white;
+  font-weight: 400;
+  border-radius: 3px;
 `;
 
 interface searchInputProp extends InputWrapperProp {
@@ -54,7 +54,7 @@ interface searchInputProp extends InputWrapperProp {
 export function SearchInput({ width, placeholder }: searchInputProp) {
   return (
     <InputWrapper width={width}>
-      <input type="text" placeholder={placeholder} />
+      <SInput type="text" placeholder={placeholder} />
       <SearchIcon></SearchIcon>
     </InputWrapper>
   );
@@ -77,7 +77,7 @@ export function ButtonInput({
   const [value, setValue] = useState("");
   return (
     <InputWrapper width={width} style={style}>
-      <input
+      <SInput
         type="text"
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -118,7 +118,7 @@ export function DefaultInput({
 }: DefaultInputProp) {
   return (
     <InputWrapper width={width}>
-      <input
+      <SInput
         type="text"
         placeholder={placeholder}
         value={value}
@@ -168,7 +168,7 @@ export function ValidInput({
     <div>
       <ValidInputWrapper width={width}>
         {disable === true ? (
-          <input
+          <SInput
             value={value}
             type={type || "text"}
             placeholder={placeholder}
@@ -179,7 +179,7 @@ export function ValidInput({
             disabled
           />
         ) : (
-          <input
+          <SInput
             value={value}
             type={type || "text"}
             placeholder={placeholder}
@@ -202,18 +202,15 @@ interface textAreaProp extends InputWrapperProp {
   placeholder: string;
 }
 
-const StyledTextarea = styled(InputWrapper)`
-  /* background-color: transparent; */
-  > textarea {
-    background-color: transparent;
-    color: #ffffff;
-    overflow: hidden;
-    outline: none;
-    border: none;
-    width: 100%;
-    font-size: 1rem;
-    resize: vertical;
-  }
+const StyledTextarea = styled.textarea`
+  background-color: transparent;
+  color: #ffffff;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  resize: vertical;
 `;
 
 export function Textarea({
@@ -233,16 +230,16 @@ export function Textarea({
   }, []);
 
   return (
-    <StyledTextarea width={width}>
-      <textarea
+    <InputWrapper width={width}>
+      <StyledTextarea
         ref={textAreaRef}
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onInput={handleResizeHeight}
         rows={row}
-      ></textarea>
-    </StyledTextarea>
+      ></StyledTextarea>
+    </InputWrapper>
   );
 }
 
@@ -274,7 +271,7 @@ export function TagInput({
   return (
     <InputWrapper width={width}>
       {children}
-      <input
+      <SInput
         type="text"
         value={value}
         placeholder="Tags ..."
@@ -306,13 +303,13 @@ export function FileInput({ value, setValue }: FileInputProp) {
   };
   return (
     <InputWrapper width="">
-      <label htmlFor="input-file">업로드하기</label>
-      <input
+      <SLabel htmlFor="SInput-file">업로드하기</SLabel>
+      <SInput
         type="text"
         placeholder={value ? filename : "사진을 업로드해주세요"}
         disabled
       />
-      <input id="input-file" type="file" onChange={handleFileChange} />
+      <SInput id="SInput-file" type="file" onChange={handleFileChange} />
     </InputWrapper>
   );
 }

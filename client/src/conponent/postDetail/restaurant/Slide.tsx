@@ -1,6 +1,6 @@
 import KakaoMap from "./KakaoMap";
 import styled, { css } from "styled-components";
-import { DownArrow } from "../../icons/Icon";
+import { DownArrow } from "../../../icons/Icon";
 import { useState } from "react";
 
 const Wrapper = styled.div`
