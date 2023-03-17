@@ -3,8 +3,6 @@ spring:
     console:
       enabled: true
       path: /h2
-      settings:
-        web-allow-others: true
   datasource:
     url: jdbc:h2:mem:test
   jpa:
@@ -13,7 +11,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 logging:
   level:
     org:
@@ -27,8 +25,19 @@ server:
       force-response: true
 mail:
   address:
-    admin: admin@gmail.com
+    admin: ${ADMIN_MAIL_ADDRESS}
 jwt:
-  key: MOHAE123412341234123412341234123412341234
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: ${ACCESS_TOKEN_EXPIRATION}
+  refresh-token-expiration-minutes: ${REFRESH_TOKEN_EXPIRATION}
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${BUCKET_NAME}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
