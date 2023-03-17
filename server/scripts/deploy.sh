@@ -23,7 +23,7 @@ else
   sleep 5
 fi
 
-source /etc/profile
+source ~/.profile
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
