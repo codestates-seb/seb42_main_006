@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import IconBtn from "../conponent/parts/IconButton";
 import Player from "../conponent/parts/Player";
+import Slide from "../conponent/parts/Slide";
+import CommentCreator from "../conponent/CommentCreator";
+import CommentList from "../conponent/parts/CommentList";
 
 const Container = styled.div`
   display: flex;
@@ -10,8 +13,7 @@ const Container = styled.div`
   align-items: center;
   color: white;
   width: 800px;
-  height: 60vh;
-  margin: 0 auto;
+  margin: 24px auto;
 `;
 
 const TitleContainer = styled.div`
@@ -29,6 +31,7 @@ const Title = styled.h1`
 
 const BoxContainer = styled.div`
   display: flex;
+
   width: 100%;
   height: 350px;
 `;
@@ -46,9 +49,10 @@ const Boxs = styled.div`
 
 const RetweetContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-top: 3rem;
-  border: 1px solid #4a4a4a;
+  /* border: 1px solid #4a4a4a; */
   width: 100%;
 `;
 
@@ -85,33 +89,36 @@ export default function PostDetail() {
   const [list, setList] = useState(initialState);
 
   return (
-    <>
-      <Container>
-        <TitleContainer>
-          <Title>나만의 플레이리스트 공유합니다</Title>
-          <IconBtn
-            title=""
-            width="40px"
-            height="40px"
-            radius="5px"
-            fontWeight={400}
-            fontColor="pink"
-            btnType=""
-            iconType="treeDot"
-            border="none"
-            handleClick={() => console.log("click")}
-          />
-        </TitleContainer>
-        <BoxContainer>
-          <Boxs>
-            <Player list={list} nowPlaying={list[0]} setList={setList}></Player>
-          </Boxs>
-          <Boxs>오른쪽 상자</Boxs>
-        </BoxContainer>
-        <RetweetContainer>
-          <div>댓글창</div>
-        </RetweetContainer>
-      </Container>
-    </>
+    <Container>
+      <TitleContainer>
+        <Title>나만의 플레이리스트 공유합니다</Title>
+        <IconBtn
+          title=""
+          width="40px"
+          height="40px"
+          radius="5px"
+          fontWeight={400}
+          fontColor="pink"
+          btnType=""
+          iconType="treeDot"
+          border="none"
+          handleClick={() => console.log("click")}
+        />
+      </TitleContainer>
+      <BoxContainer>
+        <Boxs>
+          <Player list={list} nowPlaying={list[0]} setList={setList}></Player>
+          {/* <Slide
+              url="https://i.ytimg.com/vi/Rrf8uQFvICE/mqdefault.jpg"
+              loc={{ lat: "37.2819", lon: "127.14814" }}
+            ></Slide> */}
+        </Boxs>
+        <Boxs>오른쪽 상자</Boxs>
+      </BoxContainer>
+      <RetweetContainer>
+        <CommentCreator></CommentCreator>
+        <CommentList></CommentList>
+      </RetweetContainer>
+    </Container>
   );
 }

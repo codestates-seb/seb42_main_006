@@ -21,13 +21,14 @@ const InputWrapper = styled.div<InputWrapperProp>`
   gap: 5px;
 
   &:focus-within {
+    background-color: transparent;
     border-color: #ff3366;
   }
 
   > input {
     flex: 1 1 auto;
     outline: none;
-    background-color: inherit;
+    background-color: transparent;
     border: none;
     font-size: 1rem;
 
@@ -197,10 +198,12 @@ export function ValidInput({
 interface textAreaProp extends InputWrapperProp {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  row: number;
   placeholder: string;
 }
 
 const StyledTextarea = styled(InputWrapper)`
+  /* background-color: transparent; */
   > textarea {
     background-color: transparent;
     color: #ffffff;
@@ -209,6 +212,7 @@ const StyledTextarea = styled(InputWrapper)`
     border: none;
     width: 100%;
     font-size: 1rem;
+    resize: vertical;
   }
 `;
 
@@ -217,6 +221,7 @@ export function Textarea({
   value,
   setValue,
   placeholder,
+  row,
 }: textAreaProp) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -235,7 +240,7 @@ export function Textarea({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onInput={handleResizeHeight}
-        rows={10}
+        rows={row}
       ></textarea>
     </StyledTextarea>
   );

@@ -189,6 +189,7 @@ function AddPost() {
           value={body}
           setValue={setBody}
           placeholder="내용을 입력해주세요."
+          row={10}
         ></Textarea>
         <span>태그</span>
         <TagInput

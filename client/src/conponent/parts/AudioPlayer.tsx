@@ -94,10 +94,11 @@ const PlayerWrapper = styled.div`
 `;
 
 const AudioInput = styled.input`
+  z-index: 500;
   margin: 0;
   &[type="range"] {
     overflow: hidden;
-    height: 3px;
+    height: 4px;
     -webkit-appearance: none;
     width: 100%;
     background: transparent;

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-interface MapComponentProp {
+export interface MapComponentProp {
   loc: string | { lat: string; lon: string };
   mode: "Search" | "Location";
 }
