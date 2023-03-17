@@ -20,6 +20,7 @@ public class PrfPostDto {
         private String content;
         private String tags;
         private List<UrlDto> urls;
+        private String imageKey;
     }
 
     @Setter
@@ -31,6 +32,7 @@ public class PrfPostDto {
         private String tags;
         private List<UrlDto> newUrls;
         private List<DeletedUrlDto> deletedUrls;
+        private String imageKey;
     }
 
     @Setter
@@ -45,6 +47,7 @@ public class PrfPostDto {
         private String tags;
         private Integer likeCount;
         private List<UrlResponseDto> urls;
+        private String imageKey;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createAt;
@@ -66,6 +69,7 @@ public class PrfPostDto {
         private Integer likeCount;
         private List<UrlResponseDto> urls;
         private List<PrfPostCommentResponseDto> comments;
+        private String imageKey;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createAt;

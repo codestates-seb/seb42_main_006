@@ -26,7 +26,7 @@ const ModalBox = styled.div`
     padding: 1rem;
     font-size: 0.85rem;
     line-height: 1.3;
-    strong {
+    .siteName {
       font-weight: 400;
       color: #ff3366;
     }
@@ -91,8 +91,8 @@ export default function UserModal({
         {alert ? (
           <p className="modalTxt">
             회원탈퇴가 완료되었습니다!
-            <br /> 지금까지 <strong>MOHAE</strong>를 <br /> 이용해주셔서
-            감사합니다.
+            <br /> 지금까지 <strong className="siteName">MOHAE</strong>를 <br />
+            이용해주셔서 감사합니다.
           </p>
         ) : (
           <>

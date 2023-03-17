@@ -11,12 +11,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -36,9 +39,11 @@ public class RecruitPost extends Auditable {
 
     private String content;
 
+    @Range(max= 10)
     private int recruitNumber;
 
-    private int currentNumber;
+    @Range(max= 10)
+    private Integer currentNumber = 0;
 
 
     //모집기간
@@ -57,13 +62,13 @@ public class RecruitPost extends Auditable {
     private Integer likeCount = 0;
 
     //회원 <-> 모집글
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "member_id")
     private Member member;
 
     //게시글<->모집글
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "prf_post_id")
     private PrfPost prfPost;
@@ -99,6 +104,10 @@ public class RecruitPost extends Auditable {
     }
     public void likeCountDown() {
         this.likeCount--;
+    }
+
+    public void currentNumberUp(){
+        this.currentNumber++;
     }
 
 }

@@ -4,6 +4,7 @@ import { useUserInfo, userDelete, userEdit } from "../../util/MyApi";
 import useInput from "../../util/MyInput";
 import { validFn } from "../../function/validFn";
 import styled from "styled-components";
+import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../img/logo.svg";
 import UserModal from "./UserModal";
@@ -14,6 +15,9 @@ const MyInfo = styled.section`
   gap: 1.5rem;
   align-items: center;
   justify-content: center;
+  ${media.mobile`
+    flex-direction: column;
+  `}
   .myBox {
     min-width: 16rem;
     flex-direction: column;
@@ -21,16 +25,13 @@ const MyInfo = styled.section`
     justify-content: center;
     align-items: flex-start;
     gap: 0.5rem;
+    ${media.mobile`
+      align-items: center;
+    `}
   }
   .editItem {
     display: flex;
     gap: 0.4rem;
-    align-items: center;
-  }
-  h4 {
-    margin-bottom: 0.5rem;
-    font-size: 1.6rem;
-    font-weight: 400;
   }
 `;
 
@@ -42,10 +43,15 @@ const MyProfile = styled.div`
   justify-content: center;
   border-radius: 1000px;
   background-color: #3c3c3c;
-  img {
+  .logo {
     width: 3rem;
     height: 3rem;
   }
+`;
+
+const MyTitleBg = styled.h4`
+  font-size: 1.6rem;
+  font-weight: 400;
 `;
 
 const MyTitleSm = styled.h5`
@@ -97,7 +103,7 @@ const MyBtn = styled.button`
   svg {
     margin: 0.16rem;
   }
-  span {
+  .btnText {
     display: block;
     margin: 0.33rem 0.5rem;
     font-size: 0.65rem;
@@ -110,19 +116,23 @@ export default function UserEdit() {
   const navigate = useNavigate();
 
   const [info] = useUserInfo(`/members/mypage`);
+
   const [edit, setEdit] = useState(false);
   const [modal, setModal] = useState(false);
   const [alert, setAlert] = useState(false);
 
-  const [nickValue, nickBind, nickReset] = useInput("");
+  let userInfo: any = {};
+  userInfo = info;
+
+  const [nickValue, nickBind, nickReset] = useInput(
+    userInfo.nickName ? userInfo.nickName : "닉네임123"
+  );
   const [passValue, passBind, passReset] = useInput("");
   const [valid, setValid] = useState({ nickname: true, password: true });
 
-  console.log(info);
-
   const handleEdit = () => {
     setEdit(!edit);
-    nickReset("닉네임123");
+    nickReset(userInfo.nickName);
     passReset("");
   };
 
@@ -149,8 +159,14 @@ export default function UserEdit() {
 
   const editNickname = () => {
     userEdit("/members/edit/nickname", { nickName: nickValue });
-    setEdit(!edit);
-    nickReset("닉네임123");
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 50);
+
+    setTimeout(() => {
+      setEdit(!edit);
+    }, 100);
   };
 
   const editPassword = () => {
@@ -160,20 +176,24 @@ export default function UserEdit() {
 
   const deleteAccount = () => {
     setAlert(!alert);
+
     userDelete("/members");
+    sessionStorage.removeItem("auth");
+    sessionStorage.removeItem("user");
+
     setTimeout(() => {
       navigate("/");
-    }, 1000);
+    }, 2000);
   };
 
   return (
     <>
       <MyInfo>
         <MyProfile>
-          <img src={logo} alt="logo" />
+          <img className="logo" src={logo} alt="logo" />
         </MyProfile>
         <div className="myBox">
-          <h4 className="editItem">
+          <div className="editItem">
             {edit ? (
               <MyEdit>
                 <MyInput
@@ -187,7 +207,7 @@ export default function UserEdit() {
                 )}
               </MyEdit>
             ) : (
-              "닉네임123"
+              <MyTitleBg>{nickValue}</MyTitleBg>
             )}
             <MyBtn onClick={edit ? editNickname : handleEdit}>
               <PenIcon />
@@ -197,7 +217,7 @@ export default function UserEdit() {
                 <CloseIcon />
               </MyBtn>
             ) : null}
-          </h4>
+          </div>
 
           <MyTitleSm>비밀번호 변경</MyTitleSm>
           <div className="editItem">
@@ -219,7 +239,7 @@ export default function UserEdit() {
             </MyBtn>
           </div>
           <MyBtn onClick={handleModal}>
-            <span>회원 탈퇴</span>
+            <span className="btnText">회원 탈퇴</span>
           </MyBtn>
         </div>
       </MyInfo>

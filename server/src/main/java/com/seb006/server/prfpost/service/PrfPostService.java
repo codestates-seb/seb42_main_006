@@ -68,6 +68,7 @@ public class PrfPostService {
         Optional.ofNullable(patchDto.getCategory()).ifPresent(category -> verifiedPost.setCategory(category));
         Optional.ofNullable(patchDto.getContent()).ifPresent(content -> verifiedPost.setContent(content));
         Optional.ofNullable(patchDto.getTags()).ifPresent(tags -> verifiedPost.setTags(tags));
+        Optional.ofNullable(patchDto.getImageKey()).ifPresent(imageKey -> verifiedPost.setImageKey(imageKey));
 
         // 삭제될 URL가 있는 경우
         if(patchDto.getDeletedUrls()!=null){
