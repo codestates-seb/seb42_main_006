@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { StyledBtn } from "../conponent/parts/Button";
 import MainCategory from "../conponent/main/Category";
+import { media } from "../style/Media";
 
 const MainWrap = styled.div`
   width: 100%;
@@ -8,6 +10,9 @@ const MainWrap = styled.div`
   text-align: center;
   section {
     padding: 5rem 0;
+    ${media.pc`
+      padding: 5rem 2.66rem;
+    `}
   }
   section.pink {
     background: #ff3366;
@@ -23,10 +28,14 @@ const MainSlogan = styled.h2`
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.055em;
-  strong {
+  .point {
     padding: 0.25rem 0;
-    color: #ff3366;
+    font-size: 4rem;
     font-weight: 400;
+    color: #ff3366;
+    ${media.mobile`
+      font-size: 3.5rem;
+    `}
   }
   &:after {
     display: block;
@@ -36,6 +45,9 @@ const MainSlogan = styled.h2`
     background: #ff3366;
     content: "";
   }
+  ${media.mobile`
+    font-size: 3.5rem;
+  `}
 `;
 
 const MainTitle = styled.h2`
@@ -43,6 +55,9 @@ const MainTitle = styled.h2`
   font-weight: 500;
   letter-spacing: 0.25em;
   color: #3c3c3c;
+  ${media.mobile`
+    font-size: 2.5rem;
+  `}
 `;
 
 const MainText = styled.p`
@@ -51,6 +66,11 @@ const MainText = styled.p`
   font-weight: 400;
   line-height: 1.4;
   color: #3c3c3c;
+  .break {
+    ${media.pc`
+      display: none;
+    `}
+  }
 `;
 
 const CateList = styled.ul`
@@ -59,6 +79,9 @@ const CateList = styled.ul`
   align-items: center;
   justify-content: center;
   gap: 3rem;
+  ${media.pc`
+      flex-wrap:wrap;
+  `}
 `;
 
 const ExList = styled.ul`
@@ -66,46 +89,57 @@ const ExList = styled.ul`
   margin: 7rem 0;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
-  li {
-    padding: 1.66rem;
-    background: #222;
-    border: 1px solid #3c3c3c;
-    border-radius: 0.33rem;
-  }
+  ${media.pc`
+      gap: 1.5rem;
+  `}
+  ${media.mobile`
+    grid-template-columns: repeat(1, 1fr);
+  `}
+`;
+
+const ExListLi = styled.li`
+  padding: 1.66rem;
+  background: #222;
+  border: 1px solid #3c3c3c;
+  border-radius: 0.33rem;
 `;
 
 export default function Main() {
+  const token = sessionStorage.getItem("auth");
+
   return (
     <MainWrap>
       <section>
         <MainSlogan>
-          당신의 경험, <strong>MOHAE</strong>
+          당신의 경험, <strong className="point">MOHAE</strong>
           <br />
           에서 공유하세요
         </MainSlogan>
         <MainText>
           우리 서비스는 자신만의 음악, 맛집, 영화 등을 다른 사람들과 공유하고,
           취향이 비슷한 사람들끼리 매칭할 수 있는 서비스입니다.
-          <br />
+          <br className="break" />
           취향이 비슷한 사람들과 소통하며 새로운 음악, 맛집, 영화 등을 발견하고
           싶으신 분들께, 저희의 서비스를 적극 추천드립니다!
-          <br />
+          <br className="break" />
           우리 서비스는 자신의 취향을 공유하고, 취향이 비슷한 사람들끼리
-          매칭하여 추천을 제공하는 서비스입니다. <br />
+          매칭하여 추천을 제공하는 서비스입니다. <br className="break" />
           "당신의 취향과 어울리는 추천을 놓치지 마세요! 우리 서비스가 당신의
           행복을 전달해드립니다."
         </MainText>
 
-        <StyledBtn
-          title="A D D"
-          width="12rem"
-          height="2.8rem"
-          radius="3rem"
-          fontWeight={400}
-          fontColor="white"
-          btnType="full"
-          handleClick={() => console.log("click")}
-        ></StyledBtn>
+        <Link to={token ? "/addpost" : "/login"}>
+          <StyledBtn
+            title="A D D"
+            width="12rem"
+            height="2.8rem"
+            radius="3rem"
+            fontWeight={400}
+            fontColor="white"
+            btnType="full"
+            handleClick={() => console.log("click")}
+          ></StyledBtn>
+        </Link>
       </section>
       <section className="pink">
         <MainTitle>Category</MainTitle>
@@ -117,7 +151,7 @@ export default function Main() {
             <MainCategory iconType="music" label="Music" />
           </li>
           <li>
-            <MainCategory iconType="food" label="Matjip" />
+            <MainCategory iconType="food" label="Hot Place" />
           </li>
           <li>
             <MainCategory iconType="flower" label="Anywhere" />
@@ -130,7 +164,7 @@ export default function Main() {
       <section className="max">
         <MainTitle>Experience</MainTitle>
         <ExList>
-          <li>
+          <ExListLi>
             <MainCategory iconType="share" border label="Sharing" />
             <MainText>
               우리의 서비스를 이용하면 자신이 좋아하는 음악, 맛집, 영화 등을
@@ -138,8 +172,8 @@ export default function Main() {
               맛집, 영화 등을 발견할 수 있고, 또한 자신의 취향에 맞는 추천을
               받을 수 있습니다.
             </MainText>
-          </li>
-          <li>
+          </ExListLi>
+          <ExListLi>
             <MainCategory iconType="match" border label="Matching" />
             <MainText>
               우리의 서비스는 취향이 비슷한 사람들끼리 매칭하는 기능도
@@ -147,14 +181,14 @@ export default function Main() {
               맞는 추천을 받을 수 있습니다. 우리 서비스는 쉽고 간편하게 이용할
               수 있으며, 다양한 장르와 카테고리에서 추천을 받을 수 있습니다.
             </MainText>
-          </li>
-          <li>
+          </ExListLi>
+          <ExListLi>
             <MainCategory iconType="recommend" border label="Recommending" />
             <MainText>
               보유하고 있는 다양한 정보를 기반으로 최적화된 추천 시스템을
               제공하여, 이용자들의 만족도를 높일 수 있습니다.
             </MainText>
-          </li>
+          </ExListLi>
         </ExList>
       </section>
     </MainWrap>

@@ -1,8 +1,12 @@
 import { useState } from "react";
 
-export default function useInput(
-  initial: string
-): [string, object, React.Dispatch<React.SetStateAction<string>>] {
+type UseInputTypes = [
+  string,
+  object,
+  React.Dispatch<React.SetStateAction<string>>
+];
+
+export default function useInput(initial: string): UseInputTypes {
   const [value, setValue] = useState(initial);
 
   const bind = {

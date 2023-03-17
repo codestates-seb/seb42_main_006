@@ -32,22 +32,22 @@ interface MainCateProps extends MainCateStyleProps {
   label?: string;
 }
 
-// type IconText =
-//   | "movie"
-//   | "music"
-//   | "food"
-//   | "flower"
-//   | "robot"
-//   | "share"
-//   | "match"
-//   | "recommend";
+type IconText =
+  | "movie"
+  | "music"
+  | "food"
+  | "flower"
+  | "robot"
+  | "share"
+  | "match"
+  | "recommend";
 
 export default function MainCategory({
   iconType,
   border,
   label,
 }: MainCateProps) {
-  const iconTypeHandler = (iconType: string) => {
+  const iconTypeHandler = (iconType: IconText) => {
     switch (iconType) {
       case "movie":
         return <MovieIcon />;
@@ -70,9 +70,12 @@ export default function MainCategory({
     }
   };
 
+  let symbol: any = "";
+  symbol = iconType;
+
   return (
     <>
-      <MainCateItem border={border}>{iconTypeHandler(iconType)}</MainCateItem>
+      <MainCateItem border={border}>{iconTypeHandler(symbol)}</MainCateItem>
       <MainLabel>{label}</MainLabel>
     </>
   );
