@@ -10,6 +10,7 @@ const StyledSelect = styled.select<styledSelectProp>`
   border-radius: 4px;
   padding: 4px 8px;
   width: ${(props) => props.width};
+  outline: none;
 `;
 
 interface selectionProp extends styledSelectProp {

@@ -5,18 +5,15 @@ import YoutubeListItem from "./YoutubeListItem";
 
 const Wrapper = styled.div`
   width: 100%;
-  border: 2px solid #4a4a4a;
-  border-radius: 5px;
-  overflow: overlay;
+  height: calc(100% - 100px);
 
-  min-height: 150px;
-  max-height: 200px;
+  overflow: overlay;
   &::-webkit-scrollbar-thumb {
-    background-color: hsla(0, 0%, 42%, 0.49);
-    border-radius: 100px;
+    background-color: #ff3366;
+    border-radius: 1000px;
   }
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
   }
   &::-webkit-scrollbar-track {
     width: 30px; /*스크롤바 뒷 배경 색상*/

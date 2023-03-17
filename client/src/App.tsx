@@ -13,6 +13,7 @@ import Collect from "./page/Collect";
 import CollectDeatail from "./page/CollectDeatail";
 import Mypage from "./page/Mypage";
 import Main from "./page/Main";
+import PostDetail from "./page/PostDetail";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ function App() {
             <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
             <Route path="/" element={<Main />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/postdetail" element={<PostDetail />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>

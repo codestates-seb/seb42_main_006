@@ -18,8 +18,8 @@ const Background = styled.div`
   margin: auto;
   max-width: 400px;
   min-width: 300px;
-  border: 2px solid #5a5959;
-  background-color: #222222;
+  /* border: 2px solid #5a5959;
+  background-color: #222222; */
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -28,7 +28,7 @@ const Background = styled.div`
 
   > h1 {
     font-size: 2rem;
-    color: #ffffff;
+    color: #f36;
     font-weight: 400;
   }
 `;
