@@ -62,13 +62,13 @@ public class RecruitPost extends Auditable {
     private Integer likeCount = 0;
 
     //회원 <-> 모집글
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "member_id")
     private Member member;
 
     //게시글<->모집글
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "prf_post_id")
     private PrfPost prfPost;

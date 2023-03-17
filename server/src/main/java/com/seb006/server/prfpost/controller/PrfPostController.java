@@ -49,15 +49,15 @@ public class PrfPostController {
 
     // 전체 리스트 - 태그, 카테고리 필터링 X
     // sorting - 1: 최신순, 2: 인기순
-    @GetMapping("/all")
-    public ResponseEntity getPrfPosts(@Positive @RequestParam(defaultValue = "1") int page,
-                                      @Positive @RequestParam(defaultValue = "10") int size,
-                                      @Positive @RequestParam(defaultValue = "1") int sorting){
-        Page<PrfPost> pageInfo = prfPostService.getAllPrfPosts(page-1, size, sorting);
-        List<PrfPost> allPrfPost = pageInfo.getContent();
-        List<PrfPostDto.Response> result = prfPostMapper.prfPostsToResponseDtos(allPrfPost);
+        @GetMapping("/all")
+        public ResponseEntity getPrfPosts(@Positive @RequestParam(defaultValue = "1") int page,
+        @Positive @RequestParam(defaultValue = "10") int size,
+        @Positive @RequestParam(defaultValue = "1") int sorting){
+            Page<PrfPost> pageInfo = prfPostService.getAllPrfPosts(page-1, size, sorting);
+            List<PrfPost> allPrfPost = pageInfo.getContent();
+            List<PrfPostDto.Response> result = prfPostMapper.prfPostsToResponseDtos(allPrfPost);
 
-        return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
+            return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
     }
 
 
