@@ -12,6 +12,8 @@ spring:
     properties:
       hibernate:
         format_sql: false
+  config:
+    import: 'aws-parameterstore:'
 logging:
   level:
     org:
@@ -41,3 +43,9 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+aws:
+  paramstore:
+    enabled: true
+    prefix: /spring-boot-aws
+    name: mohae
+    profileSeparator: _
