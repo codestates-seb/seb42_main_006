@@ -23,21 +23,21 @@ server:
   servlet:
     encoding:
       force-response: true
-# mail:
-#   address:
-#     admin: ${ADMIN_MAIL_ADDRESS}
-# jwt:
-#   key: ${JWT_SECRET_KEY}
-#   access-token-expiration-minutes: ${ACCESS_TOKEN_EXPIRATION}
-#   refresh-token-expiration-minutes: ${REFRESH_TOKEN_EXPIRATION}
+mail:
+  address:
+    admin: ${ADMIN_MAIL_ADDRESS}
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: ${ACCESS_TOKEN_EXPIRATION}
+  refresh-token-expiration-minutes: ${REFRESH_TOKEN_EXPIRATION}
 cloud:
   aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${BUCKET_NAME}
     region:
       static: ap-northeast-2
     stack:
       auto: false
-#     credentials:
-#       accessKey: ${AWS_ACCESS_KEY}
-#       secretKey: ${AWS_SECRET_KEY}
-#     s3:
-#       bucket: ${BUCKET_NAME}
