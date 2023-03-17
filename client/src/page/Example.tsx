@@ -7,6 +7,7 @@ import {
 import IconBtn from "../conponent/parts/IconButton";
 import Tag from "../conponent/parts/Tag";
 import styled from "styled-components";
+import AudioPlayer from "../conponent/parts/AudioPlayer";
 
 const Filter = styled.div`
   display: flex;
@@ -150,6 +151,18 @@ export default function Example() {
         fontWeight={400}
         fontColor=""
         btnType=""
+        iconType="stop"
+        border="none"
+        handleClick={() => console.log("click")}
+      />
+      <IconBtn
+        title=""
+        width="40px"
+        height="40px"
+        radius="5px"
+        fontWeight={400}
+        fontColor=""
+        btnType=""
         iconType="rightPlay"
         border="none"
         handleClick={() => console.log("click")}
@@ -226,6 +239,18 @@ export default function Example() {
         border="none"
         handleClick={() => console.log("click")}
       />
+      <IconBtn
+        title=""
+        width="30px"
+        height="30px"
+        radius="100px"
+        fontWeight={400}
+        fontColor=""
+        btnType=""
+        iconType="speaker"
+        border="none"
+        handleClick={() => console.log("click")}
+      />
       <Tag title="태그"></Tag>
       <SearchInput
         width="500px"
@@ -247,6 +272,14 @@ export default function Example() {
         height="36px"
         placeholder="Default"
       ></DefaultInput>
+      <AudioPlayer
+        data={{
+          url: "https://www.youtube.com/watch?v=Rrf8uQFvICE",
+          thumbnail: "https://i.ytimg.com/vi/zISCDPViQ3c/mqdefault.jpg",
+          title:
+            "3시간 봄 내음 가득한 힐링음악 🌼 아침음악, 스트레스해소음악, 명상음악, 요가 (Sprout)",
+        }}
+      ></AudioPlayer>
     </Filter>
   );
 }

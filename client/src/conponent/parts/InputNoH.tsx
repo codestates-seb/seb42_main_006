@@ -13,7 +13,7 @@ const InputWrapper = styled.div<InputWrapperProp>`
   justify-content: space-between;
   align-items: center;
   background-color: #282828;
-  border: 2px solid #4a4a4a;
+  border: 2px solid #5a5959;
   border-radius: 4px;
   padding: 4px 8px;
   width: ${(props) => props.width};
@@ -32,6 +32,18 @@ const InputWrapper = styled.div<InputWrapperProp>`
     font-size: 1rem;
 
     color: white;
+  }
+
+  > input[type="file"] {
+    display: none;
+  }
+
+  > label {
+    padding: 2px 8px;
+    background-color: #ff3366;
+    color: white;
+    font-weight: 400;
+    border-radius: 3px;
   }
 `;
 
@@ -80,7 +92,10 @@ export function ButtonInput({
         btnType="full"
         fontColor="white"
         fontWeight={400}
-        handleClick={() => handleClick(value)}
+        handleClick={() => {
+          handleClick(value);
+          setValue("");
+        }}
       ></StyledBtn>
     </InputWrapper>
   );
@@ -88,12 +103,29 @@ export function ButtonInput({
 
 interface DefaultInputProp extends InputWrapperProp {
   placeholder: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  onBlur?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function DefaultInput({ width, placeholder }: DefaultInputProp) {
+export function DefaultInput({
+  width,
+  placeholder,
+  value,
+  setValue,
+  onBlur,
+}: DefaultInputProp) {
   return (
     <InputWrapper width={width}>
-      <input type="text" placeholder={placeholder} />
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
+        onBlur={() => onBlur && onBlur(true)}
+      />
     </InputWrapper>
   );
 }
@@ -224,7 +256,7 @@ export function TagInput({
   const [value, setValue] = useState("");
 
   const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (value !== "" && e.key === "Enter") {
       e.preventDefault();
       addTags(value);
       setValue("");
@@ -246,6 +278,36 @@ export function TagInput({
         }
         onKeyUp={keyPressHandler}
       />
+    </InputWrapper>
+  );
+}
+
+interface FileInputProp {
+  value: File;
+  setValue: React.Dispatch<React.SetStateAction<File>>;
+}
+
+export function FileInput({ value, setValue }: FileInputProp) {
+  const [filename, setFilename] = useState("");
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.currentTarget;
+    const files = (target.files as FileList)[0];
+
+    if (files === undefined) {
+      return;
+    }
+    setFilename(files.name);
+    setValue(files);
+  };
+  return (
+    <InputWrapper width="">
+      <label htmlFor="input-file">업로드하기</label>
+      <input
+        type="text"
+        placeholder={value ? filename : "사진을 업로드해주세요"}
+        disabled
+      />
+      <input id="input-file" type="file" onChange={handleFileChange} />
     </InputWrapper>
   );
 }

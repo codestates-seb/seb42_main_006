@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-import { ValidInput } from "../conponent/parts/Input";
+import { ValidInput } from "../conponent/parts/InputNoH";
 import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
@@ -18,8 +18,8 @@ const Background = styled.div`
   margin: auto;
   max-width: 400px;
   min-width: 300px;
-  border: 2px solid #5a5959;
-  background-color: #222222;
+  /* border: 2px solid #5a5959;
+  background-color: #222222; */
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -28,7 +28,7 @@ const Background = styled.div`
 
   > h1 {
     font-size: 2rem;
-    color: #ffffff;
+    color: #f36;
     font-weight: 400;
   }
 `;
@@ -62,7 +62,7 @@ function Signup() {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    if (emailCheck) {
+    if (emailCheck === true) {
       if (
         emailCheck &&
         emailValid &&
@@ -107,7 +107,6 @@ function Signup() {
           <span>Email</span>
           <ValidInput
             width="100%"
-            height="40px"
             placeholder="Email"
             value={email}
             setValue={setEmail}
@@ -121,12 +120,11 @@ function Signup() {
             validFn={(x) => validFn("email")(x)}
           ></ValidInput>
 
-          {emailCheck && (
+          {emailCheck === true && (
             <>
               <span>Nickname</span>
               <ValidInput
                 width="100%"
-                height="40px"
                 placeholder="Nickname"
                 value={nickname}
                 setValue={setNickname}
@@ -138,7 +136,6 @@ function Signup() {
               <span>Password</span>
               <ValidInput
                 width="100%"
-                height="40px"
                 placeholder="Password"
                 type="password"
                 value={password}
@@ -150,7 +147,6 @@ function Signup() {
               ></ValidInput>
               <ValidInput
                 width="100%"
-                height="40px"
                 placeholder="Password 확인"
                 type="password"
                 value={passwordRepeat}

@@ -7,12 +7,14 @@ import {
   Retweet,
   LeftPlay,
   Play,
+  Stop,
   RightPlay,
   NoneImg,
   DownArrow,
   LogOut,
   Calender,
   UserProfileImg,
+  Speaker,
 } from "../../icons/Icon";
 import styled from "styled-components";
 
@@ -78,6 +80,8 @@ export default function IconBtn({
         return <LeftPlay />;
       case "play":
         return <Play />;
+      case "stop":
+        return <Stop />;
       case "rightPlay":
         return <RightPlay />;
       case "noneImg":
@@ -90,6 +94,8 @@ export default function IconBtn({
         return <Calender />;
       case "profile":
         return <UserProfileImg />;
+      case "speaker":
+        return <Speaker />;
       default:
         return <Heart />;
     }

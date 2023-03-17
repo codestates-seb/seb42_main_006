@@ -1,14 +1,14 @@
-interface Props {
-  width: string;
-  height: string;
-}
+const MainDefaultValue: { width: string; height: string } = {
+  width: "3.5rem",
+  height: "3.5rem",
+};
 
-export function MovieIcon({ width, height }: Props) {
+export function MovieIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -19,12 +19,12 @@ export function MovieIcon({ width, height }: Props) {
   );
 }
 
-export function MusicIcon({ width, height }: Props) {
+export function MusicIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -35,12 +35,12 @@ export function MusicIcon({ width, height }: Props) {
   );
 }
 
-export function FoodIcon({ width, height }: Props) {
+export function FoodIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -51,44 +51,44 @@ export function FoodIcon({ width, height }: Props) {
   );
 }
 
-export function FlowerIcon({ width, height }: Props) {
+export function FlowerIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 256 256"
     >
       <path
         fill="#fff"
-        d="M209.35 131.09a42.24 42.24 0 0 0-6.82-3.09a42.24 42.24 0 0 0 6.82-3.09a38 38 0 1 0-38-65.82a43.33 43.33 0 0 0-6.08 4.36A42.94 42.94 0 0 0 166 56a38 38 0 0 0-76 0a42.94 42.94 0 0 0 .73 7.45a43.33 43.33 0 0 0-6.08-4.36a38 38 0 0 0-38 65.82a42.24 42.24 0 0 0 6.82 3.09a42.24 42.24 0 0 0-6.82 3.09a38 38 0 0 0 9.16 69.62a38.53 38.53 0 0 0 9.9 1.31a37.82 37.82 0 0 0 18.94-5.11a43.33 43.33 0 0 0 6.08-4.36A42.94 42.94 0 0 0 90 200a38 38 0 0 0 76 0a42.94 42.94 0 0 0-.73-7.45a43.33 43.33 0 0 0 6.08 4.36a37.82 37.82 0 0 0 18.94 5.09a38.53 38.53 0 0 0 9.9-1.31a38 38 0 0 0 9.16-69.62Zm-32-61.61a26 26 0 1 1 26 45c-4.77 2.75-14.92 6.15-36.4 7.47l-1.44-.08A38 38 0 0 0 152 98.58l.66-1.31c11.9-17.94 19.92-25.03 24.69-27.79ZM128 154a26 26 0 1 1 26-26a26 26 0 0 1-26 26Zm0-124a26 26 0 0 1 26 26c0 5.51-2.13 16-11.73 35.27c-.26.4-.53.8-.79 1.21a37.88 37.88 0 0 0-27 0l-.79-1.22C104.13 72 102 61.51 102 56a26 26 0 0 1 26-26Zm-75.35 84.52a26 26 0 0 1 26-45c4.77 2.76 12.79 9.85 24.67 27.79l.66 1.31a38 38 0 0 0-13.49 23.33l-1.44.08c-21.48-1.36-31.63-4.76-36.4-7.51Zm26 72a26 26 0 0 1-26-45c4.77-2.75 14.92-6.15 36.4-7.47l1.44.08A38 38 0 0 0 104 157.42l-.66 1.31c-11.9 17.94-19.92 25.03-24.69 27.79ZM128 226a26 26 0 0 1-26-26c0-5.51 2.13-16 11.73-35.27c.26-.4.53-.8.79-1.21a37.88 37.88 0 0 0 27 0l.79 1.22C151.87 184 154 194.49 154 200a26 26 0 0 1-26 26Zm84.87-49a26 26 0 0 1-35.52 9.52c-4.77-2.76-12.79-9.85-24.67-27.79l-.66-1.31a38 38 0 0 0 13.49-23.33L167 134c21.48 1.32 31.63 4.72 36.4 7.47a26 26 0 0 1 9.47 35.53Z"
+        d="M210.35 129.36c-.81-.47-1.7-.92-2.62-1.36c.92-.44 1.81-.89 2.62-1.36a40 40 0 1 0-40-69.28c-.81.47-1.65 1-2.48 1.59c.08-1 .13-2 .13-3a40 40 0 0 0-80 0c0 .94 0 1.94.13 3c-.83-.57-1.67-1.12-2.48-1.59a40 40 0 1 0-40 69.28c.81.47 1.7.92 2.62 1.36c-.92.44-1.81.89-2.62 1.36a40 40 0 1 0 40 69.28c.81-.47 1.65-1 2.48-1.59c-.08 1-.13 2-.13 2.95a40 40 0 0 0 80 0c0-.94-.05-1.94-.13-2.95c.83.57 1.67 1.12 2.48 1.59a39.79 39.79 0 0 0 19.94 5.36a40.43 40.43 0 0 0 10.42-1.38a40 40 0 0 0 9.64-73.28ZM128 156a28 28 0 1 1 28-28a28 28 0 0 1-28 28Z"
       />
     </svg>
   );
 }
 
-export function RobotIcon({ width, height }: Props) {
+export function RobotIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
         fill="#fff"
-        d="M22 14h-1c0-3.87-3.13-7-7-7h-1V5.73A2 2 0 1 0 10 4c0 .74.4 1.39 1 1.73V7h-1c-3.87 0-7 3.13-7 7H2c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1v1a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1m-1 3h-2v3H5v-3H3v-1h2v-2c0-2.76 2.24-5 5-5h4c2.76 0 5 2.24 5 5v2h2v1m-10.3-3c.4.39.4 1.05 0 1.45l-.73.73l-1.47 1.47l-2.2-2.2c-.4-.4-.4-1.06 0-1.45c.41-.42 1.06-.42 1.47 0l.73.72l.73-.72c.41-.42 1.06-.42 1.47 0m7 0c.4.39.4 1.05 0 1.45l-.73.73l-1.47 1.47l-2.2-2.2c-.4-.4-.4-1.06 0-1.45c.41-.42 1.06-.42 1.47 0l.73.72l.73-.72c.41-.42 1.06-.42 1.47 0Z"
+        d="M22 14h-1c0-3.87-3.13-7-7-7h-1V5.73A2 2 0 1 0 10 4c0 .74.4 1.39 1 1.73V7h-1c-3.87 0-7 3.13-7 7H2c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1v1a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1M9.7 15.45l-.73.73l-1.47 1.47l-2.2-2.2c-.4-.4-.4-1.06 0-1.45c.41-.42 1.06-.42 1.47 0l.73.72l.73-.72c.41-.42 1.06-.42 1.47 0c.4.39.4 1.05 0 1.45m9 0l-.73.73l-1.47 1.47l-2.2-2.2c-.4-.4-.4-1.06 0-1.45c.41-.42 1.06-.42 1.47 0l.73.72l.73-.72c.41-.42 1.06-.42 1.47 0c.4.39.4 1.05 0 1.45Z"
       />
     </svg>
   );
 }
 
-export function ShareIcon({ width, height }: Props) {
+export function ShareIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 48 48"
     >
       <g fill="none" stroke="#ff3366" strokeWidth="4">
@@ -103,12 +103,12 @@ export function ShareIcon({ width, height }: Props) {
   );
 }
 
-export function MatchIcon({ width, height }: Props) {
+export function MatchIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path
@@ -119,12 +119,12 @@ export function MatchIcon({ width, height }: Props) {
   );
 }
 
-export function RecomIcon({ width, height }: Props) {
+export function RecomIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={MainDefaultValue.width}
+      height={MainDefaultValue.height}
       viewBox="0 0 24 24"
     >
       <path

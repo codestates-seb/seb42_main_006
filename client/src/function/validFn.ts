@@ -5,6 +5,8 @@ export const validFn = (type: string) => {
     nickname: /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/,
     password:
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/,
+    youtubeUrl:
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)$/,
   };
 
   return (x: string): boolean => emailReg[type].test(x);
