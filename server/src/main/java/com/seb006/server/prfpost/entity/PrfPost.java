@@ -41,6 +41,9 @@ public class PrfPost extends Auditable {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
+    @Column
+    private String imageKey;
+
     // urls를 Set으로 해야할까? 아니면 중복이 불가능하게 validation을 설정해야할까 고민
     @BatchSize(size=10)
     @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

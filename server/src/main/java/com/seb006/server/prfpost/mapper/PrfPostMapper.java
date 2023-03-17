@@ -24,6 +24,7 @@ public interface PrfPostMapper {
             prfPost.setCategory(postDto.getCategory());
             prfPost.setContent(postDto.getContent());
             prfPost.setTags(postDto.getTags());
+            prfPost.setImageKey(postDto.getImageKey());
 
             if(postDto.getUrls()==null){
                 // exception 발생
@@ -59,6 +60,7 @@ public interface PrfPostMapper {
             response.setContent(prfPost.getContent());
             response.setTags(prfPost.getTags());
             response.setLikeCount(prfPost.getLikeCount());
+            response.setImageKey(prfPost.getImageKey());
 
             response.setUrls(prfPost.getUrls().stream()
                     .map(url ->{
@@ -93,6 +95,7 @@ public interface PrfPostMapper {
             response.setContent(prfPost.getContent());
             response.setTags(prfPost.getTags());
             response.setLikeCount(prfPost.getLikeCount());
+            response.setImageKey(prfPost.getImageKey());
 
             response.setComments(prfPost.getComments().stream()
                     .map(comment -> {
