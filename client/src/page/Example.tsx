@@ -239,6 +239,18 @@ export default function Example() {
         border="none"
         handleClick={() => console.log("click")}
       />
+      <IconBtn
+        title=""
+        width="30px"
+        height="30px"
+        radius="100px"
+        fontWeight={400}
+        fontColor=""
+        btnType=""
+        iconType="speaker"
+        border="none"
+        handleClick={() => console.log("click")}
+      />
       <Tag title="태그"></Tag>
       <SearchInput
         width="500px"
@@ -262,7 +274,7 @@ export default function Example() {
       ></DefaultInput>
       <AudioPlayer
         data={{
-          url: "https://www.youtube.com/watch?v=ea2JWWZyEP0",
+          url: "https://www.youtube.com/watch?v=Rrf8uQFvICE",
           thumbnail: "https://i.ytimg.com/vi/zISCDPViQ3c/mqdefault.jpg",
           title:
             "3시간 봄 내음 가득한 힐링음악 🌼 아침음악, 스트레스해소음악, 명상음악, 요가 (Sprout)",

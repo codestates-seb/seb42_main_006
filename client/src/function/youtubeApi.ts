@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const getVideoId = async (item: string) => {
-  const match = item.match(
+export const getVideoId = async (url: string) => {
+  const match = url.match(
     /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?:\S+)?/,
   );
   const videoId = match?.[1];

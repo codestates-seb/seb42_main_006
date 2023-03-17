@@ -14,6 +14,7 @@ import {
   LogOut,
   Calender,
   UserProfileImg,
+  Speaker,
 } from "../../icons/Icon";
 import styled from "styled-components";
 
@@ -93,6 +94,8 @@ export default function IconBtn({
         return <Calender />;
       case "profile":
         return <UserProfileImg />;
+      case "speaker":
+        return <Speaker />;
       default:
         return <Heart />;
     }
