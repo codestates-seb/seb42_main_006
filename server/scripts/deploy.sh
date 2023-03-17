@@ -1,5 +1,4 @@
 #!/bin/bash
-# 빌드 파일의 이름이 콘텐츠와 다르다면 다음 줄의 .jar 파일 이름을 수정하시기 바랍니다.
 BUILD_JAR=$(ls /home/ubuntu/action/build/libs/server-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 
@@ -26,4 +25,5 @@ fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
+source ~/.bashrc
 sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/action/deploy_err.log &

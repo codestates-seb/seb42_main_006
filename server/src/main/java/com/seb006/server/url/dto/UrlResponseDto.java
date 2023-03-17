@@ -7,5 +7,7 @@ import lombok.Setter;
 @Getter
 public class UrlResponseDto {
     private long id;
+    private String title;
+    private String thumbnail;
     private String url;
 }

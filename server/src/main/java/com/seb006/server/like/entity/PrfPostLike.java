@@ -19,12 +19,12 @@ public class PrfPostLike extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "prf_post_id")
     private PrfPost prfPost;

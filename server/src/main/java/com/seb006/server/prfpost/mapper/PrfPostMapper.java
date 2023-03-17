@@ -24,6 +24,7 @@ public interface PrfPostMapper {
             prfPost.setCategory(postDto.getCategory());
             prfPost.setContent(postDto.getContent());
             prfPost.setTags(postDto.getTags());
+            prfPost.setImageKey(postDto.getImageKey());
 
             if(postDto.getUrls()==null){
                 // exception 발생
@@ -31,6 +32,8 @@ public interface PrfPostMapper {
                 List<Urls> urls = postDto.getUrls().stream()
                         .map(eachUrl -> {
                             Urls url = new Urls();
+                            url.setTitle(eachUrl.getTitle());
+                            url.setThumbnail(eachUrl.getThumbnail());
                             url.setUrl(eachUrl.getUrl());
                             url.setPrfPost(prfPost);
                             return url;
@@ -57,11 +60,14 @@ public interface PrfPostMapper {
             response.setContent(prfPost.getContent());
             response.setTags(prfPost.getTags());
             response.setLikeCount(prfPost.getLikeCount());
+            response.setImageKey(prfPost.getImageKey());
 
             response.setUrls(prfPost.getUrls().stream()
                     .map(url ->{
                         UrlResponseDto urlDto = new UrlResponseDto();
                         urlDto.setId(url.getId());
+                        urlDto.setTitle(url.getTitle());
+                        urlDto.setThumbnail(url.getThumbnail());
                         urlDto.setUrl(url.getUrl());
                         return urlDto;
                     })
@@ -89,6 +95,7 @@ public interface PrfPostMapper {
             response.setContent(prfPost.getContent());
             response.setTags(prfPost.getTags());
             response.setLikeCount(prfPost.getLikeCount());
+            response.setImageKey(prfPost.getImageKey());
 
             response.setComments(prfPost.getComments().stream()
                     .map(comment -> {
@@ -97,6 +104,7 @@ public interface PrfPostMapper {
                         prfPostCommentResponseDto.content(comment.getContent());
                         prfPostCommentResponseDto.createdAt(comment.getCreatedAt());
                         prfPostCommentResponseDto.modifiedAt(comment.getModifiedAt());
+                        prfPostCommentResponseDto.memberId(comment.getMember().getId());
                         prfPostCommentResponseDto.nickname(comment.getMember().getNickName());
                         return prfPostCommentResponseDto.build();
                     })
@@ -106,6 +114,8 @@ public interface PrfPostMapper {
                     .map(url ->{
                         UrlResponseDto urlDto = new UrlResponseDto();
                         urlDto.setId(url.getId());
+                        urlDto.setTitle(url.getTitle());
+                        urlDto.setThumbnail(url.getThumbnail());
                         urlDto.setUrl(url.getUrl());
                         return urlDto;
                     })

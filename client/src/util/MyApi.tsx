@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { requestAuth } from "../function/request";
+import axios from "axios";
 
 type UserFetchTypes = [
   any[],
@@ -17,6 +17,7 @@ export const useFetch = (URL: string): UserFetchTypes => {
     const fetchData = async () => {
       try {
         const response = await axios.get(url);
+        // const response = await requestAuth.get(url);
         setValue(response.data);
         setPending(false);
       } catch (error) {
@@ -30,27 +31,35 @@ export const useFetch = (URL: string): UserFetchTypes => {
   return [value, pending, setUrl];
 };
 
-type UserInfoTypes = [any[], boolean];
+interface UserInfoItemTypes {
+  createdAt: string;
+  email: string;
+  id: number;
+  memberStatus: string;
+  modifiedAt: string;
+  nickName: string;
+}
 
-export const useUserInfo = (URL: string): UserInfoTypes => {
-  const [value, setValue] = useState([]);
-  const [pending, setPending] = useState(true);
+export const useUserInfo = (URL: string): [any[]] => {
+  const [value, setValue] = useState<[] | UserInfoItemTypes[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<UserInfoItemTypes[]> => {
       try {
         const response = await requestAuth.get(URL);
-        setValue(response.data);
-        setPending(false);
+        return response.data;
       } catch (error) {
-        setPending(false);
-        console.error(error);
+        console.log(error);
+        return [];
       }
     };
-    fetchData();
+    (async () => {
+      const result = await fetchData();
+      setValue(result);
+    })();
   }, [URL]);
 
-  return [value, pending];
+  return [value];
 };
 
 export const userEdit = async (URL: string, item: object) => {
