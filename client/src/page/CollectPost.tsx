@@ -61,6 +61,7 @@ export default function CollectPost() {
             value={body}
             setValue={setBody}
             placeholder="내용을 입력해주세요."
+            row={10}
           ></Textarea>
         </div>
         <div>

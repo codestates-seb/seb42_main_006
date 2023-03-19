@@ -12,7 +12,9 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
-  width: 800px;
+  width: 80%;
+  min-width: 400px;
+  max-width: 800px;
   margin: 24px auto;
 `;
 
@@ -30,21 +32,26 @@ const Title = styled.h1`
 `;
 
 const BoxContainer = styled.div`
-  display: flex;
-
   width: 100%;
-  height: 350px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 const Boxs = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 400px;
+  width: 390px;
   border: 2px solid #4a4a4a;
   border-radius: 5px;
   height: 350px;
-  margin: 0.5rem;
+  margin-bottom: 5px;
+`;
+
+const ContentBox = styled(Boxs)`
+  padding: 12px;
+  overflow: hidden;
 `;
 
 const RetweetContainer = styled.div`
@@ -54,6 +61,15 @@ const RetweetContainer = styled.div`
   margin-top: 3rem;
   /* border: 1px solid #4a4a4a; */
   width: 100%;
+`;
+
+const Spre = styled.pre`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overflow-y: scroll;
+  word-break: break-word;
+  white-space: pre-wrap;
 `;
 
 const initialState = [
@@ -113,7 +129,41 @@ export default function PostDetail() {
               loc={{ lat: "37.2819", lon: "127.14814" }}
             ></Slide> */}
         </Boxs>
-        <Boxs>오른쪽 상자</Boxs>
+        <ContentBox>
+          <Spre>
+            sdfsdfsdf sd fs d f s df s df sd
+            fdffffffffffffffffffffffdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff
+            fdffffffffffffffffffffffdfffffffffffffffffffff
+            fdffffffffffffffffffffffdffffffffffffffffffffffdffffffffffffffffffffffdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdffffffffffffffffffffffdfffffffffffffffffffff sdfsdfsdf sd fs d f s
+            df s df sd fdffffffffffffffffffffffdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff
+            fdffffffffffffffffffffffdfffffffffffffffffffff
+            fdffffffffffffffffffffffdffffffffffffffffffffffdffffffffffffffffffffffdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdffffffffffffffffffffffdfffffffffffffffffffff sdfsdfsdf sd fs d f s
+            df s df sd fdffffffffffffffffffffffdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdfffffffffffffffffffff
+            fdffffffffffffffffffffffdfffffffffffffffffffff
+            fdffffffffffffffffffffffdffffffffffffffffffffffdffffffffffffffffffffffdfffffffffffffffffffff
+            fdfffffffffffffffffffff fdfffffffffffffffffffff
+            fdffffffffffffffffffffffdfffffffffffffffffffff
+          </Spre>
+        </ContentBox>
       </BoxContainer>
       <RetweetContainer>
         <CommentCreator></CommentCreator>

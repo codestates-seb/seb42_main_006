@@ -16,74 +16,19 @@ import { useNavigate } from "react-router";
 
 import { getVideoId } from "../function/youtubeApi";
 
-const Background = styled.div`
-  margin: 24px auto;
-  max-width: 900px;
-  min-width: 300px;
-  /* border: 2px solid #5a5959; */
-  /* background-color: #222222; */
-  border-radius: 15px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const Category = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-
-  > h1 {
-    font-size: 2rem;
-    color: #ffffff;
-    font-weight: 400;
-  }
-`;
-
-const CategoryWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  color: #ffffff;
-`;
-
-const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  > div {
-    margin-bottom: 20px;
-  }
-`;
-
-const InputTitle = styled.span`
-  color: #ffffff;
-  margin-bottom: 10px;
-  font-weight: 500;
-`;
-
-const BtnWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-`;
-
 interface Iurls {
   url: string;
   thumbnail: string;
   title: string;
 }
 
-function AddPost() {
+export default function AddPost() {
   const [curCategory, setCurCategory] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [urls, setUrls] = useState<Iurls[]>([]);
-  const [file, setfile] = useState<any>();
+  const [file, setfile] = useState<File>();
   const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
     lat: "",
     lon: "",
@@ -94,7 +39,7 @@ function AddPost() {
     setTags((prev) => [...prev, x]);
   };
   const handleDeleteTags = () => {
-    setTags((prev) => [...prev].slice(0, prev.length - 1));
+    setTags((prev) => prev.slice(0, prev.length - 1));
   };
 
   const handleAddUrls = (x: string) => {
@@ -111,9 +56,9 @@ function AddPost() {
   return (
     <Background>
       <Category>
-        <h1>게시글 작성하기</h1>
+        <Title>게시글 작성하기</Title>
         <CategoryWrapper>
-          <InputTitle>카테고리</InputTitle>
+          <CategoryTitle>카테고리</CategoryTitle>
           <Selection
             width=""
             opt={["영화", "음악", "맛집"]}
@@ -129,17 +74,34 @@ function AddPost() {
           value={title}
           setValue={setTitle}
         ></DefaultInput>
-        {curCategory === "영화" && (
-          <MoviePreview urls={urls} handleAddUrls={handleAddUrls} />
-        )}
-        {curCategory === "음악" && (
-          <PlaylistMaker
-            urls={urls}
-            setUrls={setUrls}
-            onAddList={handleAddUrls}
-          />
-        )}
-        {curCategory === "맛집" && <MapSearch setLatLon={setLatLon} />}
+        {(() => {
+          switch (curCategory) {
+            case "영화":
+              return <MoviePreview urls={urls} handleAddUrls={handleAddUrls} />;
+            case "음악":
+              return (
+                <PlaylistMaker
+                  urls={urls}
+                  setUrls={setUrls}
+                  onAddList={handleAddUrls}
+                />
+              );
+            case "맛집":
+              return (
+                <>
+                  <MapSearch setLatLon={setLatLon} />
+                  <InputTitle>사진</InputTitle>
+                  <FileInput
+                    width="100%"
+                    value={file}
+                    setValue={setfile}
+                  ></FileInput>
+                </>
+              );
+            default:
+              return;
+          }
+        })()}
         <InputTitle>내용</InputTitle>
         <Textarea
           width="100%"
@@ -158,12 +120,7 @@ function AddPost() {
             <Tag title={x} key={idx}></Tag>
           ))}
         </TagInput>
-        {curCategory === "맛집" && (
-          <>
-            <InputTitle>사진</InputTitle>
-            <FileInput value={file} setValue={setfile}></FileInput>
-          </>
-        )}
+        <pre>{body}</pre>
       </FormWrapper>
       <BtnWrapper>
         <StyledBtn
@@ -191,4 +148,68 @@ function AddPost() {
   );
 }
 
-export default AddPost;
+const Background = styled.div`
+  margin: 24px auto;
+  max-width: 900px;
+  min-width: 300px;
+  /* border: 2px solid #5a5959; */
+  /* background-color: #222222; */
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const Category = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: 400;
+`;
+
+const CategoryWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #ffffff;
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    margin-bottom: 20px;
+  }
+  > pre {
+    width: 300px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow: auto;
+  }
+`;
+
+const CategoryTitle = styled.span`
+  color: #fff;
+  font-weight: 500;
+`;
+
+const InputTitle = styled.span`
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 500;
+`;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+`;

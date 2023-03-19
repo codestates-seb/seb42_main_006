@@ -13,7 +13,7 @@ const Content = styled.div`
 const ContentWapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 800px;
+  width: 100%;
   color: white;
 `;
 

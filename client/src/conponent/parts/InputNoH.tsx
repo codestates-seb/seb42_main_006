@@ -19,6 +19,7 @@ const InputWrapper = styled.div<InputWrapperProp>`
   width: ${(props) => props.width};
   max-width: 900px;
   gap: 5px;
+  flex-wrap: wrap;
 
   &:focus-within {
     background-color: transparent;
@@ -167,28 +168,16 @@ export function ValidInput({
   return (
     <div>
       <ValidInputWrapper width={width}>
-        {disable === true ? (
-          <SInput
-            value={value}
-            type={type || "text"}
-            placeholder={placeholder}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setValue(e.target.value)
-            }
-            onBlur={() => setValid(validFn(value))}
-            disabled
-          />
-        ) : (
-          <SInput
-            value={value}
-            type={type || "text"}
-            placeholder={placeholder}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setValue(e.target.value)
-            }
-            onBlur={() => setValid(validFn(value))}
-          />
-        )}
+        <SInput
+          value={value}
+          type={type || "text"}
+          placeholder={placeholder}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setValue(e.target.value)
+          }
+          onBlur={() => setValid(validFn(value))}
+          disabled={!!disable}
+        />
       </ValidInputWrapper>
       {!valid && <span>{errorMsg}</span>}
     </div>
@@ -258,9 +247,10 @@ export function TagInput({
   const [value, setValue] = useState("");
 
   const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (value !== "" && e.key === "Enter") {
+    if (value.length !== 0 && e.key === "#") {
+      console.log(e.currentTarget.value);
       e.preventDefault();
-      addTags(value);
+      addTags(e.currentTarget.value);
       setValue("");
     } else if (value.length === 0 && e.key === "Backspace") {
       e.preventDefault();
@@ -284,12 +274,12 @@ export function TagInput({
   );
 }
 
-interface FileInputProp {
-  value: File;
-  setValue: React.Dispatch<React.SetStateAction<File>>;
+interface FileInputProp extends InputWrapperProp {
+  value: File | undefined;
+  setValue: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
-export function FileInput({ value, setValue }: FileInputProp) {
+export function FileInput({ width, value, setValue }: FileInputProp) {
   const [filename, setFilename] = useState("");
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
@@ -297,12 +287,13 @@ export function FileInput({ value, setValue }: FileInputProp) {
 
     if (files === undefined) {
       return;
+    } else {
+      setFilename(files.name);
+      setValue(files);
     }
-    setFilename(files.name);
-    setValue(files);
   };
   return (
-    <InputWrapper width="">
+    <InputWrapper width={width}>
       <SLabel htmlFor="SInput-file">업로드하기</SLabel>
       <SInput
         type="text"

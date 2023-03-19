@@ -3,6 +3,33 @@ import styled from "styled-components";
 import { ButtonInput } from "../parts/InputNoH";
 import KakaoMap from "../postDetail/restaurant/KakaoMap";
 
+interface ImapSearchProp {
+  setLatLon: React.Dispatch<React.SetStateAction<{ lat: string; lon: string }>>;
+}
+
+export default function MapSearch({ setLatLon }: ImapSearchProp) {
+  const [loc, setLoc] = useState("");
+
+  return (
+    <>
+      <InputTitle>위치</InputTitle>
+      <Wrapper>
+        <ButtonInput
+          width="100%"
+          title="검색"
+          placeholder="장소명"
+          handleClick={(value: string) => setLoc(value)}
+        />
+        {loc.length !== 0 && (
+          <MapDiv>
+            <KakaoMap loc={loc} mode="Search" setLatLon={setLatLon}></KakaoMap>
+          </MapDiv>
+        )}
+      </Wrapper>
+    </>
+  );
+}
+
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
@@ -29,30 +56,3 @@ const InputTitle = styled.span`
   margin-bottom: 10px;
   font-weight: 500;
 `;
-
-interface ImapSearchProp {
-  setLatLon: React.Dispatch<React.SetStateAction<{ lat: string; lon: string }>>;
-}
-
-function MapSearch({ setLatLon }: ImapSearchProp) {
-  const [loc, setLoc] = useState("");
-
-  return (
-    <>
-      <InputTitle>위치</InputTitle>
-      <Wrapper>
-        <ButtonInput
-          width="100%"
-          title="검색"
-          placeholder="장소명"
-          handleClick={(value: string) => setLoc(value)}
-        ></ButtonInput>
-        <MapDiv>
-          <KakaoMap loc={loc} mode="Search" setLatLon={setLatLon}></KakaoMap>
-        </MapDiv>
-      </Wrapper>
-    </>
-  );
-}
-
-export default MapSearch;

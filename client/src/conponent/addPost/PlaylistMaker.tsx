@@ -3,6 +3,39 @@ import styled from "styled-components";
 import { ButtonInput } from "../parts/InputNoH";
 import YoutubeList from "../postDetail/music/YoutubeList";
 
+interface Iurls {
+  url: string;
+  thumbnail: string;
+  title: string;
+}
+
+interface IplaylistMakerProp {
+  onAddList: (x: string) => void;
+  urls: Iurls[];
+  setUrls: React.Dispatch<React.SetStateAction<Iurls[]>>;
+}
+
+function PlaylistMaker({ urls, setUrls, onAddList }: IplaylistMakerProp) {
+  return (
+    <>
+      <InputTitle>플레이리스트</InputTitle>
+      <ButtonInput
+        title="Add list"
+        width="100%"
+        placeholder="Urls ..."
+        handleClick={onAddList}
+      ></ButtonInput>
+      {urls.length !== 0 && (
+        <PlaylistWrapper>
+          <YoutubeList list={urls} setList={setUrls}></YoutubeList>
+        </PlaylistWrapper>
+      )}
+    </>
+  );
+}
+
+export default PlaylistMaker;
+
 const InputTitle = styled.span`
   color: #ffffff;
   margin-bottom: 10px;
@@ -28,34 +61,3 @@ const PlaylistWrapper = styled.div`
     width: 30px; /*스크롤바 뒷 배경 색상*/
   }
 `;
-
-interface Iurls {
-  url: string;
-  thumbnail: string;
-  title: string;
-}
-
-interface IplaylistMakerProp {
-  onAddList: (x: string) => void;
-  urls: Iurls[];
-  setUrls: React.Dispatch<React.SetStateAction<Iurls[]>>;
-}
-
-function PlaylistMaker({ urls, setUrls, onAddList }: IplaylistMakerProp) {
-  return (
-    <>
-      <InputTitle>플레이리스트</InputTitle>
-      <ButtonInput
-        title="Add list"
-        width="100%"
-        placeholder="Urls ..."
-        handleClick={onAddList}
-      ></ButtonInput>
-      <PlaylistWrapper>
-        <YoutubeList list={urls} setList={setUrls}></YoutubeList>
-      </PlaylistWrapper>
-    </>
-  );
-}
-
-export default PlaylistMaker;
