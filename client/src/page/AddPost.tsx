@@ -2,14 +2,8 @@ import styled from "styled-components";
 import MoviePreview from "../conponent/addPost/MoviePreview";
 import PlaylistMaker from "../conponent/addPost/PlaylistMaker";
 import Selection from "../conponent/parts/Selection";
-import {
-  DefaultInput,
-  Textarea,
-  TagInput,
-  FileInput,
-} from "../conponent/parts/InputNoH";
+import { DefaultInput, Textarea, FileInput } from "../conponent/parts/InputNoH";
 import MapSearch from "../conponent/addPost/MapSearch";
-import Tag from "../conponent/parts/Tag";
 import { StyledBtn } from "../conponent/parts/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -26,7 +20,7 @@ export default function AddPost() {
   const [curCategory, setCurCategory] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string>("");
   const [urls, setUrls] = useState<Iurls[]>([]);
   const [file, setfile] = useState<File>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,13 +29,6 @@ export default function AddPost() {
     lon: "",
   });
   const navigate = useNavigate();
-
-  const handleAddTags = (x: string) => {
-    setTags((prev) => [...prev, x]);
-  };
-  const handleDeleteTags = () => {
-    setTags((prev) => prev.slice(0, prev.length - 1));
-  };
 
   const handleAddUrls = (x: string) => {
     const url: Iurls = { url: "", thumbnail: "", title: "" };
@@ -112,15 +99,12 @@ export default function AddPost() {
           row={10}
         ></Textarea>
         <InputTitle>태그</InputTitle>
-        <TagInput
+        <DefaultInput
           width="100%"
-          addTags={handleAddTags}
-          deleteTags={handleDeleteTags}
-        >
-          {tags.map((x, idx) => (
-            <Tag title={x} key={idx}></Tag>
-          ))}
-        </TagInput>
+          value={tags}
+          setValue={setTags}
+          placeholder="#tag1, #tag2, #tag3 ..."
+        ></DefaultInput>
         <pre>{body}</pre>
       </FormWrapper>
       <BtnWrapper>
