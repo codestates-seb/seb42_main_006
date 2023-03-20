@@ -95,9 +95,9 @@ const Title = styled.div`
   font-weight: bold;
   color: white;
   margin-bottom: 10px; // 각 내부 div들에도 margin-bottom 속성을 추가합니다.
-  /* white-space: nowrap;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden; */
+  overflow: hidden;
 `;
 
 const Summary = styled.div`

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   font-weight: bold;
   color: white;
   width: 160px;
