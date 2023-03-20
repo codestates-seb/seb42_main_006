@@ -19,32 +19,34 @@ const InputWrapper = styled.div<InputWrapperProp>`
   width: ${(props) => props.width};
   max-width: 900px;
   gap: 5px;
+  flex-wrap: wrap;
 
   &:focus-within {
+    background-color: transparent;
     border-color: #ff3366;
   }
+`;
 
-  > input {
-    flex: 1 1 auto;
-    outline: none;
-    background-color: inherit;
-    border: none;
-    font-size: 1rem;
+const SInput = styled.input`
+  flex: 1 1 auto;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
 
-    color: white;
-  }
+  color: white;
 
-  > input[type="file"] {
+  &[type="file"] {
     display: none;
   }
+`;
 
-  > label {
-    padding: 2px 8px;
-    background-color: #ff3366;
-    color: white;
-    font-weight: 400;
-    border-radius: 3px;
-  }
+const SLabel = styled.label`
+  padding: 2px 8px;
+  background-color: #ff3366;
+  color: white;
+  font-weight: 400;
+  border-radius: 3px;
 `;
 
 interface searchInputProp extends InputWrapperProp {
@@ -53,7 +55,7 @@ interface searchInputProp extends InputWrapperProp {
 export function SearchInput({ width, placeholder }: searchInputProp) {
   return (
     <InputWrapper width={width}>
-      <input type="text" placeholder={placeholder} />
+      <SInput type="text" placeholder={placeholder} />
       <SearchIcon></SearchIcon>
     </InputWrapper>
   );
@@ -76,7 +78,7 @@ export function ButtonInput({
   const [value, setValue] = useState("");
   return (
     <InputWrapper width={width} style={style}>
-      <input
+      <SInput
         type="text"
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -86,12 +88,13 @@ export function ButtonInput({
       />
       <StyledBtn
         title={title}
-        width="10%"
+        width=""
         height="90%"
         radius="4px"
         btnType="full"
         fontColor="white"
         fontWeight={400}
+        style={{ padding: "0 8px" }}
         handleClick={() => {
           handleClick(value);
           setValue("");
@@ -117,7 +120,7 @@ export function DefaultInput({
 }: DefaultInputProp) {
   return (
     <InputWrapper width={width}>
-      <input
+      <SInput
         type="text"
         placeholder={placeholder}
         value={value}
@@ -166,28 +169,16 @@ export function ValidInput({
   return (
     <div>
       <ValidInputWrapper width={width}>
-        {disable === true ? (
-          <input
-            value={value}
-            type={type || "text"}
-            placeholder={placeholder}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setValue(e.target.value)
-            }
-            onBlur={() => setValid(validFn(value))}
-            disabled
-          />
-        ) : (
-          <input
-            value={value}
-            type={type || "text"}
-            placeholder={placeholder}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setValue(e.target.value)
-            }
-            onBlur={() => setValid(validFn(value))}
-          />
-        )}
+        <SInput
+          value={value}
+          type={type || "text"}
+          placeholder={placeholder}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setValue(e.target.value)
+          }
+          onBlur={() => setValid(validFn(value))}
+          disabled={!!disable}
+        />
       </ValidInputWrapper>
       {!valid && <span>{errorMsg}</span>}
     </div>
@@ -197,19 +188,19 @@ export function ValidInput({
 interface textAreaProp extends InputWrapperProp {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  row: number;
   placeholder: string;
 }
 
-const StyledTextarea = styled(InputWrapper)`
-  > textarea {
-    background-color: transparent;
-    color: #ffffff;
-    overflow: hidden;
-    outline: none;
-    border: none;
-    width: 100%;
-    font-size: 1rem;
-  }
+const StyledTextarea = styled.textarea`
+  background-color: transparent;
+  color: #ffffff;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  resize: vertical;
 `;
 
 export function Textarea({
@@ -217,6 +208,7 @@ export function Textarea({
   value,
   setValue,
   placeholder,
+  row,
 }: textAreaProp) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -228,16 +220,16 @@ export function Textarea({
   }, []);
 
   return (
-    <StyledTextarea width={width}>
-      <textarea
+    <InputWrapper width={width}>
+      <StyledTextarea
         ref={textAreaRef}
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onInput={handleResizeHeight}
-        rows={10}
-      ></textarea>
-    </StyledTextarea>
+        rows={row}
+      ></StyledTextarea>
+    </InputWrapper>
   );
 }
 
@@ -256,9 +248,10 @@ export function TagInput({
   const [value, setValue] = useState("");
 
   const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (value !== "" && e.key === "Enter") {
+    if (value.length !== 0 && e.key === "#") {
+      console.log(e.currentTarget.value);
       e.preventDefault();
-      addTags(value);
+      addTags(e.currentTarget.value);
       setValue("");
     } else if (value.length === 0 && e.key === "Backspace") {
       e.preventDefault();
@@ -269,7 +262,7 @@ export function TagInput({
   return (
     <InputWrapper width={width}>
       {children}
-      <input
+      <SInput
         type="text"
         value={value}
         placeholder="Tags ..."
@@ -282,12 +275,12 @@ export function TagInput({
   );
 }
 
-interface FileInputProp {
-  value: File;
-  setValue: React.Dispatch<React.SetStateAction<File>>;
+interface FileInputProp extends InputWrapperProp {
+  value: File | undefined;
+  setValue: React.Dispatch<React.SetStateAction<File | undefined>>;
 }
 
-export function FileInput({ value, setValue }: FileInputProp) {
+export function FileInput({ width, value, setValue }: FileInputProp) {
   const [filename, setFilename] = useState("");
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
@@ -295,19 +288,20 @@ export function FileInput({ value, setValue }: FileInputProp) {
 
     if (files === undefined) {
       return;
+    } else {
+      setFilename(files.name);
+      setValue(files);
     }
-    setFilename(files.name);
-    setValue(files);
   };
   return (
-    <InputWrapper width="">
-      <label htmlFor="input-file">업로드하기</label>
-      <input
+    <InputWrapper width={width}>
+      <SLabel htmlFor="SInput-file">업로드하기</SLabel>
+      <SInput
         type="text"
         placeholder={value ? filename : "사진을 업로드해주세요"}
         disabled
       />
-      <input id="input-file" type="file" onChange={handleFileChange} />
+      <SInput id="SInput-file" type="file" onChange={handleFileChange} />
     </InputWrapper>
   );
 }

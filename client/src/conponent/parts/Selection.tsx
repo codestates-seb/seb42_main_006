@@ -11,6 +11,8 @@ const StyledSelect = styled.select<styledSelectProp>`
   padding: 4px 8px;
   width: ${(props) => props.width};
   outline: none;
+  font-size: 1rem;
+  color: #ffffff;
 `;
 
 interface selectionProp extends styledSelectProp {

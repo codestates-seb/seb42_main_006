@@ -1,4 +1,4 @@
-import logo from "../img/logo.svg";
+import logo from "../icons/logo.svg";
 
 import { useNavigate } from "react-router";
 import styled from "styled-components";

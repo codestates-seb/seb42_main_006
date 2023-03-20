@@ -102,7 +102,7 @@ function Signup() {
   return (
     <Wrapper>
       <Background>
-        <h1>Sign Up</h1>
+        <h1>회원가입</h1>
         <FormWrapper>
           <span>Email</span>
           <ValidInput

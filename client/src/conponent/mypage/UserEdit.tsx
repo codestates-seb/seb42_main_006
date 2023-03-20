@@ -6,7 +6,7 @@ import { validFn } from "../../function/validFn";
 import styled from "styled-components";
 import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
-import logo from "../../img/logo.svg";
+import logo from "../../icons/logo.svg";
 import UserModal from "./UserModal";
 
 const MyInfo = styled.section`
@@ -125,7 +125,7 @@ export default function UserEdit() {
   userInfo = info;
 
   const [nickValue, nickBind, nickReset] = useInput(
-    userInfo.nickName ? userInfo.nickName : "닉네임123"
+    userInfo.nickName ? userInfo.nickName : "닉네임123",
   );
   const [passValue, passBind, passReset] = useInput("");
   const [valid, setValid] = useState({ nickname: true, password: true });

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import IconBtn from "../conponent/parts/IconButton";
-import Player from "../conponent/parts/Player";
+import Player from "../conponent/postDetail/music/Player";
+import Slide from "../conponent/postDetail/restaurant/Slide";
+import CommentCreator from "../conponent/CommentCreator";
+import CommentList from "../conponent/parts/CommentList";
 
 const Container = styled.div`
   display: flex;
@@ -9,9 +12,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
-  width: 800px;
-  height: 60vh;
-  margin: 0 auto;
+  width: 80%;
+  min-width: 400px;
+  max-width: 800px;
+  margin: 24px auto;
 `;
 
 const TitleContainer = styled.div`
@@ -28,28 +32,44 @@ const Title = styled.h1`
 `;
 
 const BoxContainer = styled.div`
-  display: flex;
   width: 100%;
-  height: 350px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 const Boxs = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 400px;
+  width: 390px;
   border: 2px solid #4a4a4a;
   border-radius: 5px;
   height: 350px;
-  margin: 0.5rem;
+  margin-bottom: 5px;
+`;
+
+const ContentBox = styled(Boxs)`
+  padding: 12px;
+  overflow: hidden;
 `;
 
 const RetweetContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-top: 3rem;
-  border: 1px solid #4a4a4a;
+  /* border: 1px solid #4a4a4a; */
   width: 100%;
+`;
+
+const Spre = styled.pre`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overflow-y: scroll;
+  word-break: break-word;
+  white-space: pre-wrap;
 `;
 
 const initialState = [
@@ -85,33 +105,38 @@ export default function PostDetail() {
   const [list, setList] = useState(initialState);
 
   return (
-    <>
-      <Container>
-        <TitleContainer>
-          <Title>나만의 플레이리스트 공유합니다</Title>
-          <IconBtn
-            title=""
-            width="40px"
-            height="40px"
-            radius="5px"
-            fontWeight={400}
-            fontColor="pink"
-            btnType=""
-            iconType="treeDot"
-            border="none"
-            handleClick={() => console.log("click")}
-          />
-        </TitleContainer>
-        <BoxContainer>
-          <Boxs>
-            <Player list={list} nowPlaying={list[0]} setList={setList}></Player>
-          </Boxs>
-          <Boxs>오른쪽 상자</Boxs>
-        </BoxContainer>
-        <RetweetContainer>
-          <div>댓글창</div>
-        </RetweetContainer>
-      </Container>
-    </>
+    <Container>
+      <TitleContainer>
+        <Title>나만의 플레이리스트 공유합니다</Title>
+        <IconBtn
+          title=""
+          width="40px"
+          height="40px"
+          radius="5px"
+          fontWeight={400}
+          fontColor="pink"
+          btnType=""
+          iconType="treeDot"
+          border="none"
+          handleClick={() => console.log("click")}
+        />
+      </TitleContainer>
+      <BoxContainer>
+        <Boxs>
+          <Player list={list} nowPlaying={list[0]} setList={setList}></Player>
+          {/* <Slide
+              url="https://i.ytimg.com/vi/Rrf8uQFvICE/mqdefault.jpg"
+              loc={{ lat: "37.2819", lon: "127.14814" }}
+            ></Slide> */}
+        </Boxs>
+        <ContentBox>
+          <Spre></Spre>
+        </ContentBox>
+      </BoxContainer>
+      <RetweetContainer>
+        <CommentCreator></CommentCreator>
+        <CommentList></CommentList>
+      </RetweetContainer>
+    </Container>
   );
 }

@@ -10,6 +10,19 @@ const GlobalStyles = createGlobalStyle`
     }
     *{
       box-sizing: border-box;
+
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 51, 102, .7);
+        border-radius: 1000px;
+        
+      }
+      &::-webkit-scrollbar {
+        width:4px;
+        
+      }
+      &::-webkit-scrollbar-track {
+
+      }
     }
     input, textarea { 
       -moz-user-select: auto;
