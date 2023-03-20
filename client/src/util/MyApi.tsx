@@ -31,7 +31,7 @@ export const useFetch = (URL: string): UserFetchTypes => {
   return [value, pending, setUrl];
 };
 
-interface UserInfoItemTypes {
+export interface UserInfoItemTypes {
   createdAt: string;
   email: string;
   id: number;
@@ -53,10 +53,7 @@ export const useUserInfo = (URL: string): [any[]] => {
         return [];
       }
     };
-    (async () => {
-      const result = await fetchData();
-      setValue(result);
-    })();
+    fetchData().then((data) => setValue(data));
   }, [URL]);
 
   return [value];

@@ -1,10 +1,11 @@
 import { useState } from "react";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useFetch } from "../util/MyApi";
 import styled from "styled-components";
 import { media } from "../style/Media";
 import UserEdit from "../conponent/mypage/UserEdit";
 import Paging from "../conponent/mypage/Paging";
+import { useUserInfo } from "../util/MyApi";
 
 const MypageWrap = styled.div`
   max-width: 1200px;
@@ -112,11 +113,16 @@ const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
 `;
 
 export default function Mypage() {
-  // const navigate = useNavigate();
-  // const token = sessionStorage.getItem("auth");
-  // if (!token) {
-  //   navigate("/login");
-  // }
+  const navigate = useNavigate();
+  const token = sessionStorage.getItem("auth");
+  if (!token) {
+    navigate("/login");
+  }
+
+  const [info] = useUserInfo(`/members/mypage`);
+
+  let userInfo: any = {};
+  userInfo = info;
 
   const tabArray = [
     {
@@ -204,7 +210,7 @@ export default function Mypage() {
 
   return (
     <MypageWrap>
-      <UserEdit />
+      <UserEdit userInfo={userInfo} />
       <MyTabList>
         {tabArray.map((el) => (
           <MyTabLi

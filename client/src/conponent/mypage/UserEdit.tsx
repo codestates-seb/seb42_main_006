@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useUserInfo, userDelete, userEdit } from "../../util/MyApi";
+import { UserInfoItemTypes, userDelete, userEdit } from "../../util/MyApi";
 import useInput from "../../util/MyInput";
 import { validFn } from "../../function/validFn";
 import styled from "styled-components";
 import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
-import logo from "../../img/logo.svg";
+import logo from "../../icons/logo.svg";
 import UserModal from "./UserModal";
 
 const MyInfo = styled.section`
@@ -112,21 +112,19 @@ const MyBtn = styled.button`
   }
 `;
 
-export default function UserEdit() {
+export default function UserEdit({
+  userInfo,
+}: {
+  userInfo: UserInfoItemTypes;
+}) {
   const navigate = useNavigate();
-
-  const [info] = useUserInfo(`/members/mypage`);
 
   const [edit, setEdit] = useState(false);
   const [modal, setModal] = useState(false);
   const [alert, setAlert] = useState(false);
 
-  let userInfo: any = {};
-  userInfo = info;
-
-  const [nickValue, nickBind, nickReset] = useInput(
-    userInfo.nickName ? userInfo.nickName : "닉네임123"
-  );
+  const [nickValue, nickBind, nickReset] = useInput(userInfo.nickName);
+  const [user, setUser] = useState(userInfo.nickName);
   const [passValue, passBind, passReset] = useInput("");
   const [valid, setValid] = useState({ nickname: true, password: true });
 
@@ -159,14 +157,8 @@ export default function UserEdit() {
 
   const editNickname = () => {
     userEdit("/members/edit/nickname", { nickName: nickValue });
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 50);
-
-    setTimeout(() => {
-      setEdit(!edit);
-    }, 100);
+    setUser(nickValue);
+    setEdit(!edit);
   };
 
   const editPassword = () => {
@@ -202,12 +194,15 @@ export default function UserEdit() {
                     handleValid({ word: nickValue, label: "nickname" })
                   }
                 />
-                {valid.nickname ? null : (
+                {/* {valid.nickname ? null : (
+                  <div className="validTxt">닉네임을 확인해주세요!!</div>
+                )} */}
+                {!valid.nickname && (
                   <div className="validTxt">닉네임을 확인해주세요!!</div>
                 )}
               </MyEdit>
             ) : (
-              <MyTitleBg>{nickValue}</MyTitleBg>
+              <MyTitleBg>{user || userInfo.nickName}</MyTitleBg>
             )}
             <MyBtn onClick={edit ? editNickname : handleEdit}>
               <PenIcon />

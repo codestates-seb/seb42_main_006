@@ -67,7 +67,7 @@ const MainText = styled.p`
   line-height: 1.4;
   color: #3c3c3c;
   .break {
-    ${media.pc`
+    ${media.mobile`
       display: none;
     `}
   }
