@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
         
       }
       &::-webkit-scrollbar {
-        width:3px;
+        width:4px;
         
       }
       &::-webkit-scrollbar-track {

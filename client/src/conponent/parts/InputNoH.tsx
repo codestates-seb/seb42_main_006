@@ -88,12 +88,13 @@ export function ButtonInput({
       />
       <StyledBtn
         title={title}
-        width="10%"
+        width=""
         height="90%"
         radius="4px"
         btnType="full"
         fontColor="white"
         fontWeight={400}
+        style={{ padding: "0 8px" }}
         handleClick={() => {
           handleClick(value);
           setValue("");

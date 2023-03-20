@@ -130,39 +130,7 @@ export default function PostDetail() {
             ></Slide> */}
         </Boxs>
         <ContentBox>
-          <Spre>
-            sdfsdfsdf sd fs d f s df s df sd
-            fdffffffffffffffffffffffdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff
-            fdffffffffffffffffffffffdfffffffffffffffffffff
-            fdffffffffffffffffffffffdffffffffffffffffffffffdffffffffffffffffffffffdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdffffffffffffffffffffffdfffffffffffffffffffff sdfsdfsdf sd fs d f s
-            df s df sd fdffffffffffffffffffffffdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff
-            fdffffffffffffffffffffffdfffffffffffffffffffff
-            fdffffffffffffffffffffffdffffffffffffffffffffffdffffffffffffffffffffffdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdffffffffffffffffffffffdfffffffffffffffffffff sdfsdfsdf sd fs d f s
-            df s df sd fdffffffffffffffffffffffdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdfffffffffffffffffffff
-            fdffffffffffffffffffffffdfffffffffffffffffffff
-            fdffffffffffffffffffffffdffffffffffffffffffffffdffffffffffffffffffffffdfffffffffffffffffffff
-            fdfffffffffffffffffffff fdfffffffffffffffffffff
-            fdffffffffffffffffffffffdfffffffffffffffffffff
-          </Spre>
+          <Spre></Spre>
         </ContentBox>
       </BoxContainer>
       <RetweetContainer>
