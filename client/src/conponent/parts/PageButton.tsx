@@ -8,6 +8,8 @@ const PButton = styled.button`
   color: rgb(255 255 255 / var(--tw-text-opacity));
   height: 3.5rem;
   font-size: 1.25rem;
+  text-align: left;
+  padding-left: 24px;
   &:hover {
     background-color: #171717;
     cursor: pointer;

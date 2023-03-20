@@ -14,7 +14,7 @@ const Content = styled.div`
   padding-top: 10px;
   position: sticky;
   top: 70px;
-  left: -160px;
+  left: 0;
   padding-left: 10px;
 `;
 

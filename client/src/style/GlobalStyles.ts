@@ -14,14 +14,12 @@ const GlobalStyles = createGlobalStyle`
       &::-webkit-scrollbar-thumb {
         background-color: rgba(255, 51, 102, .7);
         border-radius: 1000px;
-        
       }
       &::-webkit-scrollbar {
         width:4px;
-        
+        height: 4px;
       }
       &::-webkit-scrollbar-track {
-
       }
     }
     input, textarea { 
