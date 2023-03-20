@@ -29,6 +29,7 @@ export default function AddPost() {
   const [tags, setTags] = useState<string[]>([]);
   const [urls, setUrls] = useState<Iurls[]>([]);
   const [file, setfile] = useState<File>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
     lat: "",
     lon: "",
