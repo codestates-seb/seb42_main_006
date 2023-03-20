@@ -8,6 +8,7 @@ import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.mapper.MemberMapper;
 import com.seb006.server.member.service.MemberPostsService;
 import com.seb006.server.member.service.MemberService;
+import com.seb006.server.participation.entity.Participation;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +94,7 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/prf-post")
+    @GetMapping("/prf-posts")
     public ResponseEntity getMyPrfPosts(Principal principal,
                                         @Positive @RequestParam(defaultValue = "1") int page,
                                         @Positive @RequestParam(defaultValue = "10") int size) {
@@ -130,5 +131,20 @@ public class MemberController {
 
         return new ResponseEntity(
                 new MultiResponseDto<>(response, prfPostLikePage), HttpStatus.OK);
+    }
+
+    @GetMapping("/participation")
+    public ResponseEntity getMyParticipation(Principal principal,
+                                             @Positive @RequestParam(defaultValue = "1") int page,
+                                             @Positive @RequestParam(defaultValue = "10") int size) {
+        Page<Participation> participationPage
+                = memberPostsService.findMyParticipation(principal.getName(), page - 1, size);
+        List<Participation> participationList  = participationPage.getContent();
+        List<MemberPostsDto> response = memberMapper.participationToMemberPostDtos(participationList);
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(response, participationPage), HttpStatus.OK
+        );
+
     }
 }

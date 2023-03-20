@@ -4,6 +4,7 @@ import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.member.dto.MemberDto;
 import com.seb006.server.member.dto.MemberPostsDto;
 import com.seb006.server.member.entity.Member;
+import com.seb006.server.participation.entity.Participation;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.mapstruct.Mapper;
@@ -31,5 +32,13 @@ public interface MemberMapper {
                 .collect(Collectors.toList());
 
         return prfPostsToMemberPostsDtos(prfPosts);
+    }
+
+    default List<MemberPostsDto> participationToMemberPostDtos(List<Participation> participationList) {
+        List<RecruitPost> recruitPosts = participationList.stream()
+                .map(participation -> participation.getRecruitPost())
+                .collect(Collectors.toList());
+
+        return recruitPostsToMemberPostsDtos(recruitPosts);
     }
 }
