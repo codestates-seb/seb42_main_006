@@ -20,6 +20,7 @@ const Background = styled.div`
   min-width: 300px;
   /* border: 2px solid #5a5959;
   background-color: #222222; */
+  /* box-shadow: 0 0 20px 2px #ff336664; */
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -78,7 +79,7 @@ function Login() {
   return (
     <Wrapper>
       <Background>
-        <h1>Log In</h1>
+        <h1>로그인</h1>
         <FormWrapper>
           <span>Email</span>
           <ValidInput

@@ -7,7 +7,7 @@ import {
 import IconBtn from "../conponent/parts/IconButton";
 import Tag from "../conponent/parts/Tag";
 import styled from "styled-components";
-import AudioPlayer from "../conponent/parts/AudioPlayer";
+import AudioPlayer from "../conponent/postDetail/music/AudioPlayer";
 
 const Filter = styled.div`
   display: flex;

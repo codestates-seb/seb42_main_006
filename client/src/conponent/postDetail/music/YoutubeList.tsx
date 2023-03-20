@@ -8,16 +8,6 @@ const Wrapper = styled.div`
   height: calc(100% - 100px);
 
   overflow: overlay;
-  &::-webkit-scrollbar-thumb {
-    background-color: #ff3366;
-    border-radius: 1000px;
-  }
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    width: 30px; /*스크롤바 뒷 배경 색상*/
-  }
 `;
 
 export interface Iurls {
