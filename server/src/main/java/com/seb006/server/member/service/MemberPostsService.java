@@ -3,6 +3,7 @@ package com.seb006.server.member.service;
 import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.repository.MemberRepository;
+import com.seb006.server.participation.entity.Participation;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.utils.CustomPagination;
@@ -62,6 +63,19 @@ public class MemberPostsService {
                 = new CustomPagination<PrfPostLike>().pagination(prfPostLikes, page, size);
 
         return prfPostLikePage;
+    }
+
+    public Page<Participation> findMyParticipation(String email, int page, int size) {
+        Member findMember = memberService.findVerifiedMember(email);
+
+        List<Participation> participationList =findMember.getParticipationList().stream()
+                .sorted(Comparator.comparing(Participation::getId).reversed())
+                .collect(Collectors.toList());
+
+        Page<Participation> participationPage
+                = new CustomPagination<Participation>().pagination(participationList, page, size);
+
+        return participationPage;
     }
 
 }
