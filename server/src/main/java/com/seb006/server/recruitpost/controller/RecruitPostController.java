@@ -79,12 +79,14 @@ public class RecruitPostController {
                 new MultiResponseDto<>(mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts),recruitPostPage),
                 HttpStatus.OK);
     }
+
     //모집글 삭제
     @DeleteMapping("/{recruit-post-id}")
     public ResponseEntity deleteRecruitPost(@PathVariable("recruit-post-id")long id){
         service.deleteRecruitPost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     //모집글 리스트 보기(태그,카테고리)
     @GetMapping
     public ResponseEntity searchRecruitPosts( @RequestParam(defaultValue = "1") int page,

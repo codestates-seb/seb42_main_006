@@ -78,14 +78,24 @@ public class LikeService {
         }
     }
 
+    // 좋아요한 게시글의 ID 리스트 return
     public List<Long> prfPostLiked(Member member, List<PrfPost> prfPosts){
         return prfPostLikeRepository.findByMemberAndPrfPostIn(member, prfPosts).stream()
                 .map(prfPostLike -> prfPostLike.getPrfPost().getId())
                 .collect(Collectors.toList());
     }
 
+    // 좋아요한 게시글이면 return true
     public boolean isPrfPostLiked(Member member, PrfPost prfPost){
         if (prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost).isPresent()){
+            return true;
+        }
+        return false;
+    }
+
+    // 좋아요한 모집글이면 return true
+    public boolean isRecruitPostLiked(Member member, RecruitPost recruitPost){
+        if (recruitPostLikeRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()){
             return true;
         }
         return false;
