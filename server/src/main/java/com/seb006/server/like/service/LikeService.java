@@ -11,6 +11,8 @@ import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,17 +63,31 @@ public class LikeService {
         recruitPostLikeRepository.delete(recruitPostLike);
     }
 
-    // 이미 존재하는 게시글인지 확인
+
+    // 이미 좋아요한 게시글인지 확인
     public void checkExistPrfPostLike(Member member, PrfPost prfPost){
         if (prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost).isPresent()){
             throw new BusinessLogicException(ExceptionCode.PRFPOSTLIKE_EXISTS);
         }
     }
 
-    // 이미 존재하는 모잡글인지 확인
+    // 이미 좋아요한 모잡글인지 확인
     public void checkExistRecruitPostLike(Member member, RecruitPost recruitPost){
         if (recruitPostLikeRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()){
             throw new BusinessLogicException(ExceptionCode.RECRUITPOSTLIKE_EXISTS);
         }
+    }
+
+    public List<Long> prfPostLiked(Member member, List<PrfPost> prfPosts){
+        return prfPostLikeRepository.findByMemberAndPrfPostIn(member, prfPosts).stream()
+                .map(prfPostLike -> prfPostLike.getPrfPost().getId())
+                .collect(Collectors.toList());
+    }
+
+    public boolean isPrfPostLiked(Member member, PrfPost prfPost){
+        if (prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost).isPresent()){
+            return true;
+        }
+        return false;
     }
 }

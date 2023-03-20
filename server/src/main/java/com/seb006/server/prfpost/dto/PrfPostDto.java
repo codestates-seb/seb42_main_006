@@ -46,6 +46,7 @@ public class PrfPostDto {
         private String content;
         private String tags;
         private Integer likeCount;
+        private boolean isLiked = false;
         private List<UrlResponseDto> urls;
         private String imageKey;
 
@@ -67,6 +68,7 @@ public class PrfPostDto {
         private String content;
         private String tags;
         private Integer likeCount;
+        private boolean isLiked = false;
         private List<UrlResponseDto> urls;
         private List<PrfPostCommentResponseDto> comments;
         private String imageKey;

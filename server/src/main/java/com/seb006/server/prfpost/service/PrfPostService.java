@@ -102,4 +102,5 @@ public class PrfPostService {
 
         return optionalPrfPost.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRFPOST_NOT_FOUND));
     }
+
 }
