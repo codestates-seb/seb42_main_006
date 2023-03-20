@@ -124,9 +124,7 @@ export default function UserEdit() {
   let userInfo: any = {};
   userInfo = info;
 
-  const [nickValue, nickBind, nickReset] = useInput(
-    userInfo.nickName ? userInfo.nickName : "닉네임123"
-  );
+  const [nickValue, nickBind, nickReset] = useInput(userInfo.nickName);
   const [passValue, passBind, passReset] = useInput("");
   const [valid, setValid] = useState({ nickname: true, password: true });
 
