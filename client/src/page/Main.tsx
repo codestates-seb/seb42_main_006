@@ -4,7 +4,9 @@ import { StyledBtn } from "../conponent/parts/Button";
 import { media } from "../style/Media";
 import CommonLi from "../conponent/main/CommonLi";
 import BoxLi from "../conponent/main/BoxLi";
-// import useSessionStorage from "../util/MyToken";
+import useSessionStorage from "../util/MyToken";
+
+import { useEffect } from "react";
 
 const MainWrap = styled.div`
   width: 100%;
@@ -100,7 +102,12 @@ const ExList = styled.ul`
 `;
 
 export default function Main() {
-  const token = sessionStorage.getItem("auth");
+  // const [token] = useSessionStorage("auth", "no token");
+  const [token, setStorage] = useSessionStorage("key", "no token");
+
+  useEffect(() => {
+    setStorage("키 연습");
+  }, [setStorage]);
 
   const categoryArr = [
     {
@@ -163,7 +170,7 @@ export default function Main() {
           행복을 전달해드립니다."
         </MainText>
 
-        <Link to={token ? "/addpost" : "/login"}>
+        <Link to={token !== "no token" ? "/addpost" : "/login"}>
           <StyledBtn
             title="A D D"
             width="12rem"
