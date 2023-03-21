@@ -3,6 +3,8 @@ package com.seb006.server.auth.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seb006.server.auth.dto.LoginDto;
 import com.seb006.server.auth.jwt.JwtTokenizer;
+import com.seb006.server.auth.redis.entity.RefreshToken;
+import com.seb006.server.auth.redis.repository.RefreshTokenRepository;
 import com.seb006.server.member.entity.Member;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +25,14 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   JwtTokenizer jwtTokenizer,
+                                   RefreshTokenRepository refreshTokenRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenizer = jwtTokenizer;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @SneakyThrows
@@ -59,9 +65,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Refresh", refreshToken);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
+
+        saveRedisRefreshToken(member, refreshToken);
     }
 
-    private String delegateAccessToken(Member member) {
+    public String delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", member.getEmail());
         claims.put("roles", member.getRoles());
@@ -76,7 +84,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return accessToken;
     }
 
-    private String delegateRefreshToken(Member member) {
+    public String delegateRefreshToken(Member member) {
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -92,5 +100,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         if (member.getMemberStatus() == Member.MemberStatus.QUIT)
             throw new DisabledException("Member who has already resigned");
+    }
+
+    private void saveRedisRefreshToken(Member member, String refreshToken) {
+        RefreshToken redisRefreshToken = new RefreshToken(member.getEmail(), refreshToken);
+        refreshTokenRepository.save(redisRefreshToken);
     }
 }

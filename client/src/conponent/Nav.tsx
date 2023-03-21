@@ -21,6 +21,12 @@ const Content = styled.div`
 
 export default function Nav() {
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("auth");
+
+  const hadleNav = () => {
+    token ? navigate("/mypage") : navigate("/login");
+  };
+
   return (
     <Content>
       <PageButton title="Main" handleClick={() => navigate("/")}></PageButton>
@@ -32,10 +38,7 @@ export default function Nav() {
         title="Together"
         handleClick={() => navigate("/collect")}
       ></PageButton>
-      <PageButton
-        title="My page"
-        handleClick={() => navigate("/mypage")}
-      ></PageButton>
+      <PageButton title="My page" handleClick={hadleNav}></PageButton>
     </Content>
   );
 }

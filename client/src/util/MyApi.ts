@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { requestAuth } from "../function/request";
-import axios from "axios";
+import { useNavigate } from "react-router";
 
 type UserFetchTypes = [
   any[],
@@ -16,8 +16,7 @@ export const useFetch = (URL: string): UserFetchTypes => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(url);
-        // const response = await requestAuth.get(url);
+        const response = await requestAuth.get(url);
         setValue(response.data);
         setPending(false);
       } catch (error) {
@@ -31,7 +30,9 @@ export const useFetch = (URL: string): UserFetchTypes => {
   return [value, pending, setUrl];
 };
 
-interface UserInfoItemTypes {
+type UserInfoReturnTypes = [any[], boolean, boolean];
+
+export interface UserInfoItemTypes {
   createdAt: string;
   email: string;
   id: number;
@@ -40,26 +41,32 @@ interface UserInfoItemTypes {
   nickName: string;
 }
 
-export const useUserInfo = (URL: string): [any[]] => {
+export const useUserInfo = (URL: string): UserInfoReturnTypes => {
+  const [pending, setPending] = useState<boolean>(true);
   const [value, setValue] = useState<[] | UserInfoItemTypes[]>([]);
+  const [block, setBlock] = useState<boolean>(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async (): Promise<UserInfoItemTypes[]> => {
       try {
         const response = await requestAuth.get(URL);
+        setPending(false);
+        setBlock(false);
         return response.data;
       } catch (error) {
-        console.log(error);
+        setBlock(true);
+        setPending(false);
+        console.error(error);
+        navigate("/login");
         return [];
       }
     };
-    (async () => {
-      const result = await fetchData();
-      setValue(result);
-    })();
-  }, [URL]);
+    fetchData().then((data) => setValue(data));
+  }, [URL, navigate]);
 
-  return [value];
+  return [value, pending, block];
 };
 
 export const userEdit = async (URL: string, item: object) => {

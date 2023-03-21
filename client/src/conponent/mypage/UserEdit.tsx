@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useUserInfo, userDelete, userEdit } from "../../util/MyApi";
+import { UserInfoItemTypes, userDelete, userEdit } from "../../util/MyApi";
 import useInput from "../../util/MyInput";
 import { validFn } from "../../function/validFn";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../icons/logo.svg";
 import UserModal from "./UserModal";
+import Modal from "../Modal";
 
 const MyInfo = styled.section`
   display: flex;
@@ -112,21 +113,22 @@ const MyBtn = styled.button`
   }
 `;
 
-export default function UserEdit() {
+export default function UserEdit({
+  userInfo,
+  pending,
+}: {
+  userInfo: UserInfoItemTypes;
+  pending: boolean;
+}) {
   const navigate = useNavigate();
-
-  const [info] = useUserInfo(`/members/mypage`);
 
   const [edit, setEdit] = useState(false);
   const [modal, setModal] = useState(false);
   const [alert, setAlert] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
-  let userInfo: any = {};
-  userInfo = info;
-
-  const [nickValue, nickBind, nickReset] = useInput(
-    userInfo.nickName ? userInfo.nickName : "닉네임123",
-  );
+  const [nickValue, nickBind, nickReset] = useInput(userInfo.nickName);
+  const [user, setUser] = useState(userInfo.nickName);
   const [passValue, passBind, passReset] = useInput("");
   const [valid, setValid] = useState({ nickname: true, password: true });
 
@@ -139,6 +141,12 @@ export default function UserEdit() {
   const handleModal = () => {
     setModal(!modal);
   };
+
+  const handleConfirm = () => {
+    console.log("check");
+    setConfirm(!confirm);
+  };
+
   interface UserEdValidProps {
     word: string;
     label: string;
@@ -159,14 +167,8 @@ export default function UserEdit() {
 
   const editNickname = () => {
     userEdit("/members/edit/nickname", { nickName: nickValue });
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 50);
-
-    setTimeout(() => {
-      setEdit(!edit);
-    }, 100);
+    setUser(nickValue);
+    setEdit(!edit);
   };
 
   const editPassword = () => {
@@ -188,68 +190,80 @@ export default function UserEdit() {
 
   return (
     <>
-      <MyInfo>
-        <MyProfile>
-          <img className="logo" src={logo} alt="logo" />
-        </MyProfile>
-        <div className="myBox">
-          <div className="editItem">
-            {edit ? (
+      {pending && <div>로딩중 ...</div>}
+
+      {userInfo && (
+        <MyInfo>
+          <MyProfile>
+            <img className="logo" src={logo} alt="logo" />
+          </MyProfile>
+          <div className="myBox">
+            <div className="editItem">
+              {edit ? (
+                <MyEdit>
+                  <MyInput
+                    {...nickBind}
+                    onFocus={() =>
+                      handleValid({ word: nickValue, label: "nickname" })
+                    }
+                  />
+                  {!valid.nickname && (
+                    <div className="validTxt">닉네임을 확인해주세요!!</div>
+                  )}
+                </MyEdit>
+              ) : (
+                <MyTitleBg>{user || userInfo.nickName}</MyTitleBg>
+              )}
+              <MyBtn onClick={edit ? editNickname : handleEdit}>
+                <PenIcon />
+              </MyBtn>
+              {edit ? (
+                <MyBtn onClick={handleEdit}>
+                  <CloseIcon />
+                </MyBtn>
+              ) : null}
+            </div>
+
+            <MyTitleSm>비밀번호 변경</MyTitleSm>
+            <div className="editItem">
               <MyEdit>
                 <MyInput
-                  {...nickBind}
+                  type="password"
+                  {...passBind}
                   onFocus={() =>
-                    handleValid({ word: nickValue, label: "nickname" })
+                    handleValid({ word: passValue, label: "password" })
                   }
+                  placeholder="비밀번호를 수정하세요"
                 />
-                {valid.nickname ? null : (
-                  <div className="validTxt">닉네임을 확인해주세요!!</div>
+                {!valid.password && (
+                  <div className="validTxt">비밀번호를 확인해주세요!!</div>
                 )}
               </MyEdit>
-            ) : (
-              <MyTitleBg>{nickValue}</MyTitleBg>
-            )}
-            <MyBtn onClick={edit ? editNickname : handleEdit}>
-              <PenIcon />
-            </MyBtn>
-            {edit ? (
-              <MyBtn onClick={handleEdit}>
-                <CloseIcon />
+              <MyBtn onClick={valid.password ? editPassword : handleConfirm}>
+                <PenIcon />
               </MyBtn>
-            ) : null}
-          </div>
-
-          <MyTitleSm>비밀번호 변경</MyTitleSm>
-          <div className="editItem">
-            <MyEdit>
-              <MyInput
-                type="password"
-                {...passBind}
-                onFocus={() =>
-                  handleValid({ word: passValue, label: "password" })
-                }
-                placeholder="비밀번호를 수정하세요"
-              />
-              {valid.password ? null : (
-                <div className="validTxt">비밀번호를 확인해주세요!!</div>
-              )}
-            </MyEdit>
-            <MyBtn onClick={valid ? editPassword : undefined}>
-              <PenIcon />
+            </div>
+            <MyBtn onClick={handleModal}>
+              <span className="btnText">회원 탈퇴</span>
             </MyBtn>
           </div>
-          <MyBtn onClick={handleModal}>
-            <span className="btnText">회원 탈퇴</span>
-          </MyBtn>
-        </div>
-      </MyInfo>
-      {modal ? (
+        </MyInfo>
+      )}
+
+      {modal && (
         <UserModal
           alert={alert}
           handleModal={handleModal}
           deleteAccount={deleteAccount}
         />
-      ) : null}
+      )}
+      {confirm && (
+        <Modal
+          handleModal={handleConfirm}
+          title={"비밀번호 확인"}
+          text={"올바른 비밀번호가 아닙니다.\n다시 한 번 더 확인해주세요"}
+        />
+      )}
     </>
   );
 }
