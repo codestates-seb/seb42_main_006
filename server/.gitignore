@@ -20,6 +20,7 @@ bin/
 ### IntelliJ IDEA ###
 application-local.yml
 application-server.yml
+application-dev.yml
 
 .idea
 *.iws

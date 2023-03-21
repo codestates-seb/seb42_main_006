@@ -45,7 +45,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             request.setAttribute("exception", e);
         }
 
-
         filterChain.doFilter(request, response);
     }
 
