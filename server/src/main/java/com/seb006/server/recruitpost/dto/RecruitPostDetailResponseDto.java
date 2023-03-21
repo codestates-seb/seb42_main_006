@@ -45,6 +45,7 @@ public class RecruitPostDetailResponseDto {
     private String tags;
 
     private Integer likeCount;
+    private boolean isLiked = false;
 
     private List<RecruitPostCommentResponseDto> comments;
 
