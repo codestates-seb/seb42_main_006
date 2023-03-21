@@ -81,6 +81,8 @@ public class PrfPostService {
            List<Urls> urls = patchDto.getNewUrls().stream()
                    .map(eachurl -> {
                        Urls url = new Urls();
+                       url.setTitle(eachurl.getTitle());
+                       url.setThumbnail(eachurl.getThumbnail());
                        url.setUrl(eachurl.getUrl());
                        url.setPrfPost(verifiedPost);
                        return url;
