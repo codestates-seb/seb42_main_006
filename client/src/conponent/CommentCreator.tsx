@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { StyledBtn } from "./parts/Button";
 import { Textarea } from "./parts/InputNoH";
 
+import { requestAuth } from "../function/request";
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,6 +27,18 @@ const SubmitBtn = styled.div`
 
 export default function CommentCreator() {
   const [commentValue, setCommetValue] = useState("");
+
+  const handleClick = () => {
+    requestAuth
+      .post("/prf-comments/{prf-post-id}", { content: commentValue })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Content>
       <ContentWapper>
@@ -45,7 +59,7 @@ export default function CommentCreator() {
             fontWeight={400}
             fontColor="white"
             btnType="full"
-            handleClick={() => console.log("click")}
+            handleClick={handleClick}
           ></StyledBtn>
         </SubmitBtn>
       </ContentWapper>

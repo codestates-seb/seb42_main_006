@@ -4,6 +4,9 @@ import { StyledBtn } from "../conponent/parts/Button";
 import Tag from "../conponent/parts/Tag";
 import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
+import { requestAuth } from "../function/request";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
 
 const Content = styled.div`
   display: flex;
@@ -103,7 +106,54 @@ const RetweetContainer = styled.div`
   width: 100%;
 `;
 
+interface Post {
+  id: number;
+  title: string;
+  category: string;
+  content: string;
+  recruitNumber: number;
+  currentNumber: number;
+  recruitStatus: string;
+  dueDate: string;
+  createAt: string;
+  modifiedAt: string;
+  memberId: number;
+  nickName: string;
+  age: string;
+  tags: string;
+}
+
 export default function CollectDeatail() {
+  const param = useParams();
+  const [post, setPost] = useState<Post>({
+    id: 1,
+    title: "제목을 입력해주세요",
+    category: "영화",
+    content: "게시글 내용을적어주세요",
+    recruitNumber: 5,
+    currentNumber: 3,
+    recruitStatus: "active",
+    dueDate: "2023-03-08",
+    createAt: "2023-02-25T17:41:46",
+    modifiedAt: "2023-02-25T18:26:13",
+    memberId: 1,
+    nickName: "홍길동",
+    age: "20대30대",
+    tags: "#홍대#맛집#냉모밀",
+  });
+
+  useEffect(() => {
+    requestAuth
+      .get<Post>(`/recruit-posts/${param.recruiteId}`)
+      .then((res) => {
+        setPost(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <Content>
       <ContentWapper>
@@ -121,12 +171,12 @@ export default function CollectDeatail() {
               border="none"
               handleClick={() => console.log("click")}
             />
-            <UserName>잘생긴 라마</UserName>
+            <UserName>{post.nickName}</UserName>
           </TopInfoLeft>
           <TopInfoRight>
             <TagRight>
               <IconBtn
-                title="12"
+                title=""
                 width="50px"
                 height="30px"
                 radius="50px"
@@ -139,7 +189,9 @@ export default function CollectDeatail() {
             </TagRight>
             <TagRight>
               <StyledBtn
-                title="참가 인원 3/5"
+                title={
+                  "참가인원" + post.currentNumber + "/" + post.recruitNumber
+                }
                 width="100px"
                 height="30px"
                 radius="50px"
@@ -165,7 +217,7 @@ export default function CollectDeatail() {
         </TopInfo>
         <DetailPost>
           <TitleContent>
-            <Title>성수동 뇨끼바 가실분 구합니다.</Title>
+            <Title>{post.title}</Title>
             <IconBtn
               title=""
               width="40px"
@@ -179,21 +231,21 @@ export default function CollectDeatail() {
               handleClick={() => console.log("click")}
             />
           </TitleContent>
-          <DetailContent>
-            성수동에 유명한 뇨끼바 있다고 게시판에 확인 했습니다. 2023/03/31
-            가실분 구합니다. 같이하기 눌러주시고 댓글 달아주세요~ ....
-          </DetailContent>
+          <DetailContent>{post.content}</DetailContent>
         </DetailPost>
         <Tags>
           <TagInfo>
             <TagRight>
-              <Tag title="맛집"></Tag>
+              <Tag title={post.category}></Tag>
             </TagRight>
             <TagRight>
-              <Tag title="20대"></Tag>
+              <Tag title={post.age}></Tag>
             </TagRight>
             <TagRight>
-              <Tag title="모집기한: 2023/03/31"></Tag>
+              <Tag title={"모집기한:" + post.dueDate}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={post.tags}></Tag>
             </TagRight>
           </TagInfo>
           <StyledBtn

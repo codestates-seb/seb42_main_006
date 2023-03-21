@@ -41,7 +41,10 @@ function App() {
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/addpost" element={<AddPost />}></Route>
-            <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
+            <Route
+              path="/collectdeatail/:recruiteId"
+              element={<CollectDeatail />}
+            ></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/postdetail" element={<PostDetail />}></Route>
             <Route path="/collectpost" element={<CollectPost />}></Route>
