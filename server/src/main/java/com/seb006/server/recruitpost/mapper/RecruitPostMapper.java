@@ -39,9 +39,9 @@ public interface RecruitPostMapper {
         return recruitPost;
     }
     RecruitPost recruitPostPatchDtoToRecruitPost (RecruitPostPatchDto recruitPostPatchDto);
-    default RecruitPostResponseDto recruitPostToRecruitPostResponseDto (RecruitPost recruitPost){
-        Member member = recruitPost.getMember();
 
+
+    default RecruitPostResponseDto recruitPostToRecruitPostResponseDto (RecruitPost recruitPost){
         RecruitPostResponseDto recruitPostResponseDto = new RecruitPostResponseDto();
 
         recruitPostResponseDto.setId(recruitPost.getId());
@@ -59,6 +59,32 @@ public interface RecruitPostMapper {
         recruitPostResponseDto.setAge(recruitPost.getAge());
         recruitPostResponseDto.setTags(recruitPost.getTags());
         recruitPostResponseDto.setLikeCount(recruitPost.getLikeCount());
+
+        return recruitPostResponseDto;
+    }
+
+    default RecruitPostResponseDto recruitPostToRecruitPostResponseDto (RecruitPost recruitPost, List<Long> likedRecruitIds){
+        RecruitPostResponseDto recruitPostResponseDto = new RecruitPostResponseDto();
+
+        recruitPostResponseDto.setId(recruitPost.getId());
+        recruitPostResponseDto.setTitle(recruitPost.getTitle());
+        recruitPostResponseDto.setCategory(recruitPost.getCategory());
+        recruitPostResponseDto.setContent(recruitPost.getContent());
+        recruitPostResponseDto.setRecruitNumber(recruitPost.getRecruitNumber());
+        recruitPostResponseDto.setCurrentNumber(recruitPost.getCurrentNumber());
+        recruitPostResponseDto.setRecruitStatus(recruitPost.getRecruitStatus());
+        recruitPostResponseDto.setDueDate(recruitPost.getDueDate());
+        recruitPostResponseDto.setCreatedAt(recruitPost.getCreatedAt());
+        recruitPostResponseDto.setModifiedAt(recruitPost.getModifiedAt());
+        recruitPostResponseDto.setMemberId(recruitPost.getMember().getId());
+        recruitPostResponseDto.setNickName(recruitPost.getMember().getNickName());
+        recruitPostResponseDto.setAge(recruitPost.getAge());
+        recruitPostResponseDto.setTags(recruitPost.getTags());
+        recruitPostResponseDto.setLikeCount(recruitPost.getLikeCount());
+
+        if(likedRecruitIds.contains(recruitPost.getId())){
+            recruitPostResponseDto.setLiked(true);
+        }
 
         return recruitPostResponseDto;
     }
@@ -98,6 +124,12 @@ public interface RecruitPostMapper {
 
         return recruitPostDetailResponseDto;
     }
-    List<RecruitPostResponseDto> recruitPostsToRecruitPostResponseDtos(List<RecruitPost> recruitPosts);
+
+    default List<RecruitPostResponseDto> recruitPostsToRecruitPostResponseDtos(List<RecruitPost> recruitPosts, List<Long> likedRecruitIds){
+        List<RecruitPostResponseDto> responses = recruitPosts.stream()
+                .map(e -> recruitPostToRecruitPostResponseDto(e, likedRecruitIds))
+                .collect(Collectors.toList());
+        return responses;
+    }
 
 }

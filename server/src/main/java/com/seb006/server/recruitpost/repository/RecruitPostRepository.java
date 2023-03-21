@@ -17,15 +17,11 @@ import java.util.Optional;
 
 
 public interface RecruitPostRepository extends JpaRepository<RecruitPost,Long> {
-
-
     Page<RecruitPost> findAll(Pageable pageable);
     Page<RecruitPost> findByTagsContainingOrTitleContaining(Pageable pageable, String keyword1, String keyword2);
 
     @Query("select p from RecruitPost p where p.category=:category and (p.tags like %:keyword% or p.title like %:keyword%)")
     Page<RecruitPost> findByCategoryAndKeyword(Pageable pageable, String category, String keyword);
-
-
 
 }
 
