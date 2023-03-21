@@ -52,18 +52,14 @@ export const useUserInfo = (URL: string): UserInfoReturnTypes => {
     const fetchData = async (): Promise<UserInfoItemTypes[]> => {
       try {
         const response = await requestAuth.get(URL);
-        if (response.status === 200) {
-          setBlock(false);
-        } else {
-          setBlock(true);
-          navigate("/login");
-        }
         setPending(false);
+        setBlock(false);
         return response.data;
       } catch (error) {
         setBlock(true);
         setPending(false);
         console.error(error);
+        navigate("/login");
         return [];
       }
     };

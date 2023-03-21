@@ -8,6 +8,7 @@ import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../icons/logo.svg";
 import UserModal from "./UserModal";
+import Modal from "../Modal";
 
 const MyInfo = styled.section`
   display: flex;
@@ -124,6 +125,7 @@ export default function UserEdit({
   const [edit, setEdit] = useState(false);
   const [modal, setModal] = useState(false);
   const [alert, setAlert] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   const [nickValue, nickBind, nickReset] = useInput(userInfo.nickName);
   const [user, setUser] = useState(userInfo.nickName);
@@ -139,6 +141,12 @@ export default function UserEdit({
   const handleModal = () => {
     setModal(!modal);
   };
+
+  const handleConfirm = () => {
+    console.log("check");
+    setConfirm(!confirm);
+  };
+
   interface UserEdValidProps {
     word: string;
     label: string;
@@ -231,7 +239,7 @@ export default function UserEdit({
                   <div className="validTxt">비밀번호를 확인해주세요!!</div>
                 )}
               </MyEdit>
-              <MyBtn onClick={valid.password ? editPassword : undefined}>
+              <MyBtn onClick={valid.password ? editPassword : handleConfirm}>
                 <PenIcon />
               </MyBtn>
             </div>
@@ -242,13 +250,20 @@ export default function UserEdit({
         </MyInfo>
       )}
 
-      {modal ? (
+      {modal && (
         <UserModal
           alert={alert}
           handleModal={handleModal}
           deleteAccount={deleteAccount}
         />
-      ) : null}
+      )}
+      {confirm && (
+        <Modal
+          handleModal={handleConfirm}
+          title={"비밀번호 확인"}
+          text={"올바른 비밀번호가 아닙니다.\n다시 한 번 더 확인해주세요"}
+        />
+      )}
     </>
   );
 }

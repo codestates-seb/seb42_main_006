@@ -4,6 +4,7 @@ import { StyledBtn } from "../conponent/parts/Button";
 import { media } from "../style/Media";
 import CommonLi from "../conponent/main/CommonLi";
 import BoxLi from "../conponent/main/BoxLi";
+// import useSessionStorage from "../util/MyToken";
 
 const MainWrap = styled.div`
   width: 100%;
