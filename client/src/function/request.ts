@@ -9,6 +9,6 @@ const token = sessionStorage.getItem("auth");
 export const requestAuth = axios.create({
   baseURL: process.env.REACT_APP_HOST_URL,
   headers: {
-    Authorization: `Bearer ${token}`,
+    Authorization: `${token}`,
   },
 });

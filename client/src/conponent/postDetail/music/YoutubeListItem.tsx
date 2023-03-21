@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { Iurls } from "./YoutubeList";
+import { Delete } from "../../../icons/Icon";
+import { Iurls } from "../../../page/AddPost";
 
 const StyledList = styled.div`
   padding: 14px;
@@ -10,6 +11,7 @@ const StyledList = styled.div`
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 60px;
   overflow: hidden;
@@ -31,17 +33,30 @@ const StyledList = styled.div`
   }
 `;
 
+const DelBtn = styled.button`
+  background-color: none;
+  outline: none;
+  border: none;
+`;
+
 interface ListItemProp {
   item: Iurls;
+  onDelete?: (x: string) => any;
+  mode: string;
 }
 
-function YoutubeListItem({ item }: ListItemProp) {
+function YoutubeListItem({ item, onDelete, mode }: ListItemProp) {
   return (
     <StyledList>
       <img src={item.thumbnail} alt="thumbnail" />
       <div>
         <div>{item.title}</div>
       </div>
+      {mode === "edit" && (
+        <DelBtn onClick={() => onDelete && onDelete(item.url)}>
+          <Delete></Delete>
+        </DelBtn>
+      )}
     </StyledList>
   );
 }

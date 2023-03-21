@@ -38,6 +38,7 @@ interface prop extends StyleProp {
   title: string;
   handleClick: () => any;
   style?: React.CSSProperties;
+  className?: any;
 }
 
 export function StyledBtn({
@@ -50,6 +51,7 @@ export function StyledBtn({
   btnType,
   handleClick,
   style,
+  className,
 }: prop) {
   return (
     <Button
@@ -61,6 +63,7 @@ export function StyledBtn({
       btnType={btnType}
       onClick={handleClick}
       style={style}
+      className={className}
     >
       {title}
     </Button>

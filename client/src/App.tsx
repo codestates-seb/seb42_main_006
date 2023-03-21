@@ -40,7 +40,7 @@ function App() {
             <Route path="/collect" element={<Collect />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
-            <Route path="/addpost" element={<AddPost />}></Route>
+            <Route path="/addpost/:mode/:id" element={<AddPost />}></Route>
             <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/postdetail" element={<PostDetail />}></Route>
