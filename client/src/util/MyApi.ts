@@ -59,7 +59,7 @@ export const useUserInfo = (URL: string): UserInfoReturnTypes => {
         setBlock(true);
         setPending(false);
         console.error(error);
-        navigate("/login");
+        // navigate("/login");
         return [];
       }
     };

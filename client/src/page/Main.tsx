@@ -6,8 +6,6 @@ import CommonLi from "../conponent/main/CommonLi";
 import BoxLi from "../conponent/main/BoxLi";
 import useSessionStorage from "../util/MyToken";
 
-import { useEffect } from "react";
-
 const MainWrap = styled.div`
   width: 100%;
   color: #fff;
@@ -102,12 +100,7 @@ const ExList = styled.ul`
 `;
 
 export default function Main() {
-  // const [token] = useSessionStorage("auth", "no token");
-  const [token, setStorage] = useSessionStorage("key", "no token");
-
-  useEffect(() => {
-    setStorage("키 연습");
-  }, [setStorage]);
+  const [token] = useSessionStorage("auth", "no token");
 
   const categoryArr = [
     {
