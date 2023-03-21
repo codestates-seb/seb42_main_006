@@ -7,6 +7,7 @@ import com.seb006.server.auth.handler.MemberAuthenticationEntryPoint;
 import com.seb006.server.auth.handler.MemberAuthenticationFailureHandler;
 import com.seb006.server.auth.handler.MemberAuthenticationSuccessHandler;
 import com.seb006.server.auth.jwt.JwtTokenizer;
+import com.seb006.server.auth.redis.repository.RefreshTokenRepository;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +33,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer,
+                                 CustomAuthorityUtils authorityUtils,
+                                 RefreshTokenRepository refreshTokenRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Bean
@@ -90,7 +95,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
-                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, refreshTokenRepository);
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
