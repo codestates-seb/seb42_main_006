@@ -101,6 +101,7 @@ const ExList = styled.ul`
 
 export default function Main() {
   const token = sessionStorage.getItem("auth");
+  // const [token] = useSessionStorage("auth");
 
   const categoryArr = [
     {
