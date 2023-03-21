@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { useFetch } from "../util/MyApi";
 import styled from "styled-components";
 import { media } from "../style/Media";
@@ -113,13 +112,7 @@ const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
 `;
 
 export default function Mypage() {
-  const navigate = useNavigate();
-  const token = sessionStorage.getItem("auth");
-  if (!token) {
-    navigate("/login");
-  }
-
-  const [info] = useUserInfo(`/members/mypage`);
+  const [info, infoPending, infoBlock] = useUserInfo(`/members/mypage`);
 
   let userInfo: any = {};
   userInfo = info;
@@ -127,33 +120,32 @@ export default function Mypage() {
   const tabArray = [
     {
       title: "작성한\n게시글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/prf-post`
+      url: `/members/prf-posts`,
     },
     {
       title: "작성한\n모집글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/recruit-posts`
+      url: `/members/recruit-posts`,
     },
     {
       title: "참여한\n모집글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/participation`
+      url: `/members/participation`,
     },
     {
       title: "좋아요한\n게시글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/prf-post-like`
+      url: `/members/prf-posts-like`,
     },
   ];
   const [tab, setTab] = useState(tabArray[0].title);
-  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}&page=1`);
-  //  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}?page=${num}&size=10`);
+  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}?page=1&size=10`);
+
+  let listData: any = [];
+  listData = list;
 
   const limit = 5;
   const [curr, setCurr] = useState(1);
-  const [total, setTotal] = useState(22);
-  // const [total, setTotal] = useState(list.pageInfo.totalPages || 1);
+  const [total, setTotal] = useState(
+    (listData.pageInfo && listData.pageInfo.totalPages) || 1
+  );
   const [arr, setArr] = useState(
     Array.from(
       { length: limit > total ? total : limit },
@@ -163,17 +155,24 @@ export default function Mypage() {
 
   const handleTab = (item: string, url: string) => {
     setTab(item);
-    setUrl(url);
+    setUrl(`${url}?page=1&size=10`);
     setCurr(1);
-    setArr(Array.from({ length: limit }, (_, index) => index + 1));
-    // setTotal(list.pageInfo.totalPages);
-    setTotal(10);
+
+    const pageTotal = (listData.pageInfo && listData.pageInfo.totalPages) || 1;
+    setTotal(pageTotal);
+    setArr(
+      Array.from(
+        { length: limit > pageTotal ? pageTotal : limit },
+        (_, index) => index + 1
+      )
+    );
   };
 
   const handlePaging = (num: number) => {
     setCurr(num);
-    setUrl(`${tabArray.filter((el) => el.title === tab)[0].url}&page=${num}`);
-    // setUrl(`${tabArray.filter((el) => el.title === tab)[0].url}?page=${num}&size=10`);
+    setUrl(
+      `${tabArray.filter((el) => el.title === tab)[0].url}?page=${num}&size=10`
+    );
   };
 
   const handlePrev = () => {
@@ -209,53 +208,57 @@ export default function Mypage() {
   };
 
   return (
-    <MypageWrap>
-      <UserEdit userInfo={userInfo} />
-      <MyTabList>
-        {tabArray.map((el) => (
-          <MyTabLi
-            key={el.title}
-            isActive={tab === el.title ? true : false}
-            onClick={() => handleTab(el.title, el.url)}
-          >
-            {el.title}
-          </MyTabLi>
-        ))}
-      </MyTabList>
-      <section>
-        <MypageTitle>{tab}</MypageTitle>
-        <MyBoard>
-          <MyBoardHead>
-            {["글번호", "제목"].map((el) => (
-              <MyBoardHeadLi key={el}>{el}</MyBoardHeadLi>
+    <>
+      {!infoBlock && (
+        <MypageWrap>
+          <UserEdit userInfo={userInfo} pending={infoPending} />
+          <MyTabList>
+            {tabArray.map((el) => (
+              <MyTabLi
+                key={el.title}
+                isActive={tab === el.title ? true : false}
+                onClick={() => handleTab(el.title, el.url)}
+              >
+                {el.title}
+              </MyTabLi>
             ))}
-          </MyBoardHead>
-          <MyBoardBody>
-            {pending || !list.length ? (
-              <MyBoardBodyLi isNone>
-                {pending ? "로딩중..." : "게시글이 없습니다"}
-              </MyBoardBodyLi>
-            ) : null}
-            {list &&
-              list.map((el, idx) => (
-                <MyBoardBodyLi key={el.id}>
-                  <strong className="MyBoardTitle">
-                    {total * 10 - ((curr - 1) * 10 + idx)}
-                  </strong>
-                  <div className="MyBoardContent">{el.title}</div>
-                </MyBoardBodyLi>
-              ))}
-          </MyBoardBody>
-        </MyBoard>
-        <Paging
-          curr={curr}
-          arr={arr}
-          total={total}
-          handlePaging={handlePaging}
-          handlePrev={handlePrev}
-          handleNext={handleNext}
-        />
-      </section>
-    </MypageWrap>
+          </MyTabList>
+          <section>
+            <MypageTitle>{tab}</MypageTitle>
+            <MyBoard>
+              <MyBoardHead>
+                {["글번호", "제목"].map((el) => (
+                  <MyBoardHeadLi key={el}>{el}</MyBoardHeadLi>
+                ))}
+              </MyBoardHead>
+              <MyBoardBody>
+                {(pending || !list.length) && (
+                  <MyBoardBodyLi isNone>
+                    {pending ? "로딩중..." : "게시글이 없습니다"}
+                  </MyBoardBodyLi>
+                )}
+                {listData.data &&
+                  listData.data.map((el: any, idx: number) => (
+                    <MyBoardBodyLi key={el.id}>
+                      <strong className="MyBoardTitle">
+                        {total * 10 - ((curr - 1) * 10 + idx)}
+                      </strong>
+                      <div className="MyBoardContent">{el.title}</div>
+                    </MyBoardBodyLi>
+                  ))}
+              </MyBoardBody>
+            </MyBoard>
+            <Paging
+              curr={curr}
+              arr={arr}
+              total={total}
+              handlePaging={handlePaging}
+              handlePrev={handlePrev}
+              handleNext={handleNext}
+            />
+          </section>
+        </MypageWrap>
+      )}
+    </>
   );
 }

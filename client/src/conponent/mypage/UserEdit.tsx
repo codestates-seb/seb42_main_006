@@ -114,8 +114,10 @@ const MyBtn = styled.button`
 
 export default function UserEdit({
   userInfo,
+  pending,
 }: {
   userInfo: UserInfoItemTypes;
+  pending: boolean;
 }) {
   const navigate = useNavigate();
 
@@ -180,64 +182,66 @@ export default function UserEdit({
 
   return (
     <>
-      <MyInfo>
-        <MyProfile>
-          <img className="logo" src={logo} alt="logo" />
-        </MyProfile>
-        <div className="myBox">
-          <div className="editItem">
-            {edit ? (
+      {pending && <div>로딩중 ...</div>}
+
+      {userInfo && (
+        <MyInfo>
+          <MyProfile>
+            <img className="logo" src={logo} alt="logo" />
+          </MyProfile>
+          <div className="myBox">
+            <div className="editItem">
+              {edit ? (
+                <MyEdit>
+                  <MyInput
+                    {...nickBind}
+                    onFocus={() =>
+                      handleValid({ word: nickValue, label: "nickname" })
+                    }
+                  />
+                  {!valid.nickname && (
+                    <div className="validTxt">닉네임을 확인해주세요!!</div>
+                  )}
+                </MyEdit>
+              ) : (
+                <MyTitleBg>{user || userInfo.nickName}</MyTitleBg>
+              )}
+              <MyBtn onClick={edit ? editNickname : handleEdit}>
+                <PenIcon />
+              </MyBtn>
+              {edit ? (
+                <MyBtn onClick={handleEdit}>
+                  <CloseIcon />
+                </MyBtn>
+              ) : null}
+            </div>
+
+            <MyTitleSm>비밀번호 변경</MyTitleSm>
+            <div className="editItem">
               <MyEdit>
                 <MyInput
-                  {...nickBind}
+                  type="password"
+                  {...passBind}
                   onFocus={() =>
-                    handleValid({ word: nickValue, label: "nickname" })
+                    handleValid({ word: passValue, label: "password" })
                   }
+                  placeholder="비밀번호를 수정하세요"
                 />
-                {/* {valid.nickname ? null : (
-                  <div className="validTxt">닉네임을 확인해주세요!!</div>
-                )} */}
-                {!valid.nickname && (
-                  <div className="validTxt">닉네임을 확인해주세요!!</div>
+                {!valid.password && (
+                  <div className="validTxt">비밀번호를 확인해주세요!!</div>
                 )}
               </MyEdit>
-            ) : (
-              <MyTitleBg>{user || userInfo.nickName}</MyTitleBg>
-            )}
-            <MyBtn onClick={edit ? editNickname : handleEdit}>
-              <PenIcon />
-            </MyBtn>
-            {edit ? (
-              <MyBtn onClick={handleEdit}>
-                <CloseIcon />
+              <MyBtn onClick={valid.password ? editPassword : undefined}>
+                <PenIcon />
               </MyBtn>
-            ) : null}
-          </div>
-
-          <MyTitleSm>비밀번호 변경</MyTitleSm>
-          <div className="editItem">
-            <MyEdit>
-              <MyInput
-                type="password"
-                {...passBind}
-                onFocus={() =>
-                  handleValid({ word: passValue, label: "password" })
-                }
-                placeholder="비밀번호를 수정하세요"
-              />
-              {valid.password ? null : (
-                <div className="validTxt">비밀번호를 확인해주세요!!</div>
-              )}
-            </MyEdit>
-            <MyBtn onClick={valid ? editPassword : undefined}>
-              <PenIcon />
+            </div>
+            <MyBtn onClick={handleModal}>
+              <span className="btnText">회원 탈퇴</span>
             </MyBtn>
           </div>
-          <MyBtn onClick={handleModal}>
-            <span className="btnText">회원 탈퇴</span>
-          </MyBtn>
-        </div>
-      </MyInfo>
+        </MyInfo>
+      )}
+
       {modal ? (
         <UserModal
           alert={alert}
