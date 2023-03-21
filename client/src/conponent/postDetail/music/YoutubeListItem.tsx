@@ -24,8 +24,8 @@ const StyledList = styled.div`
     overflow: hidden;
     > div {
       width: 100%;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      /* white-space: nowrap;
+      text-overflow: ellipsis; */
       color: white;
       font-size: 1rem;
     }

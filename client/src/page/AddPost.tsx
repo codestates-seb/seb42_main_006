@@ -124,7 +124,7 @@ export default function AddPost() {
             urls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
             content: body,
             tags: tags,
-            imageKey: imageKey,
+            imageKey: imageKey.fileKey,
           };
           const res = await requestAuth.post("/prf-posts", data);
           console.log(res);
@@ -137,11 +137,11 @@ export default function AddPost() {
           title: title,
           category: curCategory,
           newUrls: [urls[0]],
-          deletedUrls: [{ urlId: origin.urls[0].id }],
+          deletedUrls: [{ urlId: origin.urls[0]?.id }],
           content: body,
           tags: tags,
         };
-        const res = await requestAuth.post(`/prf-posts/${param.id}`, data);
+        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
         console.log(res);
         if (res.data.id) navigate("/");
       } else if (curCategory === "음악") {
@@ -149,25 +149,39 @@ export default function AddPost() {
           title: title,
           category: curCategory,
           newUrls: [...urls.filter((x) => !x.id)],
-          deletedUrls: [{ urlId: origin.urls[0].id }],
+          deletedUrls: origin.urls
+            .filter((x: Iurls): boolean => {
+              let result = true;
+              for (let item of urls) {
+                if (x.title === item.title) result = false;
+              }
+              return result;
+            })
+            .map((x: Iurls) => {
+              return {
+                urlId: x.id,
+              };
+            }),
+
           content: body,
           tags: tags,
         };
-        const res = await requestAuth.post(`/prf-posts/${param.id}`, data);
+        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
         console.log(res);
         if (res.data.id) navigate("/");
       } else {
         const imageKey = await UploadImg(file);
         if (imageKey) {
-          const data: Idata = {
+          const data: IEditData = {
             title: title,
             category: curCategory,
-            urls: urls,
+            newUrls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
+            deletedUrls: [{ urlId: origin.urls[0].id }],
             content: body,
             tags: tags,
             imageKey: imageKey,
           };
-          const res = await requestAuth.post(`/prf-posts/${param.id}`, data);
+          const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
           console.log(res);
           if (res.data.id) navigate("/");
         }
