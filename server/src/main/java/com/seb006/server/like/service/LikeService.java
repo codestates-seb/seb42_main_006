@@ -85,6 +85,13 @@ public class LikeService {
                 .collect(Collectors.toList());
     }
 
+    // 좋아요한 게시글의 ID 리스트 return
+    public List<Long> recruitPostLiked(Member member, List<RecruitPost> recruitPost){
+        return recruitPostLikeRepository.findByMemberAndRecruitPostIn(member, recruitPost).stream()
+                .map(recruitPostLike -> recruitPostLike.getRecruitPost().getId())
+                .collect(Collectors.toList());
+    }
+
     // 좋아요한 게시글이면 return true
     public boolean isPrfPostLiked(Member member, PrfPost prfPost){
         if (prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost).isPresent()){

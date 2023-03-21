@@ -8,7 +8,6 @@ import com.seb006.server.url.dto.UrlResponseDto;
 import com.seb006.server.url.entity.Urls;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 import java.util.stream.Collectors;

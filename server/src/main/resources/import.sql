@@ -10,4 +10,4 @@ insert into member (id, CREATED_AT, MODIFIED_AT, EMAIL, MEMBER_STATUS, NICK_NAME
 insert into member (id, CREATED_AT, MODIFIED_AT, EMAIL, MEMBER_STATUS, NICK_NAME, PASSWORD) values (9, '2022-12-26T12:00:27Z', '2022-08-30T08:07:37Z', 'asoutham8@soundcloud.com', 'ACTIVE', 'tsoutham8', 'dN7iYCo30hS0');
 insert into member (id, CREATED_AT, MODIFIED_AT, EMAIL, MEMBER_STATUS, NICK_NAME, PASSWORD) values (10, '2022-04-23T13:34:30Z', '2022-03-24T15:43:55Z', 'skiss9@redcross.org', 'ACTIVE', 'akiss9', 'EqROv2');
 
-// 게시글(1만건)
+// 게시글

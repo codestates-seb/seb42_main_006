@@ -1,8 +1,10 @@
 package com.seb006.server.recruitpost.controller;
 
 import com.seb006.server.global.response.MultiResponseDto;
+import com.seb006.server.like.service.LikeService;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.service.MemberService;
+import com.seb006.server.recruitpost.dto.RecruitPostDetailResponseDto;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
 import com.seb006.server.recruitpost.dto.RecruitPostResponseDto;
@@ -15,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
@@ -32,12 +33,13 @@ public class RecruitPostController {
     private final MemberService memberService;
 
     private final RecruitPostMapper mapper;
+    private final LikeService likeService;
 
-
-    public RecruitPostController(RecruitPostService service, MemberService memberService, RecruitPostMapper mapper) {
+    public RecruitPostController(RecruitPostService service, MemberService memberService, RecruitPostMapper mapper, LikeService likeService) {
         this.service = service;
         this.memberService = memberService;
         this.mapper = mapper;
+        this.likeService = likeService;
     }
 
     @PostMapping
@@ -61,22 +63,30 @@ public class RecruitPostController {
     }
 
     @GetMapping("/{recruit-post-id}")
-    public ResponseEntity getRecruitPost(@PathVariable("recruit-post-id")long id){
+    public ResponseEntity getRecruitPost(Principal principal, @PathVariable("recruit-post-id") long id){
+        Member member = memberService.findVerifiedMember(principal.getName());
         RecruitPost recruitPost = service.findRecruitPost(id);
 
-        return new ResponseEntity<>(mapper.recruitPostToRecruitDetailResponseDto(recruitPost),HttpStatus.OK);
+        RecruitPostDetailResponseDto result = mapper.recruitPostToRecruitDetailResponseDto(recruitPost);
+        if(likeService.isRecruitPostLiked(member, recruitPost)){
+            result.setLiked(true);
+        }
 
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity getRecruitPosts(@RequestParam int page,
+    public ResponseEntity getRecruitPosts(Principal principal,
+                                          @RequestParam int page,
                                           @RequestParam int size,
                                           @RequestParam int sorting){
+        Member member = memberService.findVerifiedMember(principal.getName());
         Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size,sorting);
         List<RecruitPost> recruitPosts = recruitPostPage.getContent();
+        List<Long> likedRecruitIds = likeService.recruitPostLiked(member, recruitPosts);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts),recruitPostPage),
+                new MultiResponseDto<>(mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts, likedRecruitIds),recruitPostPage),
                 HttpStatus.OK);
     }
 
@@ -89,14 +99,18 @@ public class RecruitPostController {
 
     //모집글 리스트 보기(태그,카테고리)
     @GetMapping
-    public ResponseEntity searchRecruitPosts( @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity searchRecruitPosts( Principal principal,
+                                              @RequestParam(defaultValue = "1") int page,
                                               @RequestParam(defaultValue = "10") int size,
                                               @RequestParam(defaultValue = "1") int sorting,
                                               @RequestParam(required = false, defaultValue = "") String category,
                                               @RequestParam(required = false, defaultValue = "") String keyword){
+        Member member = memberService.findVerifiedMember(principal.getName());
         Page<RecruitPost> recruitPostPage = service.searchRecruitPosts(page-1, size, sorting, category, keyword);
         List<RecruitPost> recruitPostList = recruitPostPage.getContent();
-        List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPostList);
+        List<Long> likedRecruitIds = likeService.recruitPostLiked(member, recruitPostList);
+
+        List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPostList, likedRecruitIds);
 
         return new ResponseEntity<>(new MultiResponseDto<RecruitPostResponseDto>(result, recruitPostPage), HttpStatus.OK);
     }
