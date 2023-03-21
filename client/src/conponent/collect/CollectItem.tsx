@@ -118,7 +118,7 @@ const IconSort = styled.div`
 
 const UserIcon = styled.div`
   width: 20%;
-  min-width: 20px;
+  min-width: 70px;
   display: flex;
   align-items: center;
   justify-content: center;

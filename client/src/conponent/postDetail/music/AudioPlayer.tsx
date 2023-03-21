@@ -3,6 +3,7 @@ import ReactPlayer from "react-player";
 import styled from "styled-components";
 import IconBtn from "../../parts/IconButton";
 import { keyframes } from "styled-components";
+import { Iurls } from "../../../page/AddPost";
 
 const Container = styled.div`
   display: flex;
@@ -139,11 +140,7 @@ const AudioWrapper = styled.div`
 `;
 
 type Props = {
-  data: {
-    url: string;
-    thumbnail: string;
-    title: string;
-  };
+  data: Iurls;
 };
 
 const AudioPlayer: React.FC<Props> = ({ data }) => {

@@ -25,6 +25,7 @@ const SubmitBtn = styled.div`
 
 export default function CommentCreator() {
   const [commentValue, setCommetValue] = useState("");
+
   return (
     <Content>
       <ContentWapper>

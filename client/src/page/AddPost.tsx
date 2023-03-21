@@ -5,15 +5,38 @@ import Selection from "../conponent/parts/Selection";
 import { DefaultInput, Textarea, FileInput } from "../conponent/parts/InputNoH";
 import MapSearch from "../conponent/addPost/MapSearch";
 import { StyledBtn } from "../conponent/parts/Button";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+
+import { requestAuth } from "../function/request";
+import { UploadImg } from "../util/PostApi";
 
 import { getVideoId } from "../function/youtubeApi";
 
-interface Iurls {
+export interface Iurls {
+  id?: number;
   url: string;
   thumbnail: string;
   title: string;
+}
+
+interface Idata {
+  title: string;
+  category: string;
+  urls: Iurls[];
+  content: string;
+  tags: string;
+  imageKey?: string;
+}
+
+interface IEditData {
+  title: string;
+  category: string;
+  newUrls: Iurls[];
+  deletedUrls: { urlId: number }[];
+  content: string;
+  tags: string;
+  imageKey?: string;
 }
 
 export default function AddPost() {
@@ -22,23 +45,148 @@ export default function AddPost() {
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string>("");
   const [urls, setUrls] = useState<Iurls[]>([]);
+  const [origin, setOrigin] = useState<any>(null);
   const [file, setfile] = useState<File>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
     lat: "",
     lon: "",
   });
+
+  const param = useParams();
   const navigate = useNavigate();
 
-  const handleAddUrls = (x: string) => {
+  useEffect(() => {
+    if (param.mode === "edit") {
+      requestAuth.get(`/prf-posts/${param.id}`).then((res) => {
+        console.log(res.data);
+        setOrigin(res.data);
+        setTitle(res.data.title);
+        setBody(res.data.content);
+        setTags(res.data.tags);
+        setUrls([...res.data.urls]);
+        setCurCategory(res.data.category);
+      });
+    }
+  }, []);
+
+  const handleDelUrls = (item: string) => {
+    setUrls([...urls.filter((x) => x.url !== item)]);
+  };
+
+  const handleAddUrls = (youtubeUrl: string) => {
+    if (urls.filter((x) => x.url === youtubeUrl).length !== 0) {
+      alert("중복된 Url은 등록하실 수 없습니다.");
+      return;
+    }
+
     const url: Iurls = { url: "", thumbnail: "", title: "" };
-    getVideoId(x)
+
+    getVideoId(youtubeUrl)
       .then((res) => {
-        url.url = x;
+        url.url = youtubeUrl;
         url.thumbnail = res.items[0].snippet.thumbnails.medium.url;
         url.title = res.items[0].snippet.title;
       })
       .then(() => setUrls((prev) => [url, ...prev]));
+  };
+
+  const handleSubmit = async () => {
+    if (param.mode === "create") {
+      if (curCategory === "영화") {
+        const data: Idata = {
+          title: title,
+          category: curCategory,
+          urls: [urls[0]],
+          content: body,
+          tags: tags,
+        };
+        const res = await requestAuth.post("/prf-posts", data);
+        console.log(res);
+        if (res.data.id) navigate("/");
+      } else if (curCategory === "음악") {
+        const data: Idata = {
+          title: title,
+          category: curCategory,
+          urls: urls,
+          content: body,
+          tags: tags,
+        };
+        const res = await requestAuth.post("/prf-posts", data);
+        console.log(res);
+        if (res.data.id) navigate("/");
+      } else {
+        const imageKey = await UploadImg(file);
+        if (imageKey) {
+          const data: Idata = {
+            title: title,
+            category: curCategory,
+            urls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
+            content: body,
+            tags: tags,
+            imageKey: imageKey.fileKey,
+          };
+          const res = await requestAuth.post("/prf-posts", data);
+          console.log(res);
+          if (res.data.id) navigate("/");
+        }
+      }
+    } else if (param.mode === "edit") {
+      if (curCategory === "영화") {
+        const data: IEditData = {
+          title: title,
+          category: curCategory,
+          newUrls: [urls[0]],
+          deletedUrls: [{ urlId: origin.urls[0]?.id }],
+          content: body,
+          tags: tags,
+        };
+        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
+        console.log(res);
+        if (res.data.id) navigate("/");
+      } else if (curCategory === "음악") {
+        const data: IEditData = {
+          title: title,
+          category: curCategory,
+          newUrls: [...urls.filter((x) => !x.id)],
+          deletedUrls: origin.urls
+            .filter((x: Iurls): boolean => {
+              let result = true;
+              for (let item of urls) {
+                if (x.title === item.title) result = false;
+              }
+              return result;
+            })
+            .map((x: Iurls) => {
+              return {
+                urlId: x.id,
+              };
+            }),
+
+          content: body,
+          tags: tags,
+        };
+        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
+        console.log(res);
+        if (res.data.id) navigate("/");
+      } else {
+        const imageKey = await UploadImg(file);
+        if (imageKey) {
+          const data: IEditData = {
+            title: title,
+            category: curCategory,
+            newUrls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
+            deletedUrls: [{ urlId: origin.urls[0].id }],
+            content: body,
+            tags: tags,
+            imageKey: imageKey,
+          };
+          const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
+          console.log(res);
+          if (res.data.id) navigate("/");
+        }
+      }
+    }
   };
 
   return (
@@ -72,6 +220,7 @@ export default function AddPost() {
                   urls={urls}
                   setUrls={setUrls}
                   onAddList={handleAddUrls}
+                  onDelList={handleDelUrls}
                 />
               );
             case "맛집":
@@ -105,7 +254,6 @@ export default function AddPost() {
           setValue={setTags}
           placeholder="#tag1, #tag2, #tag3 ..."
         ></DefaultInput>
-        <pre>{body}</pre>
       </FormWrapper>
       <BtnWrapper>
         <StyledBtn
@@ -116,7 +264,7 @@ export default function AddPost() {
           fontWeight={400}
           fontColor="white"
           btnType="full"
-          handleClick={() => console.log(body)}
+          handleClick={handleSubmit}
         ></StyledBtn>
         <StyledBtn
           title="Cancel"

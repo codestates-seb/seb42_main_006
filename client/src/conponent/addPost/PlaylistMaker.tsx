@@ -2,20 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { ButtonInput } from "../parts/InputNoH";
 import YoutubeList from "../postDetail/music/YoutubeList";
-
-interface Iurls {
-  url: string;
-  thumbnail: string;
-  title: string;
-}
+import { Iurls } from "../../page/AddPost";
 
 interface IplaylistMakerProp {
   onAddList: (x: string) => void;
   urls: Iurls[];
   setUrls: React.Dispatch<React.SetStateAction<Iurls[]>>;
+  onDelList: (x: string) => void;
 }
 
-function PlaylistMaker({ urls, setUrls, onAddList }: IplaylistMakerProp) {
+function PlaylistMaker({
+  urls,
+  setUrls,
+  onAddList,
+  onDelList,
+}: IplaylistMakerProp) {
   return (
     <>
       <InputTitle>플레이리스트</InputTitle>
@@ -27,7 +28,12 @@ function PlaylistMaker({ urls, setUrls, onAddList }: IplaylistMakerProp) {
       ></ButtonInput>
       {urls.length !== 0 && (
         <PlaylistWrapper>
-          <YoutubeList list={urls} setList={setUrls}></YoutubeList>
+          <YoutubeList
+            list={urls}
+            setList={setUrls}
+            mode="edit"
+            onDelete={onDelList}
+          ></YoutubeList>
         </PlaylistWrapper>
       )}
     </>
