@@ -8,104 +8,6 @@ import { requestAuth } from "../function/request";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 200px;
-`;
-
-const ContentWapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 800px;
-  color: white;
-`;
-
-const TopInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 35px;
-`;
-
-const TopInfoLeft = styled.div`
-  display: flex;
-`;
-
-const TopInfoRight = styled.div`
-  display: flex;
-`;
-
-const DetailPost = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 800px;
-  height: 300px;
-  border: 1px solid #4a4a4a;
-  border-radius: 5px;
-  background-color: #222222;
-  padding: 30px;
-`;
-
-const TitleContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 770px;
-`;
-
-const Tags = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-`;
-
-const TagInfo = styled.div`
-  display: flex;
-`;
-
-const TagRight = styled.div`
-  margin-top: 2px;
-  margin-right: 5px;
-`;
-
-const Title = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-`;
-
-const DetailContent = styled.div`
-  display: flex;
-  width: 700px;
-  padding-left: 10px;
-`;
-
-const UserName = styled.div`
-  margin-left: 0.5rem;
-  padding-top: 0.4rem;
-`;
-
-const UserRetweets = styled.div`
-  display: flex;
-  margin-top: 10px;
-  padding-top: 0.4rem;
-
-  color: white;
-  font-size: 0.8rem;
-  width: 100%;
-  position: relative;
-`;
-
-const RetweetContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 3rem;
-  /* border: 1px solid #4a4a4a; */
-  width: 100%;
-`;
-
 interface Post {
   id: number;
   title: string;
@@ -269,3 +171,101 @@ export default function CollectDeatail() {
     </Content>
   );
 }
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 200px;
+`;
+
+const ContentWapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  color: white;
+`;
+
+const TopInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+`;
+
+const TopInfoLeft = styled.div`
+  display: flex;
+`;
+
+const TopInfoRight = styled.div`
+  display: flex;
+`;
+
+const DetailPost = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: 300px;
+  border: 1px solid #4a4a4a;
+  border-radius: 5px;
+  background-color: #222222;
+  padding: 30px;
+`;
+
+const TitleContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 770px;
+`;
+
+const Tags = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+`;
+
+const TagInfo = styled.div`
+  display: flex;
+`;
+
+const TagRight = styled.div`
+  margin-top: 2px;
+  margin-right: 5px;
+`;
+
+const Title = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
+const DetailContent = styled.div`
+  display: flex;
+  width: 700px;
+  padding-left: 10px;
+`;
+
+const UserName = styled.div`
+  margin-left: 0.5rem;
+  padding-top: 0.4rem;
+`;
+
+const UserRetweets = styled.div`
+  display: flex;
+  margin-top: 10px;
+  padding-top: 0.4rem;
+
+  color: white;
+  font-size: 0.8rem;
+  width: 100%;
+  position: relative;
+`;
+
+const RetweetContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3rem;
+  /* border: 1px solid #4a4a4a; */
+  width: 100%;
+`;

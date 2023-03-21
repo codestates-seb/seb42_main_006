@@ -12,8 +12,6 @@ export default function Collect() {
       </Sort>
       <PostsContent>
         <CollectItem />
-        <CollectItem />
-        <CollectItem />
       </PostsContent>
     </Content>
   );
