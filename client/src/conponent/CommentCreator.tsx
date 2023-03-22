@@ -32,6 +32,7 @@ export default function CommentCreator({ handleSubmit }: IcommentCreatorProp) {
 
   const handleClick = () => {
     handleSubmit({ content: commentValue });
+    setCommetValue("");
   };
 
   return (

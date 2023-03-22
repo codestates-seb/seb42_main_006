@@ -55,7 +55,7 @@ function Comment({ item, from, parentId, setRender }: Iitem) {
           handleClick={() => console.log("click")}
         />
         <UserRetweet>
-          <User>{item.nickName}</User>
+          <User>{item.nickname}</User>
           <div>{item.content}</div>
         </UserRetweet>
         <IconWrapper>

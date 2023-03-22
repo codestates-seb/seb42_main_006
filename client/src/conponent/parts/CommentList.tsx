@@ -20,7 +20,7 @@ export interface Props {
   createAt: string;
   modifiedAt: string;
   memberId: number;
-  nickName: string;
+  nickname: string;
 }
 
 interface ICommentListProps {
@@ -37,7 +37,7 @@ function CommentList({ postId, from }: ICommentListProps) {
       .get(
         `${
           from === "collect" ? "/recruit-comments/" : "/prf-comments/"
-        }${postId}`,
+        }${postId}`
       )
       .then((res) => {
         setComment(res.data);

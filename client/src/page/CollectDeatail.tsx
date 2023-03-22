@@ -20,7 +20,7 @@ interface Post {
   createAt: string;
   modifiedAt: string;
   memberId: number;
-  nickName: string;
+  nickname: string;
   age: string;
   tags: string;
 }
@@ -39,7 +39,7 @@ export default function CollectDeatail() {
     createAt: "2023-02-25T17:41:46",
     modifiedAt: "2023-02-25T18:26:13",
     memberId: 1,
-    nickName: "홍길동",
+    nickname: "홍길동",
     age: "20대30대",
     tags: "#홍대#맛집#냉모밀",
   });
@@ -83,7 +83,7 @@ export default function CollectDeatail() {
               border="none"
               handleClick={() => console.log("click")}
             />
-            <UserName>{post.nickName}</UserName>
+            <UserName>{post.nickname}</UserName>
           </TopInfoLeft>
           <TopInfoRight>
             <TagRight>
