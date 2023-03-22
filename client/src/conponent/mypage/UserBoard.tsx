@@ -245,13 +245,12 @@ export default function UserBoard({
                   listData.data.map((el: any, idx: number) => (
                     <MyBoardBodyLi key={el.id}>
                       <strong className="MyBoardTitle">
-                        {/* {total * 10 - ((curr - 1) * 10 + idx)} */}
                         {listData.data.length < 10
                           ? listData.data.length - idx
                           : total * 10 - ((curr - 1) * 10 + idx)}
                       </strong>
                       <div className="MyBoardContent">
-                        <Link to={`/prf-posts/${el.id}`}>{el.title}</Link>
+                        <Link to={`/postdetail/${el.id}`}>{el.title}</Link>
                       </div>
                     </MyBoardBodyLi>
                   ))}

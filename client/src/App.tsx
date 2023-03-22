@@ -30,7 +30,7 @@ const ContentWrapper = styled.div`
 
 function App() {
   const [token] = useSessionStorage("auth", "no token");
-  const [isLogin, setIsLogin] = useState(token === "no token" ? false : true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <BrowserRouter>

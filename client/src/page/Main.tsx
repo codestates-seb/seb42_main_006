@@ -145,7 +145,7 @@ export default function Main({ isLogin }: MainType) {
 
   const navigate = useNavigate();
   const hadleNavMain = () => {
-    isLogin ? navigate("/addpost") : navigate("/login");
+    isLogin ? navigate("/addpost/create/new") : navigate("/login");
   };
 
   return (
