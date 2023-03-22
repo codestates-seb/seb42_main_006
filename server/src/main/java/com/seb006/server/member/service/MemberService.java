@@ -43,13 +43,13 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findMember(String email) {
-        Member member = findVerifiedMember(email);
-        return member;
+    public Member findMember(Member member) {
+        Member findMember = checkExistMember(member.getId());
+        return findMember;
     }
 
     public Member updateMember(Member member) {
-        Member findMember = findVerifiedMember(member.getEmail());
+        Member findMember = checkExistMember(member.getId());
 
         // 회원 상태 검사 (탈퇴한 회원인 경우 exception)
         checkMemberStatus(findMember);
@@ -65,11 +65,14 @@ public class MemberService {
         return saveMember;
     }
 
-    public void deleteMember(String email) {
-        Member member = findVerifiedMember(email);
+    public void deleteMember(Member member) {
+        Member deleteMember = checkExistMember(member.getId());
 
-        member.setMemberStatus(Member.MemberStatus.QUIT);
-        memberRepository.save(member);
+        // 이미 탈퇴한 회원인지 확인
+        checkMemberStatus(deleteMember);
+
+        deleteMember.setMemberStatus(Member.MemberStatus.QUIT);
+        memberRepository.save(deleteMember);
     }
 
     @Transactional(readOnly = true)
