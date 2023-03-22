@@ -134,8 +134,8 @@ export default function PostDetail() {
         </ContentBox>
       </BoxContainer>
       <RetweetContainer>
-        <CommentCreator></CommentCreator>
-        <CommentList></CommentList>
+        {/* <CommentCreator></CommentCreator> */}
+        {/* <CommentList></CommentList> */}
       </RetweetContainer>
     </Container>
   );
