@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { StyledBtn } from "../conponent/parts/Button";
-import MainCategory from "../conponent/main/Category";
 import { media } from "../style/Media";
+import CommonLi from "../conponent/main/CommonLi";
+import BoxLi from "../conponent/main/BoxLi";
 
 const MainWrap = styled.div`
   width: 100%;
@@ -60,14 +61,14 @@ const MainTitle = styled.h2`
   `}
 `;
 
-const MainText = styled.p`
+export const MainText = styled.p`
   margin: 1.5rem 0;
   font-size: 0.85rem;
   font-weight: 400;
   line-height: 1.4;
   color: #3c3c3c;
   .break {
-    ${media.pc`
+    ${media.mobile`
       display: none;
     `}
   }
@@ -97,15 +98,55 @@ const ExList = styled.ul`
   `}
 `;
 
-const ExListLi = styled.li`
-  padding: 1.66rem;
-  background: #222;
-  border: 1px solid #3c3c3c;
-  border-radius: 0.33rem;
-`;
+interface MainType {
+  isLogin: boolean;
+}
 
-export default function Main() {
-  const token = sessionStorage.getItem("auth");
+export default function Main({ isLogin }: MainType) {
+  const categoryArr = [
+    {
+      type: "movie",
+      label: "movie",
+    },
+    {
+      type: "music",
+      label: "Music",
+    },
+    {
+      type: "food",
+      label: "Hot Place",
+    },
+    {
+      type: "flower",
+      label: "Anywhere",
+    },
+    {
+      type: "robot",
+      label: "Always",
+    },
+  ];
+  const experienceArr = [
+    {
+      type: "share",
+      label: "Sharing",
+      text: "우리의 서비스를 이용하면 자신이 좋아하는 음악, 맛집, 영화 등을 다른 사람들과 공유할 수 있습니다. 이를 통해 다양한 새로운 음악, 맛집, 영화 등을 발견할 수 있고, 또한 자신의 취향에 맞는 추천을 받을 수 있습니다.",
+    },
+    {
+      type: "match",
+      label: "Matching",
+      text: "우리의 서비스는 취향이 비슷한 사람들끼리 매칭하는 기능도 제공합니다. 이를 통해 자신과 매칭되는 사람들과 소통하며 취향이 맞는 추천을 받을 수 있습니다. 우리 서비스는 쉽고 간편하게 이용할 수 있으며, 다양한 장르와 카테고리에서 추천을 받을 수 있습니다.",
+    },
+    {
+      type: "recommend",
+      label: "Recommending",
+      text: "보유하고 있는 다양한 정보를 기반으로 최적화된 추천 시스템을 제공하여, 이용자들의 만족도를 높일 수 있습니다.",
+    },
+  ];
+
+  const navigate = useNavigate();
+  const hadleNavMain = () => {
+    isLogin ? navigate("/addpost/create/new") : navigate("/login");
+  };
 
   return (
     <MainWrap>
@@ -128,67 +169,36 @@ export default function Main() {
           행복을 전달해드립니다."
         </MainText>
 
-        <Link to={token ? "/addpost" : "/login"}>
-          <StyledBtn
-            title="A D D"
-            width="12rem"
-            height="2.8rem"
-            radius="3rem"
-            fontWeight={400}
-            fontColor="white"
-            btnType="full"
-            handleClick={() => console.log("click")}
-          ></StyledBtn>
-        </Link>
+        <StyledBtn
+          title="A D D"
+          width="12rem"
+          height="2.8rem"
+          radius="3rem"
+          fontWeight={400}
+          fontColor="white"
+          btnType="full"
+          handleClick={hadleNavMain}
+        ></StyledBtn>
       </section>
       <section className="pink">
         <MainTitle>Category</MainTitle>
         <CateList>
-          <li>
-            <MainCategory iconType="movie" label="Movie" />
-          </li>
-          <li>
-            <MainCategory iconType="music" label="Music" />
-          </li>
-          <li>
-            <MainCategory iconType="food" label="Hot Place" />
-          </li>
-          <li>
-            <MainCategory iconType="flower" label="Anywhere" />
-          </li>
-          <li>
-            <MainCategory iconType="robot" label="Always" />
-          </li>
+          {categoryArr.map((el) => (
+            <CommonLi key={el.type} iconType={el.type} label={el.label} />
+          ))}
         </CateList>
       </section>
       <section className="max">
         <MainTitle>Experience</MainTitle>
         <ExList>
-          <ExListLi>
-            <MainCategory iconType="share" border label="Sharing" />
-            <MainText>
-              우리의 서비스를 이용하면 자신이 좋아하는 음악, 맛집, 영화 등을
-              다른 사람들과 공유할 수 있습니다. 이를 통해 다양한 새로운 음악,
-              맛집, 영화 등을 발견할 수 있고, 또한 자신의 취향에 맞는 추천을
-              받을 수 있습니다.
-            </MainText>
-          </ExListLi>
-          <ExListLi>
-            <MainCategory iconType="match" border label="Matching" />
-            <MainText>
-              우리의 서비스는 취향이 비슷한 사람들끼리 매칭하는 기능도
-              제공합니다. 이를 통해 자신과 매칭되는 사람들과 소통하며 취향이
-              맞는 추천을 받을 수 있습니다. 우리 서비스는 쉽고 간편하게 이용할
-              수 있으며, 다양한 장르와 카테고리에서 추천을 받을 수 있습니다.
-            </MainText>
-          </ExListLi>
-          <ExListLi>
-            <MainCategory iconType="recommend" border label="Recommending" />
-            <MainText>
-              보유하고 있는 다양한 정보를 기반으로 최적화된 추천 시스템을
-              제공하여, 이용자들의 만족도를 높일 수 있습니다.
-            </MainText>
-          </ExListLi>
+          {experienceArr.map((el) => (
+            <BoxLi
+              key={el.type}
+              iconType={el.type}
+              label={el.label}
+              text={el.text}
+            />
+          ))}
         </ExList>
       </section>
     </MainWrap>

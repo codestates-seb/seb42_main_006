@@ -1,150 +1,129 @@
 import { useNavigate } from "react-router";
-
+import Loading from "../conponent/parts/Loading";
+import { SearchInput } from "../conponent/parts/InputNoH";
 import IconBtn from "../conponent/parts/IconButton";
-import Tag from "../conponent/parts/Tag";
 import styled from "styled-components";
+import { useEffect, useState, useRef, LegacyRef } from "react";
+import { requestAuth } from "../function/request";
+import PostItem from "../conponent/post/PostItem";
+import { Iurls } from "./AddPost";
+import useIntersectionObserver from "../util/useIntersectorObsevet";
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-`;
-
-const Sort = styled.div`
-  display: flex;
-  margin-left: 15%;
-  justify-content: flex-start;
-  gap: 10px;
-  color: white;
-  width: 50%;
-`;
-
-const PostsContent = styled.div`
-  margin-top: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const PostsSort = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* space-between으로 변경 */
-  width: 500px;
-  height: 150px;
-  border: 1px solid #4a4a4a;
-  border-radius: 5px;
-  background-color: #222222;
-  padding: 10px; /* 3개의 간격을 주기 위해 padding을 추가 */
-`;
-
-const PostDetail = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  height: 100%;
-  width: 300px;
-  margin-left: 0px; /* 왼쪽 여백을 20px로 설정 */
-  margin-bottom: 20px;
-  margin-top: 10px;
-  padding-bottom: 5px;
-`;
-
-const Title = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 10px; // 각 내부 div들에도 margin-bottom 속성을 추가합니다.
-`;
-const Summary = styled.div`
-  font-size: 13px;
-  color: #5a5959;
-  margin-bottom: 5px;
-  height: 70px;
-  margin-top: 5px;
-`;
-
-const IconSort = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 60px;
-`;
-
-const AddPosition = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100px;
-  height: 100px;
-`;
+export interface IListItem {
+  id: number;
+  title: string;
+  category: string;
+  content: string;
+  memberId: number;
+  memberName: string;
+  createAt: string;
+  modifiedAt: string;
+  tags: string;
+  urls: Iurls[];
+  imageKey?: string;
+  likeCount?: number;
+  liked?: boolean;
+}
 
 export default function Posts() {
+  const [category, setCategpry] = useState<string>("전체");
+  const [searchValue, setSearchValue] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [result, setResult] = useState<any>(null);
+  const [list, setList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const target = useRef<HTMLDivElement | null>(null);
+  const [observe, unobserve] = useIntersectionObserver(() => {
+    setPage((page) => page + 1);
+  });
   const navigate = useNavigate();
+
+  const handleCatClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
+  };
+
+  //page 늘어날때마다 get요청
+  useEffect(() => {
+    const ajaxWithLoading = async () => {
+      try {
+        setLoading(true);
+
+        const res = await requestAuth.get(
+          `/prf-posts?page=${page}&size=10&sorting=1${
+            category !== "전체" ? `&category=${category}` : ""
+          }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
+        );
+        console.log(res.data);
+        setResult({ ...res.data });
+        setList([...list, ...res.data.data]);
+      } catch (err) {
+        console.log(err);
+      }
+
+      setLoading(false);
+    };
+    if (page < result?.pageInfo.totalPages + 1 || page === 1) {
+      ajaxWithLoading();
+    }
+  }, [page]);
+
+  //카테고리 바뀔때 초기화
+  useEffect(() => {
+    setPage(1);
+    setList([]);
+  }, [category, keyword]);
+
+  //page 1일때 옵저버 등록하고 마지막 page에서 제거
+  useEffect(() => {
+    if (page === 1) observe(target.current);
+
+    const listCount = result?.data.length;
+    const totalCount = result?.pageInfo.totalPages;
+
+    if (0 === listCount || totalCount === page) {
+      unobserve(target.current);
+    }
+  }, [result]);
+
+  //로딩중일땐 옵저버 제거(중복요청 방지!!)
+  useEffect(() => {
+    if (loading) {
+      unobserve(target.current);
+    } else {
+      observe(target.current);
+    }
+  }, [loading]);
 
   return (
     <Content>
-      <Sort>
-        <div>전체</div>
-        <div>영화</div>
-        <div>음악</div>
-        <div>맛집</div>
-      </Sort>
-      <PostsContent>
-        <PostsSort>
-          <div>
-            <div>
-              <IconBtn
-                title=""
-                width="100px"
-                height="100px"
-                radius="5px"
-                fontWeight={400}
-                fontColor=""
-                btnType=""
-                iconType="noneImg"
-                border="none"
-                handleClick={() => console.log("click")}
-              />
-            </div>
-          </div>
-          <PostDetail>
-            <Title>[성수동] 뇨끼바 라는 뇨끼 전문집</Title>
-            <Summary>
-              성수동에 기념일로 여자친구랑 뇨끼바를 갔습니다. 뇨끼 전문집이여서
-              그런지 너무 맛있었네요 추천드립니다 한번 가보세요 ...
-            </Summary>
-            <Tag title="맛집"></Tag>
-          </PostDetail>
-          <IconSort>
-            <IconBtn
-              title=""
-              width="60px"
-              height="36px"
-              radius="5px"
-              fontWeight={400}
-              fontColor="white"
-              btnType=""
-              iconType="heart"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-            <IconBtn
-              title=""
-              width="40px"
-              height="40px"
-              radius="5px"
-              fontWeight={400}
-              fontColor=""
-              btnType=""
-              iconType="retweet"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-          </IconSort>
-        </PostsSort>
-      </PostsContent>
+      <SearchWrapper>
+        <Search
+          width="100%"
+          placeholder="키워드를 입력해주세요."
+          value={searchValue}
+          setValue={setSearchValue}
+        ></Search>
+        <Sort>
+          {["전체", "영화", "음악", "맛집"].map((x) => (
+            <CategoryBtn
+              isSelect={x === category}
+              onClick={handleCatClick}
+              key={x}
+            >
+              {x}
+            </CategoryBtn>
+          ))}
+        </Sort>
+      </SearchWrapper>
+      {list &&
+        list.map((item: IListItem) => {
+          return <PostItem key={item.id} item={item} />;
+        })}
+      {loading && <Loading />}
+      <div ref={target}></div>
+
       <AddPosition>
         <IconBtn
           title=""
@@ -156,9 +135,66 @@ export default function Posts() {
           btnType="full"
           iconType="add"
           border="none"
-          handleClick={() => navigate("/addpost")}
+          handleClick={() => navigate("/addpost/create/new")}
         />
       </AddPosition>
     </Content>
   );
 }
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 800px;
+  min-width: 390px;
+  height: 100%;
+  align-items: center;
+  padding-top: 24px;
+  gap: 10px;
+  margin: 0 auto;
+`;
+
+const SearchWrapper = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 3.5rem;
+  background-color: #151515;
+`;
+
+const Sort = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+  color: white;
+`;
+
+const AddPosition = styled.div`
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+`;
+
+interface CategoryBtnProp {
+  isSelect: any;
+}
+
+const CategoryBtn = styled.button<CategoryBtnProp>`
+  padding: 4px 8px;
+  border: none;
+  outline: none;
+  color: #fff;
+  border-bottom: ${(props) => (props.isSelect ? "2px solid #f36" : "none")};
+
+  &:hover {
+    color: ${(props) => (props.isSelect ? "#fff" : "#f36")};
+  }
+`;
+
+const Search = styled(SearchInput)`
+  > svg {
+    width: 24px;
+    height: 24px;
+  }
+`;

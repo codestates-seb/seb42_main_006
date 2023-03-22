@@ -3,6 +3,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import YoutubeListItem from "./YoutubeListItem";
 
+import { Iurls } from "../../../page/AddPost";
+
 const Wrapper = styled.div`
   width: 100%;
   height: calc(100% - 100px);
@@ -10,18 +12,19 @@ const Wrapper = styled.div`
   overflow: overlay;
 `;
 
-export interface Iurls {
-  url: string;
-  thumbnail: string;
-  title: string;
-}
-
 interface YoutubeListProp {
-  list: { url: string; thumbnail: string; title: string }[];
+  list: Iurls[];
   setList: React.Dispatch<React.SetStateAction<Iurls[]>>;
+  mode: "read" | "edit";
+  onDelete?: (x: string) => void;
 }
 
-export default function YoutubeList({ list, setList }: YoutubeListProp) {
+export default function YoutubeList({
+  list,
+  setList,
+  mode,
+  onDelete,
+}: YoutubeListProp) {
   const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
@@ -56,6 +59,8 @@ export default function YoutubeList({ list, setList }: YoutubeListProp) {
                           <YoutubeListItem
                             item={item}
                             key={index}
+                            mode={mode}
+                            onDelete={onDelete}
                           ></YoutubeListItem>
                         </li>
                       )}

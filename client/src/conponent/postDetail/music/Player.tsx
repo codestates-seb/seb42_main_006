@@ -3,7 +3,7 @@ import styled from "styled-components";
 import AudioPlayer from "./AudioPlayer";
 import YoutubeList from "./YoutubeList";
 
-import { Iurls } from "./YoutubeList";
+import { Iurls } from "../../../page/AddPost";
 
 interface PlayerProp {
   list: Iurls[];
@@ -23,7 +23,7 @@ function Player({ list, nowPlaying, setList }: PlayerProp) {
   return (
     <Wrapper>
       <AudioPlayer data={nowPlaying}></AudioPlayer>
-      <YoutubeList list={list} setList={setList}></YoutubeList>
+      <YoutubeList list={list} setList={setList} mode="read"></YoutubeList>
     </Wrapper>
   );
 }

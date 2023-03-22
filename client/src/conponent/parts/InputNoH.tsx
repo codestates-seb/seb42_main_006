@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, SetStateAction } from "react";
 import styled from "styled-components";
 
 import { StyledBtn } from "./Button";
@@ -51,11 +51,25 @@ const SLabel = styled.label`
 
 interface searchInputProp extends InputWrapperProp {
   placeholder: string;
+  className?: any;
+  value: string;
+  setValue: React.Dispatch<SetStateAction<string>>;
 }
-export function SearchInput({ width, placeholder }: searchInputProp) {
+export function SearchInput({
+  width,
+  placeholder,
+  value,
+  setValue,
+  className,
+}: searchInputProp) {
   return (
-    <InputWrapper width={width}>
-      <SInput type="text" placeholder={placeholder} />
+    <InputWrapper width={width} className={className}>
+      <SInput
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
       <SearchIcon></SearchIcon>
     </InputWrapper>
   );

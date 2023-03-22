@@ -4,6 +4,173 @@ import { StyledBtn } from "../conponent/parts/Button";
 import Tag from "../conponent/parts/Tag";
 import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
+import { requestAuth } from "../function/request";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+
+interface Post {
+  id: number;
+  title: string;
+  category: string;
+  content: string;
+  recruitNumber: number;
+  currentNumber: number;
+  recruitStatus: string;
+  dueDate: string;
+  createAt: string;
+  modifiedAt: string;
+  memberId: number;
+  nickName: string;
+  age: string;
+  tags: string;
+}
+
+export default function CollectDeatail() {
+  const param = useParams();
+  const [post, setPost] = useState<Post>({
+    id: 1,
+    title: "제목을 입력해주세요",
+    category: "영화",
+    content: "게시글 내용을적어주세요",
+    recruitNumber: 5,
+    currentNumber: 3,
+    recruitStatus: "active",
+    dueDate: "2023-03-08",
+    createAt: "2023-02-25T17:41:46",
+    modifiedAt: "2023-02-25T18:26:13",
+    memberId: 1,
+    nickName: "홍길동",
+    age: "20대30대",
+    tags: "#홍대#맛집#냉모밀",
+  });
+
+  useEffect(() => {
+    requestAuth
+      .get<Post>(`/recruit-posts/${param.recruiteId}`)
+      .then((res) => {
+        setPost(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+    <Content>
+      <ContentWapper>
+        <TopInfo>
+          <TopInfoLeft>
+            <IconBtn
+              title=""
+              width="30px"
+              height="30px"
+              radius="100px"
+              fontWeight={400}
+              fontColor=""
+              btnType=""
+              iconType="profile"
+              border="none"
+              handleClick={() => console.log("click")}
+            />
+            <UserName>{post.nickName}</UserName>
+          </TopInfoLeft>
+          <TopInfoRight>
+            <TagRight>
+              <IconBtn
+                title=""
+                width="50px"
+                height="30px"
+                radius="50px"
+                fontWeight={400}
+                fontColor="white"
+                btnType=""
+                iconType="heart"
+                handleClick={() => console.log("click")}
+              />
+            </TagRight>
+            <TagRight>
+              <StyledBtn
+                title={
+                  "참가인원" + post.currentNumber + "/" + post.recruitNumber
+                }
+                width="100px"
+                height="30px"
+                radius="50px"
+                fontWeight={400}
+                fontColor="pink"
+                btnType="empty"
+                handleClick={() => console.log("click")}
+              ></StyledBtn>
+            </TagRight>
+            <TagRight>
+              <StyledBtn
+                title="게시물 보러가기"
+                width="110px"
+                height="30px"
+                radius="50px"
+                fontWeight={400}
+                fontColor="white"
+                btnType="full"
+                handleClick={() => console.log("click")}
+              ></StyledBtn>
+            </TagRight>
+          </TopInfoRight>
+        </TopInfo>
+        <DetailPost>
+          <TitleContent>
+            <Title>{post.title}</Title>
+            <IconBtn
+              title=""
+              width="40px"
+              height="40px"
+              radius="5px"
+              fontWeight={400}
+              fontColor="pink"
+              btnType=""
+              iconType="treeDot"
+              border="none"
+              handleClick={() => console.log("click")}
+            />
+          </TitleContent>
+          <DetailContent>{post.content}</DetailContent>
+        </DetailPost>
+        <Tags>
+          <TagInfo>
+            <TagRight>
+              <Tag title={post.category}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={post.age}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={"모집기한:" + post.dueDate}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={post.tags}></Tag>
+            </TagRight>
+          </TagInfo>
+          <StyledBtn
+            title="함께하기"
+            width="100px"
+            height="30px"
+            radius="50px"
+            fontWeight={400}
+            fontColor="pink"
+            btnType="empty"
+            handleClick={() => console.log("click")}
+          ></StyledBtn>
+        </Tags>
+        <UserRetweets>
+          <RetweetContainer>
+            <CommentCreator></CommentCreator>
+            <CommentList></CommentList>
+          </RetweetContainer>
+        </UserRetweets>
+      </ContentWapper>
+    </Content>
+  );
+}
 
 const Content = styled.div`
   display: flex;
@@ -102,118 +269,3 @@ const RetweetContainer = styled.div`
   /* border: 1px solid #4a4a4a; */
   width: 100%;
 `;
-
-export default function CollectDeatail() {
-  return (
-    <Content>
-      <ContentWapper>
-        <TopInfo>
-          <TopInfoLeft>
-            <IconBtn
-              title=""
-              width="30px"
-              height="30px"
-              radius="100px"
-              fontWeight={400}
-              fontColor=""
-              btnType=""
-              iconType="profile"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-            <UserName>잘생긴 라마</UserName>
-          </TopInfoLeft>
-          <TopInfoRight>
-            <TagRight>
-              <IconBtn
-                title="12"
-                width="50px"
-                height="30px"
-                radius="50px"
-                fontWeight={400}
-                fontColor="white"
-                btnType=""
-                iconType="heart"
-                handleClick={() => console.log("click")}
-              />
-            </TagRight>
-            <TagRight>
-              <StyledBtn
-                title="참가 인원 3/5"
-                width="100px"
-                height="30px"
-                radius="50px"
-                fontWeight={400}
-                fontColor="pink"
-                btnType="empty"
-                handleClick={() => console.log("click")}
-              ></StyledBtn>
-            </TagRight>
-            <TagRight>
-              <StyledBtn
-                title="게시물 보러가기"
-                width="110px"
-                height="30px"
-                radius="50px"
-                fontWeight={400}
-                fontColor="white"
-                btnType="full"
-                handleClick={() => console.log("click")}
-              ></StyledBtn>
-            </TagRight>
-          </TopInfoRight>
-        </TopInfo>
-        <DetailPost>
-          <TitleContent>
-            <Title>성수동 뇨끼바 가실분 구합니다.</Title>
-            <IconBtn
-              title=""
-              width="40px"
-              height="40px"
-              radius="5px"
-              fontWeight={400}
-              fontColor="pink"
-              btnType=""
-              iconType="treeDot"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-          </TitleContent>
-          <DetailContent>
-            성수동에 유명한 뇨끼바 있다고 게시판에 확인 했습니다. 2023/03/31
-            가실분 구합니다. 같이하기 눌러주시고 댓글 달아주세요~ ....
-          </DetailContent>
-        </DetailPost>
-        <Tags>
-          <TagInfo>
-            <TagRight>
-              <Tag title="맛집"></Tag>
-            </TagRight>
-            <TagRight>
-              <Tag title="20대"></Tag>
-            </TagRight>
-            <TagRight>
-              <Tag title="모집기한: 2023/03/31"></Tag>
-            </TagRight>
-          </TagInfo>
-          <StyledBtn
-            title="함께하기"
-            width="100px"
-            height="30px"
-            radius="50px"
-            fontWeight={400}
-            fontColor="pink"
-            btnType="empty"
-            handleClick={() => console.log("click")}
-          ></StyledBtn>
-        </Tags>
-        <UserRetweets>
-          <RetweetContainer>
-            <CommentCreator></CommentCreator>
-            <CommentList></CommentList>
-          </RetweetContainer>
-        </UserRetweets>
-      </ContentWapper>
-    </Content>
-  );
-}

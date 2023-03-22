@@ -66,7 +66,7 @@ export default function MainCategory({
       case "recommend":
         return <RecomIcon />;
       default:
-        return <MovieIcon />;
+        throw new Error("지원하지 않는 타입입니다.");
     }
   };
 

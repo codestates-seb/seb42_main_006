@@ -1,12 +1,14 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router";
-import { useFetch } from "../util/MyApi";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useFetch, useUserInfo } from "../util/MyApi";
 import styled from "styled-components";
 import { media } from "../style/Media";
 import UserEdit from "../conponent/mypage/UserEdit";
 import Paging from "../conponent/mypage/Paging";
+import Loading from "../conponent/parts/Loading";
 
 const MypageWrap = styled.div`
+  position: relative;
   max-width: 1200px;
   width: 100%;
   margin: 4rem auto;
@@ -105,49 +107,69 @@ const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
+    > a {
+      font-size: 0.88rem;
+    }
   }
   &:hover {
     color: #ff3366;
   }
 `;
 
+const LoadingBox = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 30rem;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #151515;
+  z-index: 9999;
+`;
+
 export default function Mypage() {
-  // const navigate = useNavigate();
-  // const token = sessionStorage.getItem("auth");
-  // if (!token) {
-  //   navigate("/login");
-  // }
+  const [info, infoPending] = useUserInfo(`/members/mypage`);
+
+  let userInfo: any = {};
+  userInfo = info;
 
   const tabArray = [
     {
       title: "작성한\n게시글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/prf-post`
+      url: `/members/prf-posts`,
     },
     {
       title: "작성한\n모집글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/recruit-posts`
+      url: `/members/recruit-posts`,
     },
     {
       title: "참여한\n모집글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/participation`
+      url: `/members/participation`,
     },
     {
       title: "좋아요한\n게시글",
-      url: `https://api.github.com/repositories/1300192/issues?per_page=10`,
-      //url : `/members/prf-post-like`
+      url: `/members/prf-posts-like`,
     },
   ];
   const [tab, setTab] = useState(tabArray[0].title);
-  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}&page=1`);
-  //  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}?page=${num}&size=10`);
+  const [list, listPending, setUrl] = useFetch(
+    `${tabArray[0].url}?page=1&size=10`
+  );
+
+  let listData: any = [];
+  listData = list;
+
+  const totalPage = listData.pageInfo && listData.pageInfo.totalPages;
 
   const limit = 5;
   const [curr, setCurr] = useState(1);
-  const [total, setTotal] = useState(22);
-  // const [total, setTotal] = useState(list.pageInfo.totalPages || 1);
+  const [total, setTotal] = useState(
+    listData.pageInfo && listData.pageInfo.totalPages
+  );
   const [arr, setArr] = useState(
     Array.from(
       { length: limit > total ? total : limit },
@@ -157,17 +179,15 @@ export default function Mypage() {
 
   const handleTab = (item: string, url: string) => {
     setTab(item);
-    setUrl(url);
+    setUrl(`${url}?page=1&size=10`);
     setCurr(1);
-    setArr(Array.from({ length: limit }, (_, index) => index + 1));
-    // setTotal(list.pageInfo.totalPages);
-    setTotal(10);
   };
 
   const handlePaging = (num: number) => {
     setCurr(num);
-    setUrl(`${tabArray.filter((el) => el.title === tab)[0].url}&page=${num}`);
-    // setUrl(`${tabArray.filter((el) => el.title === tab)[0].url}?page=${num}&size=10`);
+    setUrl(
+      `${tabArray.filter((el) => el.title === tab)[0].url}?page=${num}&size=10`
+    );
   };
 
   const handlePrev = () => {
@@ -202,54 +222,78 @@ export default function Mypage() {
     }
   };
 
+  useEffect(() => {
+    setTotal(totalPage > 0 ? totalPage : 1);
+    setArr(
+      Array.from(
+        { length: limit > total ? total : limit },
+        (_, index) => index + 1
+      )
+    );
+  }, [totalPage, total, limit]);
+
   return (
     <MypageWrap>
-      <UserEdit />
-      <MyTabList>
-        {tabArray.map((el) => (
-          <MyTabLi
-            key={el.title}
-            isActive={tab === el.title ? true : false}
-            onClick={() => handleTab(el.title, el.url)}
-          >
-            {el.title}
-          </MyTabLi>
-        ))}
-      </MyTabList>
-      <section>
-        <MypageTitle>{tab}</MypageTitle>
-        <MyBoard>
-          <MyBoardHead>
-            {["글번호", "제목"].map((el) => (
-              <MyBoardHeadLi key={el}>{el}</MyBoardHeadLi>
+      {listPending && infoPending && (
+        <LoadingBox>
+          <Loading />
+        </LoadingBox>
+      )}
+      {userInfo && listData && (
+        <>
+          <UserEdit userInfo={userInfo} pending={infoPending} />
+          <MyTabList>
+            {tabArray.map((el) => (
+              <MyTabLi
+                key={el.title}
+                isActive={tab === el.title ? true : false}
+                onClick={() => handleTab(el.title, el.url)}
+              >
+                {el.title}
+              </MyTabLi>
             ))}
-          </MyBoardHead>
-          <MyBoardBody>
-            {pending || !list.length ? (
-              <MyBoardBodyLi isNone>
-                {pending ? "로딩중..." : "게시글이 없습니다"}
-              </MyBoardBodyLi>
-            ) : null}
-            {list &&
-              list.map((el, idx) => (
-                <MyBoardBodyLi key={el.id}>
-                  <strong className="MyBoardTitle">
-                    {total * 10 - ((curr - 1) * 10 + idx)}
-                  </strong>
-                  <div className="MyBoardContent">{el.title}</div>
-                </MyBoardBodyLi>
-              ))}
-          </MyBoardBody>
-        </MyBoard>
-        <Paging
-          curr={curr}
-          arr={arr}
-          total={total}
-          handlePaging={handlePaging}
-          handlePrev={handlePrev}
-          handleNext={handleNext}
-        />
-      </section>
+          </MyTabList>
+          <section>
+            <MypageTitle>{tab}</MypageTitle>
+            <MyBoard>
+              <MyBoardHead>
+                {["글번호", "제목"].map((el) => (
+                  <MyBoardHeadLi key={el}>{el}</MyBoardHeadLi>
+                ))}
+              </MyBoardHead>
+              <MyBoardBody>
+                {(listPending ||
+                  (listData.pageInfo && !listData.pageInfo.totalElements)) && (
+                  <MyBoardBodyLi isNone>
+                    {listPending ? "로딩중..." : "게시글이 없습니다"}
+                  </MyBoardBodyLi>
+                )}
+                {listData.data &&
+                  listData.data.map((el: any, idx: number) => (
+                    <MyBoardBodyLi key={el.id}>
+                      <strong className="MyBoardTitle">
+                        {listData.pageInfo.totalElements -
+                          (curr - 1) * 10 -
+                          idx}
+                      </strong>
+                      <div className="MyBoardContent">
+                        <Link to={`/postdetail/${el.id}`}>{el.title}</Link>
+                      </div>
+                    </MyBoardBodyLi>
+                  ))}
+              </MyBoardBody>
+            </MyBoard>
+            <Paging
+              curr={curr}
+              arr={arr}
+              total={total}
+              handlePaging={handlePaging}
+              handlePrev={handlePrev}
+              handleNext={handleNext}
+            />
+          </section>
+        </>
+      )}
     </MypageWrap>
   );
 }

@@ -8,48 +8,11 @@ import { StyledBtn } from "../conponent/parts/Button";
 import { validFn } from "../function/validFn";
 import { request } from "../function/request";
 
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-`;
+interface LoginType {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const Background = styled.div`
-  width: 30vw;
-  margin: auto;
-  max-width: 400px;
-  min-width: 300px;
-  /* border: 2px solid #5a5959;
-  background-color: #222222; */
-  /* box-shadow: 0 0 20px 2px #ff336664; */
-  border-radius: 15px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  > h1 {
-    font-size: 2rem;
-    color: #f36;
-    font-weight: 400;
-  }
-`;
-
-const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  > span {
-    color: #ffffff;
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-
-  > div {
-    margin-bottom: 20px;
-  }
-`;
-
-function Login() {
+function Login({ setIsLogin }: LoginType) {
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
   const [password, setPassword] = useState("");
@@ -69,6 +32,7 @@ function Login() {
           if (res.status === 200) {
             sessionStorage.setItem("auth", res.headers["authorization"]);
             sessionStorage.setItem("user", JSON.stringify(res.data));
+            setIsLogin(true);
             navigate("/posts");
           }
         })
@@ -81,7 +45,7 @@ function Login() {
       <Background>
         <h1>로그인</h1>
         <FormWrapper>
-          <span>Email</span>
+          <InputTitle>Email</InputTitle>
           <ValidInput
             width="100%"
             height="40px"
@@ -94,7 +58,7 @@ function Login() {
             validFn={(x) => validFn("email")(x)}
           ></ValidInput>
 
-          <span>Password</span>
+          <InputTitle>Password</InputTitle>
           <ValidInput
             width="100%"
             height="40px"
@@ -125,3 +89,44 @@ function Login() {
 }
 
 export default Login;
+
+const Wrapper = styled.div`
+  display: flex;
+  height: 100%;
+`;
+
+const Background = styled.div`
+  width: 30vw;
+  margin: auto;
+  max-width: 400px;
+  min-width: 300px;
+  /* border: 2px solid #5a5959;
+  background-color: #222222; */
+  /* box-shadow: 0 0 20px 2px #ff336664; */
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  > h1 {
+    font-size: 2rem;
+    color: #f36;
+    font-weight: 400;
+  }
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    margin-bottom: 20px;
+  }
+`;
+
+const InputTitle = styled.span`
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 500;
+`;

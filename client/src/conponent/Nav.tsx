@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   font-weight: bold;
   color: white;
   width: 160px;
@@ -14,12 +15,23 @@ const Content = styled.div`
   padding-top: 10px;
   position: sticky;
   top: 70px;
-  left: -160px;
+  left: 0;
   padding-left: 10px;
 `;
 
-export default function Nav() {
+interface NavType {
+  isLogin: boolean;
+}
+
+export default function Nav({ isLogin }: NavType) {
   const navigate = useNavigate();
+
+  console.log(isLogin);
+
+  const hadleNav = () => {
+    isLogin ? navigate("/mypage") : navigate("/login");
+  };
+
   return (
     <Content>
       <PageButton title="Main" handleClick={() => navigate("/")}></PageButton>
@@ -31,10 +43,7 @@ export default function Nav() {
         title="Together"
         handleClick={() => navigate("/collect")}
       ></PageButton>
-      <PageButton
-        title="My page"
-        handleClick={() => navigate("/mypage")}
-      ></PageButton>
+      <PageButton title="My page" handleClick={hadleNav}></PageButton>
     </Content>
   );
 }

@@ -37,15 +37,15 @@ const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  > span {
-    color: #ffffff;
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-
   > div {
     margin-bottom: 20px;
   }
+`;
+
+const InputTitle = styled.span`
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 500;
 `;
 
 function Signup() {
@@ -104,7 +104,7 @@ function Signup() {
       <Background>
         <h1>회원가입</h1>
         <FormWrapper>
-          <span>Email</span>
+          <InputTitle>Email</InputTitle>
           <ValidInput
             width="100%"
             placeholder="Email"
@@ -122,7 +122,7 @@ function Signup() {
 
           {emailCheck === true && (
             <>
-              <span>Nickname</span>
+              <InputTitle>Nickname</InputTitle>
               <ValidInput
                 width="100%"
                 placeholder="Nickname"
@@ -133,7 +133,7 @@ function Signup() {
                 errorMsg="닉네임을 확인해주세요."
                 validFn={(x) => validFn("nickname")(x)}
               ></ValidInput>
-              <span>Password</span>
+              <InputTitle>Password</InputTitle>
               <ValidInput
                 width="100%"
                 placeholder="Password"

@@ -1,5 +1,6 @@
 import {
   Heart,
+  FullHeart,
   Write,
   Delete,
   TreeDot,
@@ -17,6 +18,7 @@ import {
   Speaker,
 } from "../../icons/Icon";
 import styled from "styled-components";
+import React from "react";
 
 interface StyleProp {
   width: string;
@@ -45,7 +47,7 @@ const Button = styled.button<StyleProp>`
 interface prop extends StyleProp {
   title: string;
   iconType: string;
-  handleClick: () => any;
+  handleClick: () => void;
   style?: React.CSSProperties;
 }
 
@@ -66,6 +68,8 @@ export default function IconBtn({
     switch (iconType) {
       case "heart":
         return <Heart />;
+      case "fullheart":
+        return <FullHeart />;
       case "write":
         return <Write />;
       case "delete":
@@ -100,6 +104,10 @@ export default function IconBtn({
         return <Heart />;
     }
   };
+  const handler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    handleClick();
+  };
 
   return (
     <Button
@@ -110,7 +118,7 @@ export default function IconBtn({
       fontColor={fontColor}
       btnType={btnType}
       border={border}
-      onClick={handleClick}
+      onClick={handler}
       style={style}
     >
       {iconTypeHandler(iconType)} {title}
