@@ -46,6 +46,11 @@ public class AuthService {
             Map<String, String> token = new HashMap<>();
             token.put("accessToken", jwtTokenizer.generateAccessToken(member));
             token.put("refreshToken", jwtTokenizer.generateRefreshToken(member.getEmail()));
+
+            // 새로 생성한 refreshToken 으로 교체
+            redisRefreshToken.setRefreshToken(token.get("refreshToken"));
+            refreshTokenRepository.save(redisRefreshToken);
+
             return token;
         } else {
             throw new IllegalArgumentException("토큰이 일치하지 않습니다.");
