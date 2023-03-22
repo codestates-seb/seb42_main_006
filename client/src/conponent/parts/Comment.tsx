@@ -38,6 +38,19 @@ function Comment({ item, from, parentId, setRender }: Iitem) {
   };
 
   // 쓰레기통 누르면 삭제되는 요청 보내기
+  const handleDelete = () => {
+    if (from === "posts") {
+      requestAuth.delete(`/prf-comments/${parentId}/${item.id}`).then(() => {
+        setRender({});
+      });
+    } else if (from === "collect") {
+      requestAuth
+        .delete(`/recruit-comments/${parentId}/${item.id}`)
+        .then(() => {
+          setRender({});
+        });
+    }
+  };
 
   return (
     <Wrapper>
@@ -83,7 +96,7 @@ function Comment({ item, from, parentId, setRender }: Iitem) {
                 btnType=""
                 iconType="delete"
                 border="none"
-                handleClick={() => console.log("")}
+                handleClick={handleDelete}
               />
             </>
           )}
