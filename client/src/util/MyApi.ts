@@ -53,7 +53,6 @@ export const useUserInfo = (URL: string): UserInfoReturnTypes => {
       } catch (error) {
         setPending(false);
         console.error(error);
-        console.log("돌아가기!");
         return [];
       }
     };
