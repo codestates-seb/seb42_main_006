@@ -68,8 +68,7 @@ public class PrfPostController {
             return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
         }
 
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member member = memberService.findVerifiedMember(principal);
+        Member member = memberService.findVerifiedMember((String) principalObj);
 
         List<Long> likedPostIds = likeService.prfPostLiked(member, allPrfPost);
         List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost, likedPostIds);
@@ -94,8 +93,7 @@ public class PrfPostController {
             return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
         }
 
-        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member member = memberService.findVerifiedMember(principal);
+        Member member = memberService.findVerifiedMember((String) principalObj);
 
         List<Long> likedPostIds = likeService.prfPostLiked(member, allPrfPost);
         List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost, likedPostIds);
