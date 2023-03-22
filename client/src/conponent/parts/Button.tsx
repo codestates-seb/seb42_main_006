@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 
 interface StyleProp {
@@ -36,7 +37,7 @@ const Button = styled.button<StyleProp>`
 
 interface prop extends StyleProp {
   title: string;
-  handleClick: () => any;
+  handleClick: () => void;
   style?: React.CSSProperties;
   className?: any;
 }
@@ -53,6 +54,10 @@ export function StyledBtn({
   style,
   className,
 }: prop) {
+  const handler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    handleClick();
+  };
   return (
     <Button
       width={width}
@@ -61,7 +66,7 @@ export function StyledBtn({
       fontWeight={fontWeight}
       fontColor={fontColor}
       btnType={btnType}
-      onClick={handleClick}
+      onClick={handler}
       style={style}
       className={className}
     >

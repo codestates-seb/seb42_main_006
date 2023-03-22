@@ -4,6 +4,7 @@ import Tag from "../parts/Tag";
 import IconBtn from "../parts/IconButton";
 import { IListItem } from "../../page/Posts";
 import { useNavigate } from "react-router";
+import logo from "../../icons/logo.svg";
 
 interface Props {
   item: IListItem;
@@ -12,15 +13,19 @@ interface Props {
 function PostItem({ item }: Props) {
   const navigate = useNavigate();
   const splitTag = (x: string) => x.split("#").splice(1);
-  const thumbnailUrl = (category: string, item: IListItem) => {
-    if (category === "맛집")
+  const thumbnailUrl = (item: IListItem) => {
+    if (item.category === "맛집")
       return `${process.env.REACT_APP_S3_URL + item.imageKey}`;
-    else return item.urls[0].thumbnail;
+    else return item.urls[0]?.thumbnail;
+  };
+
+  const handleLike = () => {
+    console.log("like");
   };
   return (
     <PostsSort onClick={() => navigate(`/postdetail/${item.id}`)}>
       <ImgWrapper>
-        <img src={thumbnailUrl(item.category, item)} alt="thumbnail" />
+        {thumbnailUrl(item) && <img src={thumbnailUrl(item)} alt="thumbnail" />}
       </ImgWrapper>
       <PostDetail>
         <Title>{item.title}</Title>
@@ -44,7 +49,7 @@ function PostItem({ item }: Props) {
           btnType=""
           iconType={item.liked ? "fullheart" : "heart"}
           border="none"
-          handleClick={() => console.log("click")}
+          handleClick={handleLike}
         />
         <IconBtn
           title=""
@@ -71,8 +76,9 @@ const PostDetail = styled.div`
   justify-content: space-around;
   align-items: flex-start;
   height: 100%;
-  flex: 1 1 auto;
+  width: 70%;
   margin-left: 10px; /* 왼쪽 여백을 20px로 설정 */
+  overflow: hidden;
 `;
 
 const ImgWrapper = styled.div`
@@ -84,6 +90,9 @@ const ImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("${logo}");
+  background-position: center;
+  background-repeat: no-repeat;
 
   > img {
     height: 100%;
@@ -91,11 +100,15 @@ const ImgWrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.span`
   font-size: 20px;
   font-weight: bold;
   color: white;
-  margin-bottom: 10px; // 각 내부 div들에도 margin-bottom 속성을 추가합니다.
+  margin-bottom: 10px;
+  overflow: hidden;
+  white-space: pre;
+  /* text-overflow: ellipsis; */
+  text-overflow: clip;
 `;
 const Summary = styled.div`
   font-size: 13px;
@@ -103,6 +116,7 @@ const Summary = styled.div`
   margin-bottom: 5px;
   height: 70px;
   margin-top: 5px;
+  overflow: hidden;
 `;
 
 const PostsSort = styled.div`
@@ -130,4 +144,5 @@ const IconSort = styled.div`
 const TagWrapper = styled.div`
   display: flex;
   gap: 10px;
+  overflow: hidden;
 `;

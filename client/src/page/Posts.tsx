@@ -3,10 +3,11 @@ import Loading from "../conponent/parts/Loading";
 import { SearchInput } from "../conponent/parts/InputNoH";
 import IconBtn from "../conponent/parts/IconButton";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, LegacyRef } from "react";
 import { requestAuth } from "../function/request";
 import PostItem from "../conponent/post/PostItem";
 import { Iurls } from "./AddPost";
+import useIntersectionObserver from "../util/useIntersectorObsevet";
 
 export interface IListItem {
   id: number;
@@ -27,34 +28,73 @@ export interface IListItem {
 export default function Posts() {
   const [category, setCategpry] = useState<string>("전체");
   const [searchValue, setSearchValue] = useState("");
+  const [keyword, setKeyword] = useState("");
   const [result, setResult] = useState<any>(null);
+  const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const target = useRef<HTMLDivElement | null>(null);
+  const [observe, unobserve] = useIntersectionObserver(() => {
+    setPage((page) => page + 1);
+  });
   const navigate = useNavigate();
 
   const handleCatClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
   };
 
+  //page 늘어날때마다 get요청
   useEffect(() => {
     const ajaxWithLoading = async () => {
       try {
         setLoading(true);
 
         const res = await requestAuth.get(
-          `/prf-posts?size=10&sorting=1${
+          `/prf-posts?page=${page}&size=10&sorting=1${
             category !== "전체" ? `&category=${category}` : ""
           }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
         );
-
-        setResult(res.data);
+        console.log(res.data);
+        setResult({ ...res.data });
+        setList([...list, ...res.data.data]);
       } catch (err) {
         console.log(err);
       }
 
       setLoading(false);
     };
-    ajaxWithLoading();
-  }, [category]);
+    if (page < result?.pageInfo.totalPages + 1 || page === 1) {
+      ajaxWithLoading();
+    }
+  }, [page]);
+
+  //카테고리 바뀔때 초기화
+  useEffect(() => {
+    setPage(1);
+    setList([]);
+  }, [category, keyword]);
+
+  //page 1일때 옵저버 등록하고 마지막 page에서 제거
+  useEffect(() => {
+    if (page === 1) observe(target.current);
+
+    const listCount = result?.data.length;
+    const totalCount = result?.pageInfo.totalPages;
+
+    if (0 === listCount || totalCount === page) {
+      unobserve(target.current);
+    }
+  }, [result]);
+
+  //로딩중일땐 옵저버 제거(중복요청 방지!!)
+  useEffect(() => {
+    if (loading) {
+      unobserve(target.current);
+    } else {
+      observe(target.current);
+    }
+  }, [loading]);
 
   return (
     <Content>
@@ -77,12 +117,12 @@ export default function Posts() {
           ))}
         </Sort>
       </SearchWrapper>
-      {loading && <Loading />}
-      {!loading &&
-        result &&
-        result.data.map((item: IListItem) => {
+      {list &&
+        list.map((item: IListItem) => {
           return <PostItem key={item.id} item={item} />;
         })}
+      {loading && <Loading />}
+      <div ref={target}></div>
 
       <AddPosition>
         <IconBtn
