@@ -28,8 +28,6 @@ const SubmitBtn = styled.div`
 export default function CommentCreator() {
   const [commentValue, setCommetValue] = useState("");
 
-<<<<<<< HEAD
-=======
   const handleClick = () => {
     requestAuth
       .post("/prf-comments/{prf-post-id}", { content: commentValue })
@@ -41,7 +39,6 @@ export default function CommentCreator() {
       });
   };
 
->>>>>>> da10ffba6d727371f01e410680d5b56adbe6b040
   return (
     <Content>
       <ContentWapper>
