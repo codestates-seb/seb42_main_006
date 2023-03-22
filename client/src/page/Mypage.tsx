@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useFetch } from "../util/MyApi";
+import { useFetch, useUserInfo } from "../util/MyApi";
 import styled from "styled-components";
 import { media } from "../style/Media";
 import UserEdit from "../conponent/mypage/UserEdit";
 import Paging from "../conponent/mypage/Paging";
-import { useUserInfo } from "../util/MyApi";
+import Loading from "../conponent/parts/Loading";
 
 const MypageWrap = styled.div`
+  position: relative;
   max-width: 1200px;
   width: 100%;
   margin: 4rem auto;
@@ -115,6 +116,21 @@ const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
   }
 `;
 
+const LoadingBox = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 30rem;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #151515;
+  z-index: 9999;
+`;
+
 export default function Mypage() {
   const [info, infoPending] = useUserInfo(`/members/mypage`);
 
@@ -140,7 +156,9 @@ export default function Mypage() {
     },
   ];
   const [tab, setTab] = useState(tabArray[0].title);
-  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}?page=1&size=10`);
+  const [list, listPending, setUrl] = useFetch(
+    `${tabArray[0].url}?page=1&size=10`
+  );
 
   let listData: any = [];
   listData = list;
@@ -216,7 +234,11 @@ export default function Mypage() {
 
   return (
     <MypageWrap>
-      {pending && <div>로딩 중...</div>}
+      {listPending && infoPending && (
+        <LoadingBox>
+          <Loading />
+        </LoadingBox>
+      )}
       {userInfo && listData && (
         <>
           <UserEdit userInfo={userInfo} pending={infoPending} />
@@ -240,10 +262,10 @@ export default function Mypage() {
                 ))}
               </MyBoardHead>
               <MyBoardBody>
-                {(pending ||
+                {(listPending ||
                   (listData.pageInfo && !listData.pageInfo.totalElements)) && (
                   <MyBoardBodyLi isNone>
-                    {pending ? "로딩중..." : "게시글이 없습니다"}
+                    {listPending ? "로딩중..." : "게시글이 없습니다"}
                   </MyBoardBodyLi>
                 )}
                 {listData.data &&

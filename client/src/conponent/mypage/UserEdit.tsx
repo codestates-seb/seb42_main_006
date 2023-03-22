@@ -9,6 +9,7 @@ import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../icons/logo.svg";
 import UserModal from "./UserModal";
 import Modal from "../Modal";
+import Loading from "../parts/Loading";
 
 const MyInfo = styled.section`
   display: flex;
@@ -195,7 +196,7 @@ export default function UserEdit({
 
   return (
     <>
-      {pending && <div>로딩중 ...</div>}
+      {pending && <Loading />}
 
       {userInfo && (
         <MyInfo>
