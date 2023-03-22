@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import IconBtn from "../parts/IconButton";
 import { requestAuth } from "../../function/request";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
 interface Posts {
   id: number;
   title: string;
@@ -25,7 +24,6 @@ interface Posts {
 
 export default function CollectItem() {
   const Navigate = useNavigate();
-  const param = useParams();
 
   const [posts, setPosts] = useState<Posts[]>([]);
 
@@ -59,9 +57,7 @@ export default function CollectItem() {
               handleClick={() => console.log("click")}
             />
           </UserIcon>
-          <PostDetail
-            onClick={() => Navigate(`/collectdeatail/${param.recruiteId}`)}
-          >
+          <PostDetail onClick={() => Navigate(`/collectdeatail/${post.id}`)}>
             <Title>{post.title}</Title>
             <Summary>{post.content}</Summary>
             <TagInfo>

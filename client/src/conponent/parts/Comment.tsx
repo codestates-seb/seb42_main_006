@@ -1,9 +1,18 @@
-import { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import styled from "styled-components";
 import CommentCreator from "../CommentCreator";
 import IconBtn from "./IconButton";
+import { Props } from "./CommentList";
+import { requestAuth } from "../../function/request";
 
-function Comment() {
+interface Iitem {
+  item: Props;
+  from: "posts" | "collect";
+  parentId: number;
+  setRender: React.Dispatch<SetStateAction<{}>>;
+}
+
+function Comment({ item, from, parentId, setRender }: Iitem) {
   const [showOptions, setShowOptions] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -12,8 +21,26 @@ function Comment() {
     setIsEdit(false);
   };
 
+  const handleSubmit = (x: { content: string }) => {
+    if (from === "posts") {
+      requestAuth.patch(`/prf-comments/${parentId}/${item.id}`, x).then(() => {
+        setRender({});
+        setIsEdit(false);
+      });
+    } else if (from === "collect") {
+      requestAuth
+        .patch(`/recruit-comments/${parentId}/${item.id}`, x)
+        .then(() => {
+          setRender({});
+          setIsEdit(false);
+        });
+    }
+  };
+
+  // 쓰레기통 누르면 삭제되는 요청 보내기
+
   return (
-    <Wrapper key={comment.id}>
+    <Wrapper>
       <ContentWrapper>
         <IconBtn
           title=""
@@ -28,8 +55,8 @@ function Comment() {
           handleClick={() => console.log("click")}
         />
         <UserRetweet>
-          <User>{comment.nickName}</User>
-          <div>{comment.content}</div>
+          <User>{item.nickName}</User>
+          <div>{item.content}</div>
         </UserRetweet>
         <IconWrapper>
           {showOptions && (
@@ -74,7 +101,7 @@ function Comment() {
           />
         </IconWrapper>
       </ContentWrapper>
-      {isEdit && <CommentCreator></CommentCreator>}
+      {isEdit && <CommentCreator handleSubmit={handleSubmit}></CommentCreator>}
     </Wrapper>
   );
 }

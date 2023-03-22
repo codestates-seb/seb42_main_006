@@ -11,9 +11,10 @@ const UserRetweets = styled.div`
   font-size: 0.8rem;
   width: 100%;
   position: relative;
+  flex-direction: column;
 `;
 
-interface Props {
+export interface Props {
   id: number;
   content: string;
   createAt: string;
@@ -22,20 +23,22 @@ interface Props {
   nickName: string;
 }
 
-function CommentList(props) {
-  const data.id = props;
-  const [comment, setComment] = useState<Props>({
-    id: 1,
-    content: "글이 좋아요",
-    createAt: "2023-02-25T17:41:46",
-    modifiedAt: "2023-02-25T18:26:13",
-    memberId: 1,
-    nickName: "홍길동",
-  });
+interface ICommentListProps {
+  postId: number;
+  from: "posts" | "collect";
+}
+
+function CommentList({ postId, from }: ICommentListProps) {
+  const [comment, setComment] = useState<Props[]>([]);
+  const [render, setRender] = useState({});
 
   useEffect(() => {
     requestAuth
-      .get<Props[]>(`/recruit-comments/${comment.id}`)
+      .get(
+        `${
+          from === "collect" ? "/recruit-comments/" : "/prf-comments/"
+        }${postId}`,
+      )
       .then((res) => {
         setComment(res.data);
         console.log(res.data);
@@ -43,11 +46,22 @@ function CommentList(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [render]);
 
   return (
     <UserRetweets>
-      <Comment id={props.id}></Comment>
+      {comment.length > 0 &&
+        comment.map((item) => {
+          return (
+            <Comment
+              item={item}
+              parentId={postId}
+              key={item.id}
+              from={from}
+              setRender={setRender}
+            ></Comment>
+          );
+        })}
     </UserRetweets>
   );
 }

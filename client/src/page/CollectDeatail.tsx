@@ -43,6 +43,7 @@ export default function CollectDeatail() {
     age: "20대30대",
     tags: "#홍대#맛집#냉모밀",
   });
+  const [render, setRender] = useState({});
 
   useEffect(() => {
     requestAuth
@@ -54,7 +55,16 @@ export default function CollectDeatail() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [render]);
+
+  const handleSubmit = (x: { content: string }) => {
+    requestAuth
+      .post(`/recruit-comments/${param.id}`, x)
+      .then(() => setRender({}))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <Content>
@@ -163,8 +173,8 @@ export default function CollectDeatail() {
         </Tags>
         <UserRetweets>
           <RetweetContainer>
-            <CommentCreator></CommentCreator>
-            <CommentList key={post.id}></CommentList>
+            <CommentCreator handleSubmit={handleSubmit}></CommentCreator>
+            <CommentList postId={post.id} from="collect"></CommentList>
           </RetweetContainer>
         </UserRetweets>
       </ContentWapper>
