@@ -11,11 +11,7 @@ export default function Collect() {
         <div>맛집</div>
       </Sort>
       <PostsContent>
-        {/* <PostsSort> */}
         <CollectItem />
-        <CollectItem />
-        <CollectItem />
-        {/* </PostsSort> */}
       </PostsContent>
     </Content>
   );
@@ -47,14 +43,3 @@ const PostsContent = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-// const PostsSort = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between; /* space-between으로 변경 */
-//   width: 500px;
-//   /* border: 1px solid #4a4a4a; */
-//   border-radius: 5px;
-//   background-color: #222222;
-//   padding: 10px; /* 3개의 간격을 주기 위해 padding을 추가 */
-// `;
