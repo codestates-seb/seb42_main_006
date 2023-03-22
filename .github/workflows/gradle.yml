@@ -66,8 +66,3 @@ jobs:
         --deployment-config-name CodeDeployDefault.AllAtOnce
         --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME
         --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME.zip
-        
-#     - name: Build with Gradle
-#       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-#       with:
-#         arguments: build

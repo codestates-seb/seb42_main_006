@@ -8,7 +8,11 @@ import { StyledBtn } from "../conponent/parts/Button";
 import { validFn } from "../function/validFn";
 import { request } from "../function/request";
 
-function Login() {
+interface LoginType {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Login({ setIsLogin }: LoginType) {
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
   const [password, setPassword] = useState("");
@@ -28,6 +32,7 @@ function Login() {
           if (res.status === 200) {
             sessionStorage.setItem("auth", res.headers["authorization"]);
             sessionStorage.setItem("user", JSON.stringify(res.data));
+            setIsLogin(true);
             navigate("/posts");
           }
         })

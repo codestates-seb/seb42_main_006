@@ -19,12 +19,17 @@ const Content = styled.div`
   padding-left: 10px;
 `;
 
-export default function Nav() {
+interface NavType {
+  isLogin: boolean;
+}
+
+export default function Nav({ isLogin }: NavType) {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("auth");
+
+  console.log(isLogin);
 
   const hadleNav = () => {
-    token ? navigate("/mypage") : navigate("/login");
+    isLogin ? navigate("/mypage") : navigate("/login");
   };
 
   return (

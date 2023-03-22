@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { StyledBtn } from "../conponent/parts/Button";
 import { media } from "../style/Media";
 import CommonLi from "../conponent/main/CommonLi";
 import BoxLi from "../conponent/main/BoxLi";
-// import useSessionStorage from "../util/MyToken";
 
 const MainWrap = styled.div`
   width: 100%;
@@ -99,9 +98,11 @@ const ExList = styled.ul`
   `}
 `;
 
-export default function Main() {
-  const token = sessionStorage.getItem("auth");
+interface MainType {
+  isLogin: boolean;
+}
 
+export default function Main({ isLogin }: MainType) {
   const categoryArr = [
     {
       type: "movie",
@@ -142,6 +143,11 @@ export default function Main() {
     },
   ];
 
+  const navigate = useNavigate();
+  const hadleNavMain = () => {
+    isLogin ? navigate("/addpost") : navigate("/login");
+  };
+
   return (
     <MainWrap>
       <section>
@@ -163,18 +169,16 @@ export default function Main() {
           행복을 전달해드립니다."
         </MainText>
 
-        <Link to={token ? "/addpost" : "/login"}>
-          <StyledBtn
-            title="A D D"
-            width="12rem"
-            height="2.8rem"
-            radius="3rem"
-            fontWeight={400}
-            fontColor="white"
-            btnType="full"
-            handleClick={() => console.log("click")}
-          ></StyledBtn>
-        </Link>
+        <StyledBtn
+          title="A D D"
+          width="12rem"
+          height="2.8rem"
+          radius="3rem"
+          fontWeight={400}
+          fontColor="white"
+          btnType="full"
+          handleClick={hadleNavMain}
+        ></StyledBtn>
       </section>
       <section className="pink">
         <MainTitle>Category</MainTitle>
