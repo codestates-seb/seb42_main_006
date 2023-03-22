@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { requestAuth } from "../function/request";
-import { UploadImg } from "../util/PostApi";
+import { UpdateImg, UploadImg } from "../util/PostApi";
 
 import { getVideoId } from "../function/youtubeApi";
 
@@ -162,7 +162,6 @@ export default function AddPost() {
                 urlId: x.id,
               };
             }),
-
           content: body,
           tags: tags,
         };
@@ -170,21 +169,22 @@ export default function AddPost() {
         console.log(res);
         if (res.data.id) navigate("/");
       } else {
-        const imageKey = await UploadImg(file);
-        if (imageKey) {
-          const data: IEditData = {
-            title: title,
-            category: curCategory,
-            newUrls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
-            deletedUrls: [{ urlId: origin.urls[0].id }],
-            content: body,
-            tags: tags,
-            imageKey: imageKey,
-          };
-          const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
-          console.log(res);
-          if (res.data.id) navigate("/");
+        let Key: any;
+        const data: IEditData = {
+          title: title,
+          category: curCategory,
+          newUrls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
+          deletedUrls: [{ urlId: origin.urls[0].id }],
+          content: body,
+          tags: tags,
+        };
+        if (file) {
+          Key = await UpdateImg(file, origin.imageKey);
+          data.imageKey = Key.fileKey;
         }
+        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
+        console.log(res);
+        if (res.data.id) navigate("/");
       }
     }
   };
@@ -197,6 +197,7 @@ export default function AddPost() {
           <CategoryTitle>카테고리</CategoryTitle>
           <Selection
             width=""
+            value={curCategory}
             opt={["영화", "음악", "맛집"]}
             setCategory={setCurCategory}
           ></Selection>
@@ -252,7 +253,7 @@ export default function AddPost() {
           width="100%"
           value={tags}
           setValue={setTags}
-          placeholder="#tag1, #tag2, #tag3 ..."
+          placeholder="#tag1#tag2#tag3 ..."
         ></DefaultInput>
       </FormWrapper>
       <BtnWrapper>

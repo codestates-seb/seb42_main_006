@@ -16,18 +16,19 @@ const StyledSelect = styled.select<styledSelectProp>`
 `;
 
 interface selectionProp extends styledSelectProp {
+  value?: string;
   opt: string[];
   setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function Selection({ width, opt, setCategory }: selectionProp) {
+function Selection({ value, width, opt, setCategory }: selectionProp) {
   return (
     <StyledSelect
+      value={value}
       width={width}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
         setCategory(e.target.value)
       }
-      defaultValue={""}
     >
       <option value="" disabled hidden>
         선택해주세요.

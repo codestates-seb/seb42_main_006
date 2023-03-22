@@ -3,7 +3,6 @@ import logo from "../icons/logo.svg";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-import { SearchInput } from "./parts/Input";
 import { StyledBtn } from "./parts/Button";
 
 const HeaderStyle = styled.div`
@@ -20,6 +19,10 @@ const HeaderStyle = styled.div`
   background-color: rgb(21 21 21);
 `;
 
+const Logo = styled.img`
+  height: 90%;
+`;
+
 const BtnWrapper = styled.div`
   display: flex;
   gap: 10px;
@@ -30,12 +33,8 @@ export default function Header() {
 
   return (
     <HeaderStyle>
-      <img src={logo} alt="logo" />
-      <SearchInput
-        width="50%"
-        height="36px"
-        placeholder="제목 또는 태그로 검색"
-      ></SearchInput>
+      <Logo src={logo} alt="logo" />
+
       <BtnWrapper>
         <StyledBtn
           title="LOG IN"

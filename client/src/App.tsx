@@ -43,7 +43,7 @@ function App() {
             <Route path="/addpost/:mode/:id" element={<AddPost />}></Route>
             <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
-            <Route path="/postdetail" element={<PostDetail />}></Route>
+            <Route path="/postdetail/:id" element={<PostDetail />}></Route>
             <Route path="/collectpost" element={<CollectPost />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>

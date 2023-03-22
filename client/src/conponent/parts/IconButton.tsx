@@ -1,5 +1,6 @@
 import {
   Heart,
+  FullHeart,
   Write,
   Delete,
   TreeDot,
@@ -66,6 +67,8 @@ export default function IconBtn({
     switch (iconType) {
       case "heart":
         return <Heart />;
+      case "fullheart":
+        return <FullHeart />;
       case "write":
         return <Write />;
       case "delete":
