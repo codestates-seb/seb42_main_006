@@ -51,6 +51,9 @@ public class MemberService {
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getEmail());
 
+        // 회원 상태 검사 (탈퇴한 회원인 경우 exception)
+        checkMemberStatus(findMember);
+
         Optional.ofNullable(member.getNickName())
                 .ifPresent(nickName -> findMember.setNickName(nickName));
         Optional.ofNullable(member.getPassword())
