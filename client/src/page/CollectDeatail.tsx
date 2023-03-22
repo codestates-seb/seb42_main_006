@@ -46,7 +46,7 @@ export default function CollectDeatail() {
 
   useEffect(() => {
     requestAuth
-      .get<Post>(`/recruit-posts/${param.recruiteId}`)
+      .get<Post>(`/recruit-posts/${param.id}`)
       .then((res) => {
         setPost(res.data);
         console.log(res.data);
@@ -164,7 +164,7 @@ export default function CollectDeatail() {
         <UserRetweets>
           <RetweetContainer>
             <CommentCreator></CommentCreator>
-            <CommentList></CommentList>
+            <CommentList key={post.id}></CommentList>
           </RetweetContainer>
         </UserRetweets>
       </ContentWapper>
