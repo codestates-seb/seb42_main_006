@@ -103,6 +103,17 @@ public class PrfPostController {
         return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
     }
 
+    // 게시글 수정
+    @PatchMapping("/{post-id}")
+    public ResponseEntity patchPrfPost(@PathVariable("post-id") long postId,
+                                       @RequestBody PrfPostDto.Patch patchDto){
+        PrfPost result = prfPostService.updatePrfPost(postId, patchDto);
+
+        PrfPostDto.Response response = customMapper.prfPostToResponseDto(result);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 게시글 상세보기
     @GetMapping("/{post-id}")
     public ResponseEntity getPrfPost(Principal principal, @PathVariable("post-id") long postId){
