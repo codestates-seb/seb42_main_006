@@ -126,6 +126,7 @@ export default function UserEdit({
   const [modal, setModal] = useState(false);
   const [alert, setAlert] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [change, setChange] = useState(false);
 
   const [nickValue, nickBind, nickReset] = useInput(userInfo.nickName);
   const [user, setUser] = useState(userInfo.nickName);
@@ -143,8 +144,11 @@ export default function UserEdit({
   };
 
   const handleConfirm = () => {
-    console.log("check");
     setConfirm(!confirm);
+  };
+
+  const handleChange = () => {
+    setChange(!change);
   };
 
   interface UserEdValidProps {
@@ -173,6 +177,7 @@ export default function UserEdit({
 
   const editPassword = () => {
     userEdit("/members/edit/password", { password: passValue });
+    handleChange();
     passReset("");
   };
 
@@ -239,7 +244,13 @@ export default function UserEdit({
                   <div className="validTxt">비밀번호를 확인해주세요!!</div>
                 )}
               </MyEdit>
-              <MyBtn onClick={valid.password ? editPassword : handleConfirm}>
+              <MyBtn
+                onClick={
+                  valid.password && passValue.length
+                    ? editPassword
+                    : handleConfirm
+                }
+              >
                 <PenIcon />
               </MyBtn>
             </div>
@@ -261,7 +272,14 @@ export default function UserEdit({
         <Modal
           handleModal={handleConfirm}
           title={"비밀번호 확인"}
-          text={"올바른 비밀번호가 아닙니다.\n다시 한 번 더 확인해주세요"}
+          text={"올바른 비밀번호가 아닙니다.\n다시 한 번 더 확인해주세요."}
+        />
+      )}
+      {change && (
+        <Modal
+          handleModal={handleChange}
+          title={"비밀번호 변경"}
+          text={"입력된 비밀번호로\n변경되었습니다."}
         />
       )}
     </>

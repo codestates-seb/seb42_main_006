@@ -16,8 +16,7 @@ import Main from "./page/Main";
 import PostDetail from "./page/PostDetail";
 import CollectPost from "./page/CollectPost";
 
-import { useState } from "react";
-import useSessionStorage from "./util/MyToken";
+import { useState, useEffect } from "react";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -29,8 +28,13 @@ const ContentWrapper = styled.div`
 `;
 
 function App() {
-  const [token] = useSessionStorage("auth", "no token");
   const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("auth") !== null) {
+      setIsLogin(true);
+    }
+  }, []);
 
   return (
     <BrowserRouter>

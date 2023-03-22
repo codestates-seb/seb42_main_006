@@ -106,6 +106,9 @@ const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
+    > a {
+      font-size: 0.88rem;
+    }
   }
   &:hover {
     color: #ff3366;
@@ -213,9 +216,10 @@ export default function Mypage() {
 
   return (
     <MypageWrap>
-      {userInfo && <UserEdit userInfo={userInfo} pending={infoPending} />}
-      {listData && (
+      {pending && <div>로딩 중...</div>}
+      {userInfo && listData && (
         <>
+          <UserEdit userInfo={userInfo} pending={infoPending} />
           <MyTabList>
             {tabArray.map((el) => (
               <MyTabLi
@@ -236,7 +240,8 @@ export default function Mypage() {
                 ))}
               </MyBoardHead>
               <MyBoardBody>
-                {(pending || !listData.data.length) && (
+                {(pending ||
+                  (listData.pageInfo && !listData.pageInfo.totalElements)) && (
                   <MyBoardBodyLi isNone>
                     {pending ? "로딩중..." : "게시글이 없습니다"}
                   </MyBoardBodyLi>
@@ -250,7 +255,7 @@ export default function Mypage() {
                           idx}
                       </strong>
                       <div className="MyBoardContent">
-                        <Link to={`/prf-posts/${el.id}`}>{el.title}</Link>
+                        <Link to={`/postdetail/${el.id}`}>{el.title}</Link>
                       </div>
                     </MyBoardBodyLi>
                   ))}
