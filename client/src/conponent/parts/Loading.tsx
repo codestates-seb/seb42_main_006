@@ -20,6 +20,10 @@ const LoadingSpin = styled.div`
   animation: ${spin} 1s linear infinite;
 `;
 
-export default function Loading() {
-  return <LoadingSpin></LoadingSpin>;
+interface ILoadingProp {
+  className?: any;
+}
+
+export default function Loading({ className }: ILoadingProp) {
+  return <LoadingSpin className={className}></LoadingSpin>;
 }

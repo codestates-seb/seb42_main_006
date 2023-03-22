@@ -8,63 +8,6 @@ import { requestAuth } from "../function/request";
 import PostItem from "../conponent/post/PostItem";
 import { Iurls } from "./AddPost";
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  max-width: 800px;
-  min-width: 390px;
-  height: 100%;
-  align-items: center;
-  padding-top: 24px;
-  gap: 10px;
-  margin: 0 auto;
-`;
-
-const SearchWrapper = styled.div`
-  width: 100%;
-  position: sticky;
-  top: 3.5rem;
-  background-color: #151515;
-`;
-
-const Sort = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  gap: 10px;
-  color: white;
-`;
-
-const AddPosition = styled.div`
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
-`;
-
-interface CategoryBtnProp {
-  isSelect: any;
-}
-
-const CategoryBtn = styled.button<CategoryBtnProp>`
-  padding: 4px 8px;
-  border: none;
-  outline: none;
-  color: #fff;
-  border-bottom: ${(props) => (props.isSelect ? "2px solid #f36" : "none")};
-
-  &:hover {
-    color: ${(props) => (props.isSelect ? "#fff" : "#f36")};
-  }
-`;
-
-const Search = styled(SearchInput)`
-  > svg {
-    width: 24px;
-    height: 24px;
-  }
-`;
-
 export interface IListItem {
   id: number;
   title: string;
@@ -158,3 +101,60 @@ export default function Posts() {
     </Content>
   );
 }
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 800px;
+  min-width: 390px;
+  height: 100%;
+  align-items: center;
+  padding-top: 24px;
+  gap: 10px;
+  margin: 0 auto;
+`;
+
+const SearchWrapper = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 3.5rem;
+  background-color: #151515;
+`;
+
+const Sort = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+  color: white;
+`;
+
+const AddPosition = styled.div`
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+`;
+
+interface CategoryBtnProp {
+  isSelect: any;
+}
+
+const CategoryBtn = styled.button<CategoryBtnProp>`
+  padding: 4px 8px;
+  border: none;
+  outline: none;
+  color: #fff;
+  border-bottom: ${(props) => (props.isSelect ? "2px solid #f36" : "none")};
+
+  &:hover {
+    color: ${(props) => (props.isSelect ? "#fff" : "#f36")};
+  }
+`;
+
+const Search = styled(SearchInput)`
+  > svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
