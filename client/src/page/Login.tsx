@@ -31,6 +31,7 @@ function Login({ setIsLogin }: LoginType) {
           console.log(res);
           if (res.status === 200) {
             sessionStorage.setItem("auth", res.headers["authorization"]);
+            sessionStorage.setItem("refresh", res.headers["refresh"]);
             sessionStorage.setItem("user", JSON.stringify(res.data));
             setIsLogin(true);
             navigate("/posts");
