@@ -54,7 +54,10 @@ function App() {
               element={<Login setIsLogin={setIsLogin} />}
             ></Route>
             <Route path="/addpost/:mode/:id" element={<AddPost />}></Route>
-            <Route path="/collectdeatail" element={<CollectDeatail />}></Route>
+            <Route
+              path="/collectdeatail/:id"
+              element={<CollectDeatail />}
+            ></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/postdetail/:id" element={<PostDetail />}></Route>
             <Route path="/collectpost" element={<CollectPost />}></Route>

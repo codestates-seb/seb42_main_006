@@ -68,6 +68,7 @@ export default function AddPost() {
         setCurCategory(res.data.category);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelUrls = (item: string) => {

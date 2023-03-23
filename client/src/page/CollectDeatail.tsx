@@ -20,7 +20,7 @@ interface Post {
   createAt: string;
   modifiedAt: string;
   memberId: number;
-  nickName: string;
+  nickname: string;
   age: string;
   tags: string;
 }
@@ -39,14 +39,15 @@ export default function CollectDeatail() {
     createAt: "2023-02-25T17:41:46",
     modifiedAt: "2023-02-25T18:26:13",
     memberId: 1,
-    nickName: "홍길동",
+    nickname: "홍길동",
     age: "20대30대",
     tags: "#홍대#맛집#냉모밀",
   });
+  const [render, setRender] = useState({});
 
   useEffect(() => {
     requestAuth
-      .get<Post>(`/recruit-posts/${param.recruiteId}`)
+      .get<Post>(`/recruit-posts/${param.id}`)
       .then((res) => {
         setPost(res.data);
         console.log(res.data);
@@ -55,6 +56,15 @@ export default function CollectDeatail() {
         console.log(error);
       });
   }, []);
+
+  const handleSubmit = (x: { content: string }) => {
+    requestAuth
+      .post(`/recruit-comments/${param.id}`, x)
+      .then(() => setRender({}))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <Content>
@@ -73,7 +83,7 @@ export default function CollectDeatail() {
               border="none"
               handleClick={() => console.log("click")}
             />
-            <UserName>{post.nickName}</UserName>
+            <UserName>{post.nickname}</UserName>
           </TopInfoLeft>
           <TopInfoRight>
             <TagRight>
@@ -163,8 +173,12 @@ export default function CollectDeatail() {
         </Tags>
         <UserRetweets>
           <RetweetContainer>
-            <CommentCreator></CommentCreator>
-            <CommentList></CommentList>
+            <CommentCreator handleSubmit={handleSubmit}></CommentCreator>
+            <CommentList
+              postId={post.id}
+              from="collect"
+              reRender={render}
+            ></CommentList>
           </RetweetContainer>
         </UserRetweets>
       </ContentWapper>

@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { StyledBtn } from "./parts/Button";
 import { Textarea } from "./parts/InputNoH";
 
-import { requestAuth } from "../function/request";
-
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,18 +23,16 @@ const SubmitBtn = styled.div`
   margin: 1rem 0;
 `;
 
-export default function CommentCreator() {
+interface IcommentCreatorProp {
+  handleSubmit: (x: { content: string }) => void;
+}
+
+export default function CommentCreator({ handleSubmit }: IcommentCreatorProp) {
   const [commentValue, setCommetValue] = useState("");
 
   const handleClick = () => {
-    requestAuth
-      .post("/prf-comments/{prf-post-id}", { content: commentValue })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    handleSubmit({ content: commentValue });
+    setCommetValue("");
   };
 
   return (
