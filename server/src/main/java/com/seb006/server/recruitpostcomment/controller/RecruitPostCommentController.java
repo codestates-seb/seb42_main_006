@@ -60,7 +60,7 @@ public class RecruitPostCommentController {
 
     @GetMapping("/{recruit-post-id}")
     public ResponseEntity getRecruitPostComment(@PathVariable("recruit-post-id")long recruitPostId){
-        List<RecruitPostComment> recruitPostComments = service.findRecruitPostComment();
+        List<RecruitPostComment> recruitPostComments = service.findRecruitPostComments(recruitPostId);
         List<RecruitPostCommentResponseDto> response = mapper.recruitPostCommentToRecruitPostCommentResponseDtos(recruitPostComments);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
