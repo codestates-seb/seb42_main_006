@@ -1,7 +1,6 @@
 package com.seb006.server.prfpost.controller;
 
 import com.seb006.server.global.response.MultiResponseDto;
-import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.like.service.LikeService;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.service.MemberService;
@@ -16,11 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.security.Principal;
 import java.util.List;
 
 //@CrossOrigin
@@ -44,9 +41,8 @@ public class PrfPostController {
 
     // 게시글 생성
     @PostMapping
-    public ResponseEntity postPrfPost(Principal principal,
+    public ResponseEntity postPrfPost(@AuthenticationPrincipal Member member,
                                       @RequestBody PrfPostDto.Post postDto){
-        Member member = memberService.findVerifiedMember(principal.getName());
         PrfPost result = prfPostService.createPrfPost(member, customMapper.postDtoToPrfPost(postDto));
         List<Urls> resultUrls = urlService.createUrls(result.getUrls());
 
@@ -112,8 +108,7 @@ public class PrfPostController {
 
     // 게시글 상세보기
     @GetMapping("/{post-id}")
-    public ResponseEntity getPrfPost(Principal principal, @PathVariable("post-id") long postId){
-        Member member = memberService.findVerifiedMember(principal.getName());
+    public ResponseEntity getPrfPost(@AuthenticationPrincipal Member member, @PathVariable("post-id") long postId){
         PrfPost result = prfPostService.getPrfPost(postId);
 
         PrfPostDto.DetailResponse response = customMapper.prfPostToDetailResponseDto(result);
