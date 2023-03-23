@@ -6,7 +6,7 @@ import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
 import { requestAuth } from "../function/request";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 interface Post {
   id: number;
@@ -20,13 +20,21 @@ interface Post {
   createAt: string;
   modifiedAt: string;
   memberId: number;
-  nickname: string;
+  nickName: string;
   age: string;
   tags: string;
 }
 
 export default function CollectDeatail() {
   const param = useParams();
+  const [showOptions, setShowOptions] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleOptions = () => {
+    setShowOptions((prevState) => !prevState);
+    setIsEdit(false);
+  };
   const [post, setPost] = useState<Post>({
     id: 1,
     title: "제목을 입력해주세요",
@@ -39,7 +47,7 @@ export default function CollectDeatail() {
     createAt: "2023-02-25T17:41:46",
     modifiedAt: "2023-02-25T18:26:13",
     memberId: 1,
-    nickname: "홍길동",
+    nickName: "홍길동",
     age: "20대30대",
     tags: "#홍대#맛집#냉모밀",
   });
@@ -66,6 +74,14 @@ export default function CollectDeatail() {
       });
   };
 
+  // 쓰레기통 누르면 삭제되는 요청 보내기
+  const handleDelete = () => {
+    requestAuth.delete(`/recruit-posts/${param.id}`).then(() => {
+      setRender({});
+      navigate("/collect");
+    });
+  };
+
   return (
     <Content>
       <ContentWapper>
@@ -83,7 +99,7 @@ export default function CollectDeatail() {
               border="none"
               handleClick={() => console.log("click")}
             />
-            <UserName>{post.nickname}</UserName>
+            <UserName>{post.nickName}</UserName>
           </TopInfoLeft>
           <TopInfoRight>
             <TagRight>
@@ -130,6 +146,34 @@ export default function CollectDeatail() {
         <DetailPost>
           <TitleContent>
             <Title>{post.title}</Title>
+            {showOptions && (
+              <>
+                <IconBtn
+                  title=""
+                  width="40px"
+                  height="40px"
+                  radius="5px"
+                  fontWeight={400}
+                  fontColor="red"
+                  btnType=""
+                  iconType="write"
+                  border="none"
+                  handleClick={() => setIsEdit(!isEdit)}
+                />
+                <IconBtn
+                  title=""
+                  width="40px"
+                  height="40px"
+                  radius="5px"
+                  fontWeight={400}
+                  fontColor="blue"
+                  btnType=""
+                  iconType="delete"
+                  border="none"
+                  handleClick={handleDelete}
+                />
+              </>
+            )}
             <IconBtn
               title=""
               width="40px"
@@ -140,7 +184,7 @@ export default function CollectDeatail() {
               btnType=""
               iconType="treeDot"
               border="none"
-              handleClick={() => console.log("click")}
+              handleClick={toggleOptions}
             />
           </TitleContent>
           <DetailContent>{post.content}</DetailContent>
@@ -190,21 +234,23 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin-top: 200px;
+  max-width: 800px;
+  min-width: 300px;
+  margin: 24px auto;
+  gap: 20px;
 `;
 
 const ContentWapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 800px;
+  width: 100%;
   color: white;
 `;
 
 const TopInfo = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 35px;
+  width: 100%;
 `;
 
 const TopInfoLeft = styled.div`
@@ -218,8 +264,9 @@ const TopInfoRight = styled.div`
 const DetailPost = styled.div`
   display: flex;
   flex-direction: column;
-  width: 800px;
-  height: 300px;
+  width: 100%;
+  min-height: 300px;
+  height: 100%;
   border: 1px solid #4a4a4a;
   border-radius: 5px;
   background-color: #222222;
@@ -229,7 +276,7 @@ const DetailPost = styled.div`
 const TitleContent = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 770px;
+  width: 100%;
 `;
 
 const Tags = styled.div`
@@ -251,11 +298,12 @@ const Title = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  width: 90%;
 `;
 
 const DetailContent = styled.div`
   display: flex;
-  width: 700px;
+  width: 100%;
   padding-left: 10px;
 `;
 
