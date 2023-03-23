@@ -73,7 +73,7 @@ export const ModalBtn = styled.button`
 interface ModalProps {
   title: string;
   text: string;
-  btnName: string;
+  btnName?: string;
   handleModal: () => void;
   handleClick: () => void;
 }
@@ -93,9 +93,11 @@ export default function Modal({
         </CloseBtn>
         <ModalTitle>{title}</ModalTitle>
         <ModalTxt>{text}</ModalTxt>
-        <ModalBtnBox>
-          <ModalBtn onClick={handleClick}>{btnName}</ModalBtn>
-        </ModalBtnBox>
+        {btnName && (
+          <ModalBtnBox>
+            <ModalBtn onClick={handleClick}>{btnName}</ModalBtn>
+          </ModalBtnBox>
+        )}
       </ModalBox>
     </ModalWrap>
   );

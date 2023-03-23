@@ -292,7 +292,6 @@ export default function UserEdit({ userInfo, pending }: UserEditTypes) {
           handleClick={handleConfirm}
           title={"비밀번호 확인"}
           text={"올바른 비밀번호가 아닙니다.\n다시 한 번 더 확인해주세요."}
-          btnName={"확인"}
         />
       )}
       {change && (
