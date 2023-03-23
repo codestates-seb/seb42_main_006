@@ -34,8 +34,6 @@ public class PrfPostCommentService {
 
         PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostComment.getPrfPost().getId());
 
-        //Member member = memberService.findVerifiedMember(prfPostComment.getMember().getEmail());
-
         prfPostComment.setPrfPost(prfPost);
         prfPostComment.setMember(member);
 
