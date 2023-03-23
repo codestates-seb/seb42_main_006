@@ -89,7 +89,7 @@ public class RecruitPostService {
                 recruitPostRepository.findById(id);
         RecruitPost findRecruitPost =
                 optionalRecruitPost.orElseThrow(() ->
-                        new RuntimeException("RecruitPost Not Found"));
+                        new BusinessLogicException(ExceptionCode.RECRUITPOST_NOT_FOUND));
         return findRecruitPost;
     }
 

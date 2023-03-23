@@ -60,7 +60,7 @@ public class PrfPostCommentController {
     // 댓글 전체 보기 /prf-comments/{prf-post-id} -> 게시글에 있는 댓글 전체 조회
     @GetMapping("/{prf-post-id}")
     public ResponseEntity getPrfPostComments(@PathVariable("prf-post-id") long prfPostId) {
-        List<PrfPostComment> prfPostComments = service.findPrfPostComments();
+        List<PrfPostComment> prfPostComments = service.findPrfPostComments(prfPostId);
         List<PrfPostCommentResponseDto> response = mapper.prfPostCommentToPrfPostCommentResponseDtos(prfPostComments);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
