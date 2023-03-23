@@ -117,6 +117,7 @@ export default function PostDetail() {
         setList(res.data.urls);
       })
       .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = (x: { content: string }) => {

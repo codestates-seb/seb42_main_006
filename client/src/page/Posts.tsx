@@ -70,6 +70,7 @@ export default function Posts() {
     if (page < (result?.pageInfo.totalPages || 1) + 1) {
       ajaxWithLoading();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, trig]);
 
   // page 1일때 옵저버 등록하고 마지막 page에서 제거
@@ -78,6 +79,7 @@ export default function Posts() {
     if (0 === result?.data.length || result?.pageInfo.totalPages <= page) {
       unobserve(target.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   //로딩중일땐 옵저버 제거(중복요청 방지!!)
@@ -87,6 +89,7 @@ export default function Posts() {
     } else {
       observe(target.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   //카테고리 바뀔때 초기화
