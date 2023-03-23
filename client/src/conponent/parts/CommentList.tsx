@@ -26,9 +26,10 @@ export interface Props {
 interface ICommentListProps {
   postId: number;
   from: "posts" | "collect";
+  reRender: {};
 }
 
-function CommentList({ postId, from }: ICommentListProps) {
+function CommentList({ postId, from, reRender }: ICommentListProps) {
   const [comment, setComment] = useState<Props[]>([]);
   const [render, setRender] = useState({});
 
@@ -46,7 +47,7 @@ function CommentList({ postId, from }: ICommentListProps) {
       .catch((error) => {
         console.log(error);
       });
-  }, [render]);
+  }, [render, reRender]);
 
   return (
     <UserRetweets>

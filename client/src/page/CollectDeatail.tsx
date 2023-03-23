@@ -55,7 +55,7 @@ export default function CollectDeatail() {
       .catch((error) => {
         console.log(error);
       });
-  }, [render]);
+  }, []);
 
   const handleSubmit = (x: { content: string }) => {
     requestAuth
@@ -174,7 +174,11 @@ export default function CollectDeatail() {
         <UserRetweets>
           <RetweetContainer>
             <CommentCreator handleSubmit={handleSubmit}></CommentCreator>
-            <CommentList postId={post.id} from="collect"></CommentList>
+            <CommentList
+              postId={post.id}
+              from="collect"
+              reRender={render}
+            ></CommentList>
           </RetweetContainer>
         </UserRetweets>
       </ContentWapper>
