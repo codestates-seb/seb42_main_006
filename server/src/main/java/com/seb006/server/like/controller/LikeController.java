@@ -12,6 +12,7 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.service.RecruitPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -32,8 +33,7 @@ public class LikeController {
     }
 
     @PostMapping("/prf-posts/{prf-post-id}")
-    public ResponseEntity postPrfPostLike(Principal principal, @PathVariable("prf-post-id") long prfPostId){
-        Member member = memberService.findVerifiedMember(principal.getName());
+    public ResponseEntity postPrfPostLike(@AuthenticationPrincipal Member member, @PathVariable("prf-post-id") long prfPostId){
         PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostId);
 
         PrfPostLike prfPostLike = likeService.addPrfPostLike(member, prfPost);
@@ -42,8 +42,7 @@ public class LikeController {
     }
 
     @PostMapping("/recruit-posts/{recruit-post-id}")
-    public ResponseEntity postRecruitPostLike(Principal principal, @PathVariable("recruit-post-id") long recruitPostId){
-        Member member = memberService.findVerifiedMember(principal.getName());
+    public ResponseEntity postRecruitPostLike(@AuthenticationPrincipal Member member, @PathVariable("recruit-post-id") long recruitPostId){
         RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
 
         RecruitPostLike recruitPostLike = likeService.addRecruitPostLike(member, recruitPost);
@@ -53,8 +52,7 @@ public class LikeController {
 
 
     @DeleteMapping("/prf-posts/{prf-post-id}")
-    public ResponseEntity deletePrfPostLike(Principal principal, @PathVariable("prf-post-id") long prfPostId){
-        Member member = memberService.findVerifiedMember(principal.getName());
+    public ResponseEntity deletePrfPostLike(@AuthenticationPrincipal Member member, @PathVariable("prf-post-id") long prfPostId){
         PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostId);
 
         likeService.cancelPrfPostLike(member, prfPost);
@@ -62,8 +60,7 @@ public class LikeController {
     }
 
     @DeleteMapping("/recruit-posts/{recruit-post-id}")
-    public ResponseEntity deleteRecruitPostLike(Principal principal, @PathVariable("recruit-post-id") long recruitPostId){
-        Member member = memberService.findVerifiedMember(principal.getName());
+    public ResponseEntity deleteRecruitPostLike(@AuthenticationPrincipal Member member, @PathVariable("recruit-post-id") long recruitPostId){
         RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
 
         likeService.cancelRecruitPostLike(member, recruitPost);
