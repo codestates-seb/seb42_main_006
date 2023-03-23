@@ -26,6 +26,7 @@ public class MemberPostsService {
         this.memberService = memberService;
     }
 
+    // Principal
     public Page<PrfPost> findMyPrfPosts(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
 
@@ -39,6 +40,21 @@ public class MemberPostsService {
         return prfPostLikePage;
     }
 
+    // @AuthenticationPrincipal
+    public Page<PrfPost> findMyPrfPosts(Member member, int page, int size) {
+        Member findMember = memberService.checkExistMember(member.getId());
+
+        List<PrfPost> prfPosts = findMember.getPrfPosts().stream()
+                .sorted(Comparator.comparing(PrfPost::getId).reversed())
+                .collect(Collectors.toList());
+
+        Page<PrfPost> prfPostLikePage
+                = new CustomPagination<PrfPost>().pagination(prfPosts, page, size);
+
+        return prfPostLikePage;
+    }
+
+    // Principal
     public Page<RecruitPost> findMyRecruitPosts(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
 
@@ -52,6 +68,21 @@ public class MemberPostsService {
         return recruitPostPage;
     }
 
+    // @AuthenticationPrincipal
+    public Page<RecruitPost> findMyRecruitPosts(Member member, int page, int size) {
+        Member findMember = memberService.checkExistMember(member.getId());
+
+        List<RecruitPost> recruitPosts = findMember.getRecruitPosts().stream()
+                .sorted(Comparator.comparing(RecruitPost::getId).reversed())
+                .collect(Collectors.toList());
+
+        Page<RecruitPost> recruitPostPage
+                = new CustomPagination<RecruitPost>().pagination(recruitPosts, page, size);
+
+        return recruitPostPage;
+    }
+
+    // Principal
     public Page<PrfPostLike> findMyPrfPostsLike(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
 
@@ -65,8 +96,37 @@ public class MemberPostsService {
         return prfPostLikePage;
     }
 
+    // @AuthenticationPrincipal
+    public Page<PrfPostLike> findMyPrfPostsLike(Member member, int page, int size) {
+        Member findMember = memberService.checkExistMember(member.getId());
+
+        List<PrfPostLike> prfPostLikes = findMember.getPrfPostLikes().stream()
+                .sorted(Comparator.comparing(PrfPostLike::getId).reversed())
+                .collect(Collectors.toList());
+
+        Page<PrfPostLike> prfPostLikePage
+                = new CustomPagination<PrfPostLike>().pagination(prfPostLikes, page, size);
+
+        return prfPostLikePage;
+    }
+
+    // Principal
     public Page<Participation> findMyParticipation(String email, int page, int size) {
         Member findMember = memberService.findVerifiedMember(email);
+
+        List<Participation> participationList =findMember.getParticipationList().stream()
+                .sorted(Comparator.comparing(Participation::getId).reversed())
+                .collect(Collectors.toList());
+
+        Page<Participation> participationPage
+                = new CustomPagination<Participation>().pagination(participationList, page, size);
+
+        return participationPage;
+    }
+
+    // @AuthenticationPrincipal
+    public Page<Participation> findMyParticipation(Member member, int page, int size) {
+        Member findMember = memberService.checkExistMember(member.getId());
 
         List<Participation> participationList =findMember.getParticipationList().stream()
                 .sorted(Comparator.comparing(Participation::getId).reversed())

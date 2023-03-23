@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../icons/logo.svg";
+import Loading from "../parts/Loading";
 import UserModal from "./UserModal";
 import Modal from "../Modal";
 
@@ -19,21 +20,18 @@ const MyInfo = styled.section`
   ${media.mobile`
     flex-direction: column;
   `}
-  .myBox {
-    min-width: 16rem;
-    flex-direction: column;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 0.5rem;
-    ${media.mobile`
-      align-items: center;
-    `}
-  }
-  .editItem {
-    display: flex;
-    gap: 0.4rem;
-  }
+`;
+
+const MyBox = styled.div`
+  min-width: 16rem;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+  ${media.mobile`
+  align-items: center;
+`}
 `;
 
 const MyProfile = styled.div`
@@ -61,19 +59,36 @@ const MyTitleSm = styled.h5`
   color: #3c3c3c;
 `;
 
+const MyEditItem = styled.div`
+  display: flex;
+  gap: 0.4rem;
+  ${media.mobile`
+    align-items:flex-start;
+  `}
+`;
+
 const MyEdit = styled.div`
   position: relative;
   display: flex;
   gap: 0.33rem;
   align-items: center;
-  .validTxt {
-    position: absolute;
-    bottom: -1rem;
-    right: 0;
-    font-size: 0.7rem;
-    color: #fff;
-    white-space: nowrap;
-  }
+  ${media.mobile`
+    flex-direction: column;
+  `}
+`;
+
+const MyValidTxt = styled.div`
+  position: absolute;
+  bottom: -1rem;
+  right: 0;
+  font-size: 0.7rem;
+  color: #fff;
+  white-space: nowrap;
+  ${media.mobile`
+    position: static;
+    bottom:auto;
+    right:auto;
+  `}
 `;
 
 const MyInput = styled.input`
@@ -101,25 +116,28 @@ const MyBtn = styled.button`
   background: #ff3366;
   border-radius: 0.2rem;
   color: #fff;
+  ${media.mobile`
+    margin-top: 0.25rem;
+  `}
   svg {
     margin: 0.16rem;
   }
-  .btnText {
-    display: block;
-    margin: 0.33rem 0.5rem;
-    font-size: 0.65rem;
-    font-weight: 400;
-    letter-spacing: 0.025em;
-  }
 `;
 
-export default function UserEdit({
-  userInfo,
-  pending,
-}: {
+const MyBtnTxt = styled.span`
+  display: block;
+  margin: 0.33rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+`;
+
+interface UserEditTypes {
   userInfo: UserInfoItemTypes;
   pending: boolean;
-}) {
+}
+
+export default function UserEdit({ userInfo, pending }: UserEditTypes) {
   const navigate = useNavigate();
 
   const [edit, setEdit] = useState(false);
@@ -195,15 +213,15 @@ export default function UserEdit({
 
   return (
     <>
-      {pending && <div>로딩중 ...</div>}
+      {pending && <Loading />}
 
       {userInfo && (
         <MyInfo>
           <MyProfile>
             <img className="logo" src={logo} alt="logo" />
           </MyProfile>
-          <div className="myBox">
-            <div className="editItem">
+          <MyBox>
+            <MyEditItem>
               {edit ? (
                 <MyEdit>
                   <MyInput
@@ -213,7 +231,7 @@ export default function UserEdit({
                     }
                   />
                   {!valid.nickname && (
-                    <div className="validTxt">닉네임을 확인해주세요!!</div>
+                    <MyValidTxt>닉네임을 확인해주세요!!</MyValidTxt>
                   )}
                 </MyEdit>
               ) : (
@@ -222,15 +240,15 @@ export default function UserEdit({
               <MyBtn onClick={edit ? editNickname : handleEdit}>
                 <PenIcon />
               </MyBtn>
-              {edit ? (
+              {edit && (
                 <MyBtn onClick={handleEdit}>
                   <CloseIcon />
                 </MyBtn>
-              ) : null}
-            </div>
+              )}
+            </MyEditItem>
 
             <MyTitleSm>비밀번호 변경</MyTitleSm>
-            <div className="editItem">
+            <MyEditItem>
               <MyEdit>
                 <MyInput
                   type="password"
@@ -241,7 +259,7 @@ export default function UserEdit({
                   placeholder="비밀번호를 수정하세요"
                 />
                 {!valid.password && (
-                  <div className="validTxt">비밀번호를 확인해주세요!!</div>
+                  <MyValidTxt>비밀번호를 확인해주세요!!</MyValidTxt>
                 )}
               </MyEdit>
               <MyBtn
@@ -253,11 +271,11 @@ export default function UserEdit({
               >
                 <PenIcon />
               </MyBtn>
-            </div>
+            </MyEditItem>
             <MyBtn onClick={handleModal}>
-              <span className="btnText">회원 탈퇴</span>
+              <MyBtnTxt>회원 탈퇴</MyBtnTxt>
             </MyBtn>
-          </div>
+          </MyBox>
         </MyInfo>
       )}
 
@@ -271,6 +289,7 @@ export default function UserEdit({
       {confirm && (
         <Modal
           handleModal={handleConfirm}
+          handleClick={handleConfirm}
           title={"비밀번호 확인"}
           text={"올바른 비밀번호가 아닙니다.\n다시 한 번 더 확인해주세요."}
         />
@@ -278,8 +297,10 @@ export default function UserEdit({
       {change && (
         <Modal
           handleModal={handleChange}
+          handleClick={handleChange}
           title={"비밀번호 변경"}
           text={"입력된 비밀번호로\n변경되었습니다."}
+          btnName={"확인"}
         />
       )}
     </>

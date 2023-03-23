@@ -1,6 +1,7 @@
 package com.seb006.server.auth.filter;
 
 import com.seb006.server.auth.jwt.JwtTokenizer;
+import com.seb006.server.auth.userdetails.CustomUserDetailsService;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,10 +24,14 @@ import java.util.Map;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
+                                 CustomAuthorityUtils authorityUtils,
+                                 CustomUserDetailsService customUserDetailsService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -34,7 +40,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             Map<String, Object> claims = verifyJws(request);
-            setAuthenticationToContext(claims);
+            String username = (String) claims.get("username");
+
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            setAuthenticationToContext(userDetails);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
@@ -63,11 +72,18 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         return claims;
     }
 
+    // @AuthenticationPrincipal
+    private void setAuthenticationToContext(UserDetails userDetails) {
+        List<GrantedAuthority> authorities = authorityUtils.createAuthorities(userDetails.getAuthorities().toString());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    // Principal
     private void setAuthenticationToContext(Map<String, Object> claims) {
         String username = (String) claims.get("username");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
-
 }

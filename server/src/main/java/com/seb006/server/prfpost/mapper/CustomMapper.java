@@ -173,4 +173,11 @@ public class CustomMapper{
                 .collect(Collectors.toList());
         return responses;
     }
+
+    public List<PrfPostDto.Response> prfPostsToResponseDtos(List<PrfPost> prfPosts) {
+        List<PrfPostDto.Response> responses = prfPosts.stream()
+                .map(this::prfPostToResponseDto)
+                .collect(Collectors.toList());
+        return responses;
+    }
 }

@@ -8,6 +8,7 @@ import com.seb006.server.auth.handler.MemberAuthenticationFailureHandler;
 import com.seb006.server.auth.handler.MemberAuthenticationSuccessHandler;
 import com.seb006.server.auth.jwt.JwtTokenizer;
 import com.seb006.server.auth.redis.repository.RefreshTokenRepository;
+import com.seb006.server.auth.userdetails.CustomUserDetailsService;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,13 +35,16 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public SecurityConfiguration(JwtTokenizer jwtTokenizer,
                                  CustomAuthorityUtils authorityUtils,
-                                 RefreshTokenRepository refreshTokenRepository) {
+                                 RefreshTokenRepository refreshTokenRepository,
+                                 CustomUserDetailsService customUserDetailsService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Bean
@@ -101,7 +105,7 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter =
-                    new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+                    new JwtVerificationFilter(jwtTokenizer, authorityUtils, customUserDetailsService);
 
             builder
                     .addFilter(jwtAuthenticationFilter)

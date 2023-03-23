@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useFetch } from "../util/MyApi";
+import { useFetch, useUserInfo } from "../util/MyApi";
 import styled from "styled-components";
 import { media } from "../style/Media";
 import UserEdit from "../conponent/mypage/UserEdit";
 import Paging from "../conponent/mypage/Paging";
-import { useUserInfo } from "../util/MyApi";
+import Loading from "../conponent/parts/Loading";
 
 const MypageWrap = styled.div`
+  position: relative;
   max-width: 1200px;
   width: 100%;
   margin: 4rem auto;
@@ -89,30 +90,49 @@ interface MyBoardBodyLiStyleProps {
 const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
   display: flex;
   padding-left: ${(props) => (props.isNone ? "2.5rem" : null)};
+  align-items: center;
   justify-content: ${(props) => (props.isNone ? "center" : null)};
   font-size: 0.88rem;
   line-height: 2.15;
   border-bottom: 1px dashed #151515;
   cursor: pointer;
-  .MyBoardTitle {
-    width: ${minHead};
-    text-align: center;
+  &:hover {
+    color: #ff3366;
   }
-  .MyBoardContent {
+`;
+const MyBoardTitle = styled.strong`
+  width: ${minHead};
+  text-align: center;
+`;
+
+const MyBoradContent = styled.div`
+  width: calc(100% - ${minHead});
+  > a {
     overflow: hidden;
-    width: calc(100% - ${minHead});
+    display: block;
+    width: 100%;
     padding: 0 0.5rem;
+    font-size: 0.88rem;
     font-weight: 400;
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
-    > a {
-      font-size: 0.88rem;
-    }
   }
-  &:hover {
-    color: #ff3366;
-  }
+`;
+
+const LoadingBox = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #151515;
+  z-index: 9999;
 `;
 
 export default function Mypage() {
@@ -140,14 +160,16 @@ export default function Mypage() {
     },
   ];
   const [tab, setTab] = useState(tabArray[0].title);
-  const [list, pending, setUrl] = useFetch(`${tabArray[0].url}?page=1&size=10`);
+  const [list, listPending, setUrl] = useFetch(
+    `${tabArray[0].url}?page=1&size=10`
+  );
 
   let listData: any = [];
   listData = list;
 
+  const limit = 5;
   const totalPage = listData.pageInfo && listData.pageInfo.totalPages;
 
-  const limit = 5;
   const [curr, setCurr] = useState(1);
   const [total, setTotal] = useState(
     listData.pageInfo && listData.pageInfo.totalPages
@@ -216,7 +238,11 @@ export default function Mypage() {
 
   return (
     <MypageWrap>
-      {pending && <div>로딩 중...</div>}
+      {listPending && infoPending && (
+        <LoadingBox>
+          <Loading />
+        </LoadingBox>
+      )}
       {userInfo && listData && (
         <>
           <UserEdit userInfo={userInfo} pending={infoPending} />
@@ -240,23 +266,23 @@ export default function Mypage() {
                 ))}
               </MyBoardHead>
               <MyBoardBody>
-                {(pending ||
+                {(listPending ||
                   (listData.pageInfo && !listData.pageInfo.totalElements)) && (
                   <MyBoardBodyLi isNone>
-                    {pending ? "로딩중..." : "게시글이 없습니다"}
+                    {listPending ? "로딩중..." : "게시글이 없습니다"}
                   </MyBoardBodyLi>
                 )}
                 {listData.data &&
                   listData.data.map((el: any, idx: number) => (
                     <MyBoardBodyLi key={el.id}>
-                      <strong className="MyBoardTitle">
+                      <MyBoardTitle>
                         {listData.pageInfo.totalElements -
                           (curr - 1) * 10 -
                           idx}
-                      </strong>
-                      <div className="MyBoardContent">
+                      </MyBoardTitle>
+                      <MyBoradContent>
                         <Link to={`/postdetail/${el.id}`}>{el.title}</Link>
-                      </div>
+                      </MyBoradContent>
                     </MyBoardBodyLi>
                   ))}
               </MyBoardBody>

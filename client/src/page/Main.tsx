@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { StyledBtn } from "../conponent/parts/Button";
 import { media } from "../style/Media";
+import { StyledBtn } from "../conponent/parts/Button";
 import CommonLi from "../conponent/main/CommonLi";
 import BoxLi from "../conponent/main/BoxLi";
 
@@ -9,19 +9,20 @@ const MainWrap = styled.div`
   width: 100%;
   color: #fff;
   text-align: center;
-  section {
-    padding: 5rem 0;
-    ${media.pc`
+`;
+
+interface MainBoxStyleProps {
+  theme: string;
+}
+
+const MainBox = styled.section<MainBoxStyleProps>`
+  max-width: ${(props) => props.theme === "max" && "1200px"};
+  margin: 0 auto;
+  padding: 5rem 0;
+  background: ${(props) => props.theme === "pink" && "#ff3366"};
+  ${media.pc`
       padding: 5rem 2.66rem;
-    `}
-  }
-  section.pink {
-    background: #ff3366;
-  }
-  section.max {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  `};
 `;
 
 const MainSlogan = styled.h2`
@@ -29,15 +30,6 @@ const MainSlogan = styled.h2`
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.055em;
-  .point {
-    padding: 0.25rem 0;
-    font-size: 4rem;
-    font-weight: 400;
-    color: #ff3366;
-    ${media.mobile`
-      font-size: 3.5rem;
-    `}
-  }
   &:after {
     display: block;
     width: 8rem;
@@ -46,6 +38,16 @@ const MainSlogan = styled.h2`
     background: #ff3366;
     content: "";
   }
+  ${media.mobile`
+    font-size: 3.5rem;
+  `}
+`;
+
+const MainSloganPoint = styled.strong`
+  padding: 0.25rem 0;
+  font-size: 4rem;
+  font-weight: 400;
+  color: #ff3366;
   ${media.mobile`
     font-size: 3.5rem;
   `}
@@ -150,9 +152,9 @@ export default function Main({ isLogin }: MainType) {
 
   return (
     <MainWrap>
-      <section>
+      <MainBox>
         <MainSlogan>
-          당신의 경험, <strong className="point">MOHAE</strong>
+          당신의 경험, <MainSloganPoint>MOHAE</MainSloganPoint>
           <br />
           에서 공유하세요
         </MainSlogan>
@@ -179,16 +181,16 @@ export default function Main({ isLogin }: MainType) {
           btnType="full"
           handleClick={hadleNavMain}
         ></StyledBtn>
-      </section>
-      <section className="pink">
+      </MainBox>
+      <MainBox theme={"pink"}>
         <MainTitle>Category</MainTitle>
         <CateList>
           {categoryArr.map((el) => (
             <CommonLi key={el.type} iconType={el.type} label={el.label} />
           ))}
         </CateList>
-      </section>
-      <section className="max">
+      </MainBox>
+      <MainBox theme={"max"}>
         <MainTitle>Experience</MainTitle>
         <ExList>
           {experienceArr.map((el) => (
@@ -200,7 +202,7 @@ export default function Main({ isLogin }: MainType) {
             />
           ))}
         </ExList>
-      </section>
+      </MainBox>
     </MainWrap>
   );
 }

@@ -15,12 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -52,22 +52,21 @@ public class MemberController {
 
     @PostMapping("/email-check")
     public ResponseEntity validateEmail(@Valid @RequestBody MemberDto.Email email) {
-        log.info(email.getEmail());
         memberService.checkExistEmail(email.getEmail());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity deleteMember(Principal principal) {
-        memberService.deleteMember(principal.getName());
+    public ResponseEntity deleteMember(@AuthenticationPrincipal Member member) {
+        memberService.deleteMember(member);
 
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/mypage")
-    public ResponseEntity getMember(Principal principal) {
-        Member findMember = memberService.findMember(principal.getName());
+    public ResponseEntity getMember(@AuthenticationPrincipal Member member) {
+        Member findMember = memberService.findMember(member);
         MemberDto.Response response = memberMapper.memberToResponseDto(findMember);
 
         return new ResponseEntity(response, HttpStatus.OK);
@@ -75,8 +74,8 @@ public class MemberController {
 
     @PatchMapping("/edit/nickname")
     public ResponseEntity patchNickName(@Valid @RequestBody MemberDto.Patch requestBody,
-                                        Principal principal) {
-        requestBody.setEmail(principal.getName());
+                                        @AuthenticationPrincipal Member member) {
+        requestBody.setId(member.getId());
 
         Member updateMember = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
         MemberDto.Response response = memberMapper.memberToResponseDto(updateMember);
@@ -85,8 +84,9 @@ public class MemberController {
     }
 
     @PatchMapping("/edit/password")
-    public ResponseEntity patchPassword(@Valid @RequestBody MemberDto.Patch requestBody, Principal principal) {
-        requestBody.setEmail(principal.getName());
+    public ResponseEntity patchPassword(@Valid @RequestBody MemberDto.Patch requestBody,
+                                        @AuthenticationPrincipal Member member) {
+        requestBody.setId(member.getId());
 
         Member updateMember = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
         MemberDto.Response response = memberMapper.memberToResponseDto(updateMember);
@@ -95,11 +95,11 @@ public class MemberController {
     }
 
     @GetMapping("/prf-posts")
-    public ResponseEntity getMyPrfPosts(Principal principal,
+    public ResponseEntity getMyPrfPosts(@AuthenticationPrincipal Member member,
                                         @Positive @RequestParam(defaultValue = "1") int page,
                                         @Positive @RequestParam(defaultValue = "10") int size) {
         Page<PrfPost> prfPostPage
-                = memberPostsService.findMyPrfPosts(principal.getName(), page - 1, size);
+                = memberPostsService.findMyPrfPosts(member, page - 1, size);
         List<PrfPost> prfPosts =  prfPostPage.getContent();
         List<MemberPostsDto> response = memberMapper.prfPostsToMemberPostsDtos(prfPosts);
 
@@ -108,11 +108,11 @@ public class MemberController {
     }
 
     @GetMapping("/recruit-posts")
-    public ResponseEntity getMyRecruitPosts(Principal principal,
+    public ResponseEntity getMyRecruitPosts(@AuthenticationPrincipal Member member,
                                             @Positive @RequestParam(defaultValue = "1") int page,
                                             @Positive @RequestParam(defaultValue = "10") int size) {
         Page<RecruitPost> recruitPostPage
-                = memberPostsService.findMyRecruitPosts(principal.getName(), page - 1, size);
+                = memberPostsService.findMyRecruitPosts(member, page - 1, size);
         List<RecruitPost> recruitPosts = recruitPostPage.getContent();
         List<MemberPostsDto> response = memberMapper.recruitPostsToMemberPostsDtos(recruitPosts);
 
@@ -121,11 +121,11 @@ public class MemberController {
     }
 
     @GetMapping("/prf-posts-like")
-    public ResponseEntity getMyPrfPostsLike(Principal principal,
+    public ResponseEntity getMyPrfPostsLike(@AuthenticationPrincipal Member member,
                                             @Positive @RequestParam(defaultValue = "1") int page,
                                             @Positive @RequestParam(defaultValue = "10") int size) {
         Page<PrfPostLike> prfPostLikePage
-                = memberPostsService.findMyPrfPostsLike(principal.getName(), page - 1, size);
+                = memberPostsService.findMyPrfPostsLike(member, page - 1, size);
         List<PrfPostLike> prfPostLikes = prfPostLikePage.getContent();
         List<MemberPostsDto> response = memberMapper.prfPostsLikeToMemberPostDtos(prfPostLikes);
 
@@ -134,11 +134,11 @@ public class MemberController {
     }
 
     @GetMapping("/participation")
-    public ResponseEntity getMyParticipation(Principal principal,
+    public ResponseEntity getMyParticipation(@AuthenticationPrincipal Member member,
                                              @Positive @RequestParam(defaultValue = "1") int page,
                                              @Positive @RequestParam(defaultValue = "10") int size) {
         Page<Participation> participationPage
-                = memberPostsService.findMyParticipation(principal.getName(), page - 1, size);
+                = memberPostsService.findMyParticipation(member, page - 1, size);
         List<Participation> participationList  = participationPage.getContent();
         List<MemberPostsDto> response = memberMapper.participationToMemberPostDtos(participationList);
 
