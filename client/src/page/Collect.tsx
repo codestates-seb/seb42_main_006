@@ -46,6 +46,10 @@ export default function Collect() {
     e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
   };
 
+  const handleSearch = () => {
+    setKeyword(searchValue);
+  };
+
   //page 늘어날때마다 get요청
   useEffect(() => {
     const ajaxWithLoading = async () => {
@@ -55,7 +59,7 @@ export default function Collect() {
         const res = await requestAuth.get(
           `/recruit-posts?page=${page}&size=10&sorting=1${
             category !== "전체" ? `&category=${category}` : ""
-          }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`
+          }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
         );
         console.log(res.data);
         setResult({ ...res.data });
@@ -105,6 +109,7 @@ export default function Collect() {
           placeholder="키워드를 입력해주세요."
           value={searchValue}
           setValue={setSearchValue}
+          onSearch={handleSearch}
         ></Search>
         <Sort>
           {["전체", "영화", "음악", "맛집"].map((x) => (

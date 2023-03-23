@@ -47,6 +47,10 @@ export default function Posts() {
     e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
   };
 
+  const handleSearch = () => {
+    setKeyword(searchValue);
+  };
+
   //page 늘어날때마다 get요청
   useEffect(() => {
     const ajaxWithLoading = async () => {
@@ -107,6 +111,7 @@ export default function Posts() {
           placeholder="키워드를 입력해주세요."
           value={searchValue}
           setValue={setSearchValue}
+          onSearch={handleSearch}
         ></Search>
         <Sort>
           {["전체", "영화", "음악", "맛집"].map((x) => (
