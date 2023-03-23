@@ -4,9 +4,9 @@ import { ModalWrap, ModalBox, ModalTitle } from "../Modal";
 import { ModalTxt, ModalBtnBox, CloseBtn, ModalBtn } from "../Modal";
 
 interface UserModalProps {
-  deleteAccount: () => void;
-  handleModal: () => void;
   alert: boolean;
+  handleModal: () => void;
+  deleteAccount: () => void;
 }
 
 const PointModalTxt = styled(ModalTxt)`

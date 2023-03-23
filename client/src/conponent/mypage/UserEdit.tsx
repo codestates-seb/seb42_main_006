@@ -7,9 +7,9 @@ import styled from "styled-components";
 import { media } from "../../style/Media";
 import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../icons/logo.svg";
+import Loading from "../parts/Loading";
 import UserModal from "./UserModal";
 import Modal from "../Modal";
-import Loading from "../parts/Loading";
 
 const MyInfo = styled.section`
   display: flex;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { requestAuth } from "../function/request";
 
 type UserFetchTypes = [
@@ -43,6 +44,7 @@ export interface UserInfoItemTypes {
 export const useUserInfo = (URL: string): UserInfoReturnTypes => {
   const [pending, setPending] = useState<boolean>(true);
   const [value, setValue] = useState<[] | UserInfoItemTypes[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async (): Promise<UserInfoItemTypes[]> => {
@@ -53,11 +55,12 @@ export const useUserInfo = (URL: string): UserInfoReturnTypes => {
       } catch (error) {
         setPending(false);
         console.error(error);
+        navigate("/login");
         return [];
       }
     };
     fetchData().then((data) => setValue(data));
-  }, [URL]);
+  }, [URL, navigate]);
 
   return [value, pending];
 };
