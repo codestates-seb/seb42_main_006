@@ -205,6 +205,7 @@ export default function UserEdit({ userInfo, pending }: UserEditTypes) {
     userDelete("/members");
     sessionStorage.removeItem("auth");
     sessionStorage.removeItem("user");
+    sessionStorage.removeItem("refresh");
 
     setTimeout(() => {
       navigate("/");
