@@ -9,6 +9,7 @@ import com.seb006.server.prfpost.repository.PrfPostRepository;
 import com.seb006.server.prfpost.service.PrfPostService;
 import com.seb006.server.prfpostcomment.entity.PrfPostComment;
 import com.seb006.server.prfpostcomment.repository.PrfPostCommentRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class PrfPostCommentService {
 
         PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostId);
 
-        return prfPostCommentRepository.findAllByPrfPost(prfPost);
+        return prfPostCommentRepository.findAllByPrfPost(Sort.by("id").descending(),prfPost);
     }
 
     public void deletePrfPostComment(long id){
