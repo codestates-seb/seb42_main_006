@@ -24,13 +24,13 @@ public class RecruitPostComment extends Auditable {
     private String content;
 
     //멤버 연관관계 매핑
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "member_id")
     private Member member;
 
     //모집글 연관관계 매핑
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "prf_post_id")
     private RecruitPost recruitPost;

@@ -68,7 +68,7 @@ public class PrfPostController {
             return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
         }
 
-        Member member = memberService.findVerifiedMember((String) principalObj);
+        Member member = (Member) principalObj;
 
         List<Long> likedPostIds = likeService.prfPostLiked(member, allPrfPost);
         List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost, likedPostIds);
@@ -93,7 +93,7 @@ public class PrfPostController {
             return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
         }
 
-        Member member = memberService.findVerifiedMember((String) principalObj);
+        Member member = (Member) principalObj;
 
         List<Long> likedPostIds = likeService.prfPostLiked(member, allPrfPost);
         List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost, likedPostIds);
@@ -133,5 +133,4 @@ public class PrfPostController {
         prfPostService.deletePrfPost(postId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }
