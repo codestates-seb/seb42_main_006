@@ -34,7 +34,7 @@ function App() {
     if (sessionStorage.getItem("auth") !== null) {
       setIsLogin(true);
     }
-  }, []);
+  }, [setIsLogin]);
 
   return (
     <BrowserRouter>

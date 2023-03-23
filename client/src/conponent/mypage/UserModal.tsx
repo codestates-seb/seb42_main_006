@@ -1,27 +1,20 @@
 import styled from "styled-components";
 import { CloseIcon } from "../../icons/MyIcon";
-import { ModalWrap, ModalBox, ModalTitle, CloseBtn } from "../Modal";
-
-const ModalBtn = styled.button`
-  display: flex;
-  width: 4.5rem;
-  padding: 0.36rem 0.5rem;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: 0.045em;
-  background: #ff3366;
-  border-radius: 0.2rem;
-  color: #fff;
-`;
+import { ModalWrap, ModalBox, ModalTitle } from "../Modal";
+import { ModalTxt, ModalBtnBox, CloseBtn, ModalBtn } from "../Modal";
 
 interface UserModalProps {
   deleteAccount: () => void;
   handleModal: () => void;
   alert: boolean;
 }
+
+const PointModalTxt = styled(ModalTxt)`
+  .siteName {
+    font-weight: 400;
+    color: #ff3366;
+  }
+`;
 
 export default function UserModal({
   alert,
@@ -35,23 +28,23 @@ export default function UserModal({
           <CloseIcon />
         </CloseBtn>
         {alert ? (
-          <p className="modalTxt">
+          <PointModalTxt>
             회원탈퇴가 완료되었습니다!
             <br /> 지금까지 <strong className="siteName">MOHAE</strong>를 <br />
             이용해주셔서 감사합니다.
-          </p>
+          </PointModalTxt>
         ) : (
           <>
             <ModalTitle>회원 탈퇴</ModalTitle>
-            <p className="modalTxt">
+            <ModalTxt>
               회원 탈퇴시 <br />
               사이트 내 모든 개인 정보가 삭제됩니다.
               <br />
               계속 진행하시겠습니까?
-            </p>
-            <div className="buttonBox">
+            </ModalTxt>
+            <ModalBtnBox>
               <ModalBtn onClick={deleteAccount}>탈퇴</ModalBtn>
-            </div>
+            </ModalBtnBox>
           </>
         )}
       </ModalBox>
