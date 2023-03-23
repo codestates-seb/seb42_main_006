@@ -6,13 +6,24 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
+  height: 100%;
+  > svg {
+    height: 70%;
+    width: auto;
+  }
+  > span {
+    font-size: 1.2rem;
+    color: #f36;
+  }
 `;
 
 function UserProfile() {
   return (
     <Wrapper>
       <UserProfileImg></UserProfileImg>
-      <span>Username</span>
+      <span>
+        {JSON.parse(sessionStorage.getItem("user") as string).nickName}
+      </span>
     </Wrapper>
   );
 }

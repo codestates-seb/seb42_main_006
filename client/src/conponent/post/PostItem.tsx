@@ -19,8 +19,15 @@ function PostItem({ item }: Props) {
     else return item.urls[0]?.thumbnail;
   };
 
+  const onEnterPost = () => {
+    if (sessionStorage.getItem("auth")) {
+      navigate(`/postdetail/${item.id}`);
+    } else {
+      navigate("/login");
+    }
+  };
   return (
-    <PostsSort onClick={() => navigate(`/postdetail/${item.id}`)}>
+    <PostsSort onClick={onEnterPost}>
       <ImgWrapper>
         {thumbnailUrl(item) && <img src={thumbnailUrl(item)} alt="thumbnail" />}
       </ImgWrapper>
@@ -38,27 +45,15 @@ function PostItem({ item }: Props) {
           title={
             item.likeCount && item.likeCount > 0 ? `${item.likeCount}` : ""
           }
-          width="30px"
+          width=""
           height="30px"
           radius="5px"
           fontWeight={400}
-          fontColor="#f36"
+          fontColor="pink"
           btnType=""
           iconType={item.liked ? "fullheart" : "heart"}
           border="none"
           handleClick={() => {}}
-        />
-        <IconBtn
-          title=""
-          width="30px"
-          height="30px"
-          radius="5px"
-          fontWeight={400}
-          fontColor=""
-          btnType=""
-          iconType="retweet"
-          border="none"
-          handleClick={() => console.log("click")}
         />
       </IconSort>
     </PostsSort>

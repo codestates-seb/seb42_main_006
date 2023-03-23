@@ -100,18 +100,21 @@ function Comment({ item, from, parentId, setRender }: Iitem) {
               />
             </>
           )}
-          <IconBtn
-            title=""
-            width="40px"
-            height="40px"
-            radius="5px"
-            fontWeight={400}
-            fontColor="pink"
-            btnType=""
-            iconType="treeDot"
-            border="none"
-            handleClick={toggleOptions}
-          />
+          {JSON.parse(sessionStorage.getItem("user") as string).id ===
+            item.memberId && (
+            <IconBtn
+              title=""
+              width="40px"
+              height="40px"
+              radius="5px"
+              fontWeight={400}
+              fontColor="pink"
+              btnType=""
+              iconType="treeDot"
+              border="none"
+              handleClick={toggleOptions}
+            />
+          )}
         </IconWrapper>
       </ContentWrapper>
       {isEdit && <CommentCreator handleSubmit={handleSubmit}></CommentCreator>}
