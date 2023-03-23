@@ -79,6 +79,9 @@ export const userDelete = async (URL: string) => {
   try {
     const response = await requestAuth.delete(URL);
     const data = await response.data;
+    sessionStorage.removeItem("auth");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("refresh");
     return data;
   } catch (error) {
     console.error(error);

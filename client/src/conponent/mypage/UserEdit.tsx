@@ -203,8 +203,6 @@ export default function UserEdit({ userInfo, pending }: UserEditTypes) {
     setAlert(!alert);
 
     userDelete("/members");
-    sessionStorage.removeItem("auth");
-    sessionStorage.removeItem("user");
 
     setTimeout(() => {
       navigate("/");

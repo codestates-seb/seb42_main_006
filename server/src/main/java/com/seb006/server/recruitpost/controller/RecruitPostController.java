@@ -4,6 +4,7 @@ import com.seb006.server.global.response.MultiResponseDto;
 import com.seb006.server.like.service.LikeService;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.member.service.MemberService;
+import com.seb006.server.prfpost.dto.PrfPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostDetailResponseDto;
 import com.seb006.server.recruitpost.dto.RecruitPostDto;
 import com.seb006.server.recruitpost.dto.RecruitPostPatchDto;
@@ -15,6 +16,8 @@ import com.seb006.server.utils.UriCreator;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -43,9 +46,9 @@ public class RecruitPostController {
     }
 
     @PostMapping
-    public ResponseEntity postRecruitPost(Principal principal,
+    public ResponseEntity postRecruitPost(@AuthenticationPrincipal Member member,
                                           @RequestBody RecruitPostDto recruitPostDto){
-        Member member = memberService.findVerifiedMember(principal.getName());
+
         RecruitPost recruitPost = service.createRecruitPost(member,mapper.recruitPostDtoToRecruitPost(recruitPostDto));
 
         URI location = UriCreator.createUri(RECRUITPOST_DEFAULT_URL,recruitPost.getId());
@@ -63,11 +66,12 @@ public class RecruitPostController {
     }
 
     @GetMapping("/{recruit-post-id}")
-    public ResponseEntity getRecruitPost(Principal principal, @PathVariable("recruit-post-id") long id){
-        Member member = memberService.findVerifiedMember(principal.getName());
+    public ResponseEntity getRecruitPost(@AuthenticationPrincipal Member member, @PathVariable("recruit-post-id") long id){
+
         RecruitPost recruitPost = service.findRecruitPost(id);
 
         RecruitPostDetailResponseDto result = mapper.recruitPostToRecruitDetailResponseDto(recruitPost);
+
         if(likeService.isRecruitPostLiked(member, recruitPost)){
             result.setLiked(true);
         }
@@ -76,14 +80,21 @@ public class RecruitPostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity getRecruitPosts(Principal principal,
+    public ResponseEntity getRecruitPosts(@Nullable @AuthenticationPrincipal Member member,
                                           @RequestParam int page,
                                           @RequestParam int size,
                                           @RequestParam int sorting){
-        Member member = memberService.findVerifiedMember(principal.getName());
+
         Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size,sorting);
         List<RecruitPost> recruitPosts = recruitPostPage.getContent();
+
+        if(member == null){ // 비로그인 시에
+            List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts);
+            return new ResponseEntity<>(new MultiResponseDto<RecruitPostResponseDto>(result,recruitPostPage), HttpStatus.OK);
+        }
         List<Long> likedRecruitIds = likeService.recruitPostLiked(member, recruitPosts);
+        List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts,likedRecruitIds);
+
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts, likedRecruitIds),recruitPostPage),
@@ -99,21 +110,29 @@ public class RecruitPostController {
 
     //모집글 리스트 보기(태그,카테고리)
     @GetMapping
-    public ResponseEntity searchRecruitPosts( Principal principal,
+    public ResponseEntity searchRecruitPosts( @Nullable@AuthenticationPrincipal Member member,
                                               @RequestParam(defaultValue = "1") int page,
                                               @RequestParam(defaultValue = "10") int size,
                                               @RequestParam(defaultValue = "1") int sorting,
                                               @RequestParam(required = false, defaultValue = "") String category,
                                               @RequestParam(required = false, defaultValue = "") String keyword){
-        Member member = memberService.findVerifiedMember(principal.getName());
-        Page<RecruitPost> recruitPostPage = service.searchRecruitPosts(page-1, size, sorting, category, keyword);
-        List<RecruitPost> recruitPostList = recruitPostPage.getContent();
-        List<Long> likedRecruitIds = likeService.recruitPostLiked(member, recruitPostList);
 
-        List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPostList, likedRecruitIds);
+        Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size,sorting);
+        List<RecruitPost> recruitPosts = recruitPostPage.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<RecruitPostResponseDto>(result, recruitPostPage), HttpStatus.OK);
+        if(member == null){ // 비로그인 시에
+            List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts);
+            return new ResponseEntity<>(new MultiResponseDto<RecruitPostResponseDto>(result,recruitPostPage), HttpStatus.OK);
+        }
+        List<Long> likedRecruitIds = likeService.recruitPostLiked(member, recruitPosts);
+        List<RecruitPostResponseDto> result = mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts,likedRecruitIds);
+
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(mapper.recruitPostsToRecruitPostResponseDtos(recruitPosts, likedRecruitIds),recruitPostPage),
+                HttpStatus.OK);
     }
+
 
     //모집글 닫기
     @PatchMapping("/{recruit-post-id}/close")

@@ -1,5 +1,6 @@
 package com.seb006.server.recruitpostcomment.service;
 
+import com.seb006.server.global.Sorting;
 import com.seb006.server.global.exception.BusinessLogicException;
 import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
@@ -8,8 +9,10 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.service.RecruitPostService;
 import com.seb006.server.recruitpostcomment.entity.RecruitPostComment;
 import com.seb006.server.recruitpostcomment.repository.RecruitPostCommentRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +25,16 @@ public class RecruitPostCommentService {
 
     private final MemberService memberService;
 
+    private final Sorting sort;
+
     public RecruitPostCommentService(RecruitPostCommentRepository recruitPostCommentRepository,
                                      RecruitPostService recruitPostService,
-                                     MemberService memberService) {
+                                     MemberService memberService,
+                                     Sorting sort) {
         this.recruitPostCommentRepository = recruitPostCommentRepository;
         this.recruitPostService = recruitPostService;
         this.memberService = memberService;
+        this.sort = sort;
     }
 
     public RecruitPostComment createRecruitPostComment(Member member, RecruitPostComment recruitPostComment){
@@ -53,8 +60,14 @@ public class RecruitPostCommentService {
         return findVerifiedRecruitPostComment(id);
     }
 
-    public List<RecruitPostComment> findRecruitPostComment(){
-        return recruitPostCommentRepository.findAll();
+    public List<RecruitPostComment> findRecruitPostComments(long recruitPostId){
+
+
+
+        RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
+
+
+        return recruitPostCommentRepository.findAllByRecruitPost(Sort.by("id").descending(),recruitPost);
     }
 
     public void deleteRecruitPostComment(long id){

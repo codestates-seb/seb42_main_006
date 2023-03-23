@@ -281,7 +281,16 @@ export default function Mypage() {
                           idx}
                       </MyBoardTitle>
                       <MyBoradContent>
-                        <Link to={`/postdetail/${el.id}`}>{el.title}</Link>
+                        <Link
+                          to={
+                            tab === tabArray[1].title ||
+                            tab === tabArray[2].title
+                              ? `/collectdeatail/${el.id}`
+                              : `/postdetail/${el.id}`
+                          }
+                        >
+                          {el.title}
+                        </Link>
                       </MyBoradContent>
                     </MyBoardBodyLi>
                   ))}
