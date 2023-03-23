@@ -19,9 +19,6 @@ function PostItem({ item }: Props) {
     else return item.urls[0]?.thumbnail;
   };
 
-  const handleLike = () => {
-    console.log("like");
-  };
   return (
     <PostsSort onClick={() => navigate(`/postdetail/${item.id}`)}>
       <ImgWrapper>
@@ -49,7 +46,7 @@ function PostItem({ item }: Props) {
           btnType=""
           iconType={item.liked ? "fullheart" : "heart"}
           border="none"
-          handleClick={handleLike}
+          handleClick={() => {}}
         />
         <IconBtn
           title=""

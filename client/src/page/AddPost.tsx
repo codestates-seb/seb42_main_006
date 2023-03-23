@@ -276,7 +276,7 @@ export default function AddPost() {
           fontWeight={400}
           fontColor="pink"
           btnType="empty"
-          handleClick={() => navigate("/posts")}
+          handleClick={() => navigate(-1)}
         ></StyledBtn>
       </BtnWrapper>
     </Background>

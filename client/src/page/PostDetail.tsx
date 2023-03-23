@@ -8,9 +8,10 @@ import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
 import { requestAuth } from "../function/request";
 import { Iurls } from "./AddPost";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Loading from "../conponent/parts/Loading";
 import Tag from "../conponent/parts/Tag";
+import { StyledBtn } from "../conponent/parts/Button";
 
 const Container = styled.div`
   display: flex;
@@ -29,9 +30,10 @@ const TitleContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
-const Title = styled.h1`
+const Title = styled.span`
   font-weight: bold;
   font-size: 1.5rem;
   margin-left: 1rem;
@@ -100,13 +102,17 @@ interface IpostDetailData {
   urls: Iurls[];
   comments: { commentId: number; content: string }[];
   imageKey: string;
+  liked: boolean;
 }
 
 export default function PostDetail() {
   const [data, setData] = useState<IpostDetailData>();
   const [list, setList] = useState<Iurls[]>([]);
+
   const [reRender, setReRender] = useState({});
+  const [showOption, setShowOption] = useState(false);
   const param = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     requestAuth
@@ -119,6 +125,36 @@ export default function PostDetail() {
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleDelete = () => {
+    requestAuth
+      .delete(`/prf-posts/${param.id}`)
+      .then((res) => {
+        console.log(res.statusText);
+        navigate("/posts");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleLike = () => {
+    if (data?.liked) {
+      requestAuth
+        .delete(`/like/prf-posts/${param.id}`, {})
+        .then((res) => {
+          setData({ ...data, liked: false });
+        })
+        .catch((err) => console.log(err));
+    } else if (data?.liked === false) {
+      requestAuth
+        .post(`/like/prf-posts/${param.id}`, {})
+        .then((res) => {
+          setData({ ...data, liked: true });
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   const handleSubmit = (x: { content: string }) => {
     requestAuth
@@ -137,18 +173,76 @@ export default function PostDetail() {
         <>
           <TitleContainer>
             <Title>{data.title}</Title>
-            <IconBtn
-              title=""
-              width="40px"
-              height="40px"
-              radius="5px"
-              fontWeight={400}
-              fontColor="pink"
-              btnType=""
-              iconType="treeDot"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
+            <TitleBtnWrapper>
+              {showOption && (
+                <>
+                  <IconBtn
+                    title=""
+                    width="40px"
+                    height="40px"
+                    radius="5px"
+                    fontWeight={400}
+                    fontColor="red"
+                    btnType=""
+                    iconType="write"
+                    border="none"
+                    handleClick={() => navigate(`/addpost/edit/${param.id}`)}
+                  />
+                  <IconBtn
+                    title=""
+                    width="40px"
+                    height="40px"
+                    radius="5px"
+                    fontWeight={400}
+                    fontColor="blue"
+                    btnType=""
+                    iconType="delete"
+                    border="none"
+                    handleClick={handleDelete}
+                  />
+                </>
+              )}
+              {JSON.parse(sessionStorage.getItem("user") as string).id ===
+              data.memberId ? (
+                <IconBtn
+                  title=""
+                  width="40px"
+                  height="40px"
+                  radius="5px"
+                  fontWeight={400}
+                  fontColor="pink"
+                  btnType=""
+                  iconType="treeDot"
+                  border="none"
+                  handleClick={() => setShowOption(!showOption)}
+                />
+              ) : (
+                <>
+                  <IconBtn
+                    title=""
+                    width="30px"
+                    height="30px"
+                    radius="5px"
+                    fontWeight={400}
+                    fontColor="#f36"
+                    btnType=""
+                    iconType={data?.liked ? "fullheart" : "heart"}
+                    border="none"
+                    handleClick={handleLike}
+                  />
+                  <StyledBtn
+                    title="모집하기"
+                    width="100px"
+                    height="30px"
+                    radius="50px"
+                    fontWeight={400}
+                    fontColor="pink"
+                    btnType="empty"
+                    handleClick={() => navigate(`/collectpost/${param.id}`)}
+                  ></StyledBtn>
+                </>
+              )}
+            </TitleBtnWrapper>
           </TitleContainer>
           <BoxContainer>
             <Boxs>
@@ -191,3 +285,9 @@ export default function PostDetail() {
     </Container>
   );
 }
+
+const TitleBtnWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+`;

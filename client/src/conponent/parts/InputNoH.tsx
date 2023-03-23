@@ -49,11 +49,26 @@ const SLabel = styled.label`
   border-radius: 3px;
 `;
 
+const InnerBtn = styled.button`
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  width: 26px;
+  height: 26px;
+  > svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 interface searchInputProp extends InputWrapperProp {
   placeholder: string;
   className?: any;
   value: string;
   setValue: React.Dispatch<SetStateAction<string>>;
+  onSearch: () => void;
 }
 export function SearchInput({
   width,
@@ -61,7 +76,13 @@ export function SearchInput({
   value,
   setValue,
   className,
+  onSearch,
 }: searchInputProp) {
+  const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onSearch();
+    }
+  };
   return (
     <InputWrapper width={width} className={className}>
       <SInput
@@ -69,8 +90,11 @@ export function SearchInput({
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        onKeyUp={onEnter}
       />
-      <SearchIcon></SearchIcon>
+      <InnerBtn onClick={onSearch}>
+        <SearchIcon></SearchIcon>
+      </InnerBtn>
     </InputWrapper>
   );
 }
