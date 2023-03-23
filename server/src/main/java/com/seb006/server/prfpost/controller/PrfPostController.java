@@ -14,6 +14,8 @@ import com.seb006.server.url.service.UrlService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,20 +57,18 @@ public class PrfPostController {
 
     // 전체 리스트 - 태그, 카테고리 필터링 X
     @GetMapping("/all")
-    public ResponseEntity getPrfPosts(@Positive @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity getPrfPosts(@Nullable @AuthenticationPrincipal Member member,
+                                      @Positive @RequestParam(defaultValue = "1") int page,
                                       @Positive @RequestParam(defaultValue = "10") int size,
                                       @Positive @RequestParam(defaultValue = "1") int sorting){
-        Object principalObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // anonymousUser
 
         Page<PrfPost> pageInfo = prfPostService.getAllPrfPosts(page-1, size, sorting);
         List<PrfPost> allPrfPost = pageInfo.getContent();
 
-        if(principalObj == "anonymousUser"){ // 비로그인 시에
+        if(member == null){ // 비로그인 시에
             List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost);
             return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
         }
-
-        Member member = (Member) principalObj;
 
         List<Long> likedPostIds = likeService.prfPostLiked(member, allPrfPost);
         List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost, likedPostIds);
@@ -79,21 +79,19 @@ public class PrfPostController {
 
     // 게시글 리스트 - 태그, 카테고리 필터링 O
     @GetMapping
-    public ResponseEntity getPrfPostsWithKeyword(@Positive @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity getPrfPostsWithKeyword(@Nullable @AuthenticationPrincipal Member member,
+                                                 @Positive @RequestParam(defaultValue = "1") int page,
                                                  @Positive @RequestParam(defaultValue = "10") int size,
                                                  @Positive @RequestParam(defaultValue = "1") int sorting,
                                                  @RequestParam(required = false, defaultValue = "") String category,
                                                  @RequestParam(required = false, defaultValue = "") String keyword){
-        Object principalObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // anonymousUser
         Page<PrfPost> pageInfo = prfPostService.findPrfPostsWithKeyword(page-1, size, sorting, category, keyword);
         List<PrfPost> allPrfPost = pageInfo.getContent();
 
-        if(principalObj == "anonymousUser"){ // 비로그인 시에
+        if(member == null){ // 비로그인 시에
             List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost);
             return new ResponseEntity<>(new MultiResponseDto<PrfPostDto.Response>(result, pageInfo), HttpStatus.OK);
         }
-
-        Member member = (Member) principalObj;
 
         List<Long> likedPostIds = likeService.prfPostLiked(member, allPrfPost);
         List<PrfPostDto.Response> result = customMapper.prfPostsToResponseDtos(allPrfPost, likedPostIds);
