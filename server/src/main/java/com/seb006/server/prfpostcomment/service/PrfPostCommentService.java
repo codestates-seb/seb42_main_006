@@ -53,8 +53,11 @@ public class PrfPostCommentService {
     public PrfPostComment findPrfPostComment(long id){
         return findVerifiedPrfPostComment(id);
     }
-    public List<PrfPostComment> findPrfPostComments(){
-        return prfPostCommentRepository.findAll();
+    public List<PrfPostComment> findPrfPostComments(long prfPostId){
+
+        PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostId);
+
+        return prfPostCommentRepository.findAllByPrfPost(prfPost);
     }
 
     public void deletePrfPostComment(long id){

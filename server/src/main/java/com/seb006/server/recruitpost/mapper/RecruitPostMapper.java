@@ -132,4 +132,12 @@ public interface RecruitPostMapper {
         return responses;
     }
 
+    default List<RecruitPostResponseDto> recruitPostsToRecruitPostResponseDtos(List<RecruitPost> recruitPosts){
+        List<RecruitPostResponseDto> responses = recruitPosts.stream()
+                .map(this::recruitPostToRecruitPostResponseDto)
+                .collect(Collectors.toList());
+        return responses;
+    }
+
+
 }

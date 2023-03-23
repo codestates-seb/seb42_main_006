@@ -53,8 +53,11 @@ public class RecruitPostCommentService {
         return findVerifiedRecruitPostComment(id);
     }
 
-    public List<RecruitPostComment> findRecruitPostComment(){
-        return recruitPostCommentRepository.findAll();
+    public List<RecruitPostComment> findRecruitPostComments(long recruitPostId){
+
+        RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
+
+        return recruitPostCommentRepository.findAllByRecruitPost(recruitPost);
     }
 
     public void deleteRecruitPostComment(long id){
