@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IconBtn from "../conponent/parts/IconButton";
 import Player from "../conponent/postDetail/music/Player";
 import Slide from "../conponent/postDetail/restaurant/Slide";
+import YoutubePlayer from "../conponent/postDetail/movie/YoutubePlayer";
 import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
+import { requestAuth } from "../function/request";
+import { Iurls } from "./AddPost";
+import { useParams } from "react-router";
+import Loading from "../conponent/parts/Loading";
+import Tag from "../conponent/parts/Tag";
 
 const Container = styled.div`
   display: flex;
@@ -65,78 +71,122 @@ const RetweetContainer = styled.div`
 
 const Spre = styled.pre`
   width: 100%;
-  height: 100%;
+  height: 90%;
   overflow: auto;
   overflow-y: scroll;
   word-break: break-word;
   white-space: pre-wrap;
 `;
 
-const initialState = [
-  {
-    url: "https://www.youtube.com/watch?v=6iLczIQ83dg",
-    thumbnail: "https://i.ytimg.com/vi/6iLczIQ83dg/mqdefault.jpg",
-    title: "내가 너무 좋아하는 인디음악 playlist",
-  },
-  {
-    url: "https://www.youtube.com/watch?v=tWL_s_IJMDQ",
-    thumbnail: "https://i.ytimg.com/vi/tWL_s_IJMDQ/mqdefault.jpg",
-    title: "𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 내적 열정 끌어올려줄 신나는 팝송 플레이리스트🔥",
-  },
-  {
-    url: "https://www.youtube.com/watch?v=5qH19rRJ7iw",
-    thumbnail: "https://i.ytimg.com/vi/5qH19rRJ7iw/mqdefault.jpg",
-    title: "[𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭] 요즘 듣는 잔잔한 새벽감성 음악 모음",
-  },
-  {
-    url: "https://www.youtube.com/watch?v=Rrf8uQFvICE",
-    thumbnail: "https://i.ytimg.com/vi/Rrf8uQFvICE/mqdefault.jpg",
-    title: "NewJeans (뉴진스) 'Hype Boy' Official MV (MINJI ver.)",
-  },
-  {
-    url: "https://www.youtube.com/watch?v=a5Q_iyci1nA",
-    thumbnail: "https://i.ytimg.com/vi/a5Q_iyci1nA/mqdefault.jpg",
-    title:
-      "You'll change your mood, because you're in this song - The Very Best Of Soul - New Soul Music",
-  },
-];
+const TagWrap = styled.div`
+  width: 100%;
+  height: 10%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+interface IpostDetailData {
+  id: number;
+  memberId: number;
+  memberName: string;
+  title: string;
+  category: string;
+  content: string;
+  createAt: string;
+  modifiedAt: string;
+  tags: string;
+  urls: Iurls[];
+  comments: { commentId: number; content: string }[];
+  imageKey: string;
+}
 
 export default function PostDetail() {
-  const [list, setList] = useState(initialState);
+  const [data, setData] = useState<IpostDetailData>();
+  const [list, setList] = useState<Iurls[]>([]);
+  const [reRender, setReRender] = useState({});
+  const param = useParams();
+
+  useEffect(() => {
+    requestAuth
+      .get(`/prf-posts/${param.id}`)
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+        setList(res.data.urls);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleSubmit = (x: { content: string }) => {
+    requestAuth
+      .post(`/prf-comments/${data?.id}`, x)
+      .then((res) => {
+        setReRender({});
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const splitTag = (x: string) => x.split("#").splice(1);
 
   return (
     <Container>
-      <TitleContainer>
-        <Title>나만의 플레이리스트 공유합니다</Title>
-        <IconBtn
-          title=""
-          width="40px"
-          height="40px"
-          radius="5px"
-          fontWeight={400}
-          fontColor="pink"
-          btnType=""
-          iconType="treeDot"
-          border="none"
-          handleClick={() => console.log("click")}
-        />
-      </TitleContainer>
-      <BoxContainer>
-        <Boxs>
-          <Player list={list} nowPlaying={list[0]} setList={setList}></Player>
-          {/* <Slide
-              url="https://i.ytimg.com/vi/Rrf8uQFvICE/mqdefault.jpg"
-              loc={{ lat: "37.2819", lon: "127.14814" }}
-            ></Slide> */}
-        </Boxs>
-        <ContentBox>
-          <Spre></Spre>
-        </ContentBox>
-      </BoxContainer>
-      <RetweetContainer>
-        {/* <CommentCreator></CommentCreator> */}
-        {/* <CommentList></CommentList> */}
-      </RetweetContainer>
+      {data ? (
+        <>
+          <TitleContainer>
+            <Title>{data.title}</Title>
+            <IconBtn
+              title=""
+              width="40px"
+              height="40px"
+              radius="5px"
+              fontWeight={400}
+              fontColor="pink"
+              btnType=""
+              iconType="treeDot"
+              border="none"
+              handleClick={() => console.log("click")}
+            />
+          </TitleContainer>
+          <BoxContainer>
+            <Boxs>
+              {data.category === "영화" && <YoutubePlayer item={list[0]} />}
+              {data.category === "음악" && list.length > 0 && (
+                <Player
+                  list={list}
+                  nowPlaying={list[0]}
+                  setList={setList}
+                ></Player>
+              )}
+              {data.category === "맛집" && (
+                <Slide
+                  url={`${process.env.REACT_APP_S3_URL + data.imageKey}`}
+                  loc={{ lat: list[0].url, lon: list[0].thumbnail }}
+                />
+              )}
+            </Boxs>
+            <ContentBox>
+              <Spre>{data.content}</Spre>
+              <TagWrap>
+                {splitTag(data.tags).map((x) => (
+                  <Tag title={x} key={x} />
+                ))}
+              </TagWrap>
+            </ContentBox>
+          </BoxContainer>
+          <RetweetContainer>
+            <CommentCreator handleSubmit={handleSubmit}></CommentCreator>
+            <CommentList
+              postId={data.id}
+              from="posts"
+              reRender={reRender}
+            ></CommentList>
+          </RetweetContainer>
+        </>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 }

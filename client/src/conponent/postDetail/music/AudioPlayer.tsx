@@ -144,8 +144,6 @@ type Props = {
 };
 
 const AudioPlayer: React.FC<Props> = ({ data }) => {
-  const { url, thumbnail, title } = data;
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [played, setPlayed] = useState(0);
@@ -181,11 +179,11 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
       <Container>
         <TopWrapper>
           <ImgContainer rotate={isPlaying}>
-            <ThumbnailImg src={thumbnail} alt={title} />
+            <ThumbnailImg src={data.thumbnail} alt={data.title} />
           </ImgContainer>
           <RightContainer>
             <TitleWrapper>
-              <Title>{title}</Title>
+              <Title>{data.title}</Title>
             </TitleWrapper>
             <PlayBtn>
               <IconBtn
@@ -270,7 +268,7 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
           <PlayerWrapper>
             <ReactPlayer
               ref={playerRef}
-              url={url}
+              url={data.url}
               playing={isPlaying}
               volume={volume}
               onProgress={handleProgress}

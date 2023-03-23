@@ -3,7 +3,7 @@ import Loading from "../conponent/parts/Loading";
 import { SearchInput } from "../conponent/parts/InputNoH";
 import IconBtn from "../conponent/parts/IconButton";
 import styled from "styled-components";
-import { useEffect, useState, useRef, LegacyRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { requestAuth } from "../function/request";
 import PostItem from "../conponent/post/PostItem";
 import { Iurls } from "./AddPost";
@@ -33,10 +33,13 @@ export default function Posts() {
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [trig, setTrig] = useState({});
 
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(() => {
-    setPage((page) => page + 1);
+    if (page < (result?.pageInfo.totalPages || 1) + 1) {
+      setPage((page) => page + 1);
+    }
   });
   const navigate = useNavigate();
 
@@ -64,25 +67,15 @@ export default function Posts() {
 
       setLoading(false);
     };
-    if (page < result?.pageInfo.totalPages + 1 || page === 1) {
+    if (page < (result?.pageInfo.totalPages || 1) + 1) {
       ajaxWithLoading();
     }
-  }, [page]);
+  }, [page, trig]);
 
-  //카테고리 바뀔때 초기화
-  useEffect(() => {
-    setPage(1);
-    setList([]);
-  }, [category, keyword]);
-
-  //page 1일때 옵저버 등록하고 마지막 page에서 제거
+  // page 1일때 옵저버 등록하고 마지막 page에서 제거
   useEffect(() => {
     if (page === 1) observe(target.current);
-
-    const listCount = result?.data.length;
-    const totalCount = result?.pageInfo.totalPages;
-
-    if (0 === listCount || totalCount === page) {
+    if (0 === result?.data.length || result?.pageInfo.totalPages <= page) {
       unobserve(target.current);
     }
   }, [result]);
@@ -95,6 +88,13 @@ export default function Posts() {
       observe(target.current);
     }
   }, [loading]);
+
+  //카테고리 바뀔때 초기화
+  useEffect(() => {
+    setPage(1);
+    setList([]);
+    setTrig({});
+  }, [category, keyword]);
 
   return (
     <Content>
