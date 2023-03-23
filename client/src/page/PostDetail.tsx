@@ -248,11 +248,7 @@ export default function PostDetail() {
             <Boxs>
               {data.category === "영화" && <YoutubePlayer item={list[0]} />}
               {data.category === "음악" && list.length > 0 && (
-                <Player
-                  list={list}
-                  nowPlaying={list[0]}
-                  setList={setList}
-                ></Player>
+                <Player list={list} setList={setList}></Player>
               )}
               {data.category === "맛집" && (
                 <Slide

@@ -101,6 +101,7 @@ export default function CollectItem() {
               handleClick={() => console.log("click")}
             />
           </IconSort>
+          <Cover />
         </Wrapper>
       ))}
     </>
@@ -117,6 +118,17 @@ const Wrapper = styled.div`
   border-radius: 5px;
   background-color: #222222;
   margin-bottom: 10px;
+  position: relative;
+`;
+
+const Cover = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 300;
 `;
 
 const PostDetail = styled.div`
