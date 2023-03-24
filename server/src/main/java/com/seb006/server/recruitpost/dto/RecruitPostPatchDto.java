@@ -24,7 +24,7 @@ public class RecruitPostPatchDto {
 
     private RecruitPost.RecruitStatus recruitStatus;
 
-    private LocalDate dueDate;
+    private String dueDate;
 
     private String age;
 
