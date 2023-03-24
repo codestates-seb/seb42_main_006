@@ -1,8 +1,12 @@
 package com.seb006.server.auth.filter;
 
 import com.seb006.server.auth.jwt.JwtTokenizer;
+import com.seb006.server.auth.redis.entity.LogoutAccessToken;
+import com.seb006.server.auth.redis.repository.LogoutAccessTokenRedisRepository;
 import com.seb006.server.auth.userdetails.CustomUserDetailsService;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.DisabledException;
@@ -20,18 +24,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final CustomUserDetailsService customUserDetailsService;
+    private final LogoutAccessTokenRedisRepository logoutAccessTokenRedisRepository;
 
     public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
                                  CustomAuthorityUtils authorityUtils,
-                                 CustomUserDetailsService customUserDetailsService) {
+                                 CustomUserDetailsService customUserDetailsService,
+                                 LogoutAccessTokenRedisRepository logoutAccessTokenRedisRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.customUserDetailsService = customUserDetailsService;
+        this.logoutAccessTokenRedisRepository = logoutAccessTokenRedisRepository;
     }
 
     @Override
@@ -66,6 +74,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+        // 만약 입력받은 액세스 토큰이 블랙리스트에 등록되어 있다면 exception
+        checkBlackList(jws);
+
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
 
@@ -85,5 +97,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private void checkBlackList(String jws) {
+        Optional<LogoutAccessToken> optionalLogoutAccessToken = logoutAccessTokenRedisRepository.findById(jws);
+        if (optionalLogoutAccessToken.isPresent())
+            throw new BusinessLogicException(ExceptionCode.LOGOUT_AUTHORIZATION);
     }
 }

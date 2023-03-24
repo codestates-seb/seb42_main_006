@@ -1,5 +1,7 @@
 package com.seb006.server.auth.jwt;
 
+import com.seb006.server.global.exception.BusinessLogicException;
+import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -126,17 +128,25 @@ public class JwtTokenizer {
     }
 
     public boolean isValidDateToken(String jws) {
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(jws);
+        String base64EncodedSecretKey = encodeBase64SecretKey(secretKey);
 
+        try {
+            Jws<Claims> claims = getClaims(jws, base64EncodedSecretKey);
             Date expiration = claims.getBody().getExpiration();
             return expiration.after(new Date());
         } catch (JwtException je) {
-            return false;
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
         }
+    }
+
+    public Long getExpiration(String jws) {
+        String base64EncodedSecretKey = encodeBase64SecretKey(secretKey);
+        Jws<Claims> claims = getClaims(jws, base64EncodedSecretKey);
+
+        Date expiration = claims.getBody().getExpiration();
+
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
     }
 
     private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
