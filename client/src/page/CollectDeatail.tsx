@@ -23,18 +23,22 @@ interface Post {
   nickName: string;
   age: string;
   tags: string;
+  liked: boolean;
 }
 
 export default function CollectDeatail() {
   const param = useParams();
-  const [showOptions, setShowOptions] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  // const [showOptions, setShowOptions] = useState(false);
+  // const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
+  const [showOption, setShowOption] = useState(false);
+  const [data, setData] = useState<Post>();
 
-  const toggleOptions = () => {
-    setShowOptions((prevState) => !prevState);
-    setIsEdit(false);
-  };
+  // const toggleOptions = () => {
+  //   setShowOption((prevState) => !prevState);
+  //   setIsEdit(false);
+  // };
+
   const [post, setPost] = useState<Post>({
     id: 1,
     title: "",
@@ -50,6 +54,7 @@ export default function CollectDeatail() {
     nickName: "",
     age: "",
     tags: "",
+    liked: false,
   });
   const [render, setRender] = useState({});
 
@@ -103,19 +108,6 @@ export default function CollectDeatail() {
           </TopInfoLeft>
           <TopInfoRight>
             <TagRight>
-              <IconBtn
-                title=""
-                width="50px"
-                height="30px"
-                radius="50px"
-                fontWeight={400}
-                fontColor="white"
-                btnType=""
-                iconType="heart"
-                handleClick={() => console.log("click")}
-              />
-            </TagRight>
-            <TagRight>
               <StyledBtn
                 title={
                   "참가인원" + post.currentNumber + "/" + post.recruitNumber
@@ -146,7 +138,7 @@ export default function CollectDeatail() {
         <DetailPost>
           <TitleContent>
             <Title>{post.title}</Title>
-            {showOptions && (
+            {showOption && (
               <>
                 <IconBtn
                   title=""
@@ -174,18 +166,21 @@ export default function CollectDeatail() {
                 />
               </>
             )}
-            <IconBtn
-              title=""
-              width="40px"
-              height="40px"
-              radius="5px"
-              fontWeight={400}
-              fontColor="pink"
-              btnType=""
-              iconType="treeDot"
-              border="none"
-              handleClick={toggleOptions}
-            />
+            {JSON.parse(sessionStorage.getItem("user") as string).id ===
+              post.memberId && (
+              <IconBtn
+                title=""
+                width="40px"
+                height="40px"
+                radius="5px"
+                fontWeight={400}
+                fontColor="pink"
+                btnType=""
+                iconType="treeDot"
+                border="none"
+                handleClick={() => setShowOption(!showOption)}
+              />
+            )}
           </TitleContent>
           <DetailContent>{post.content}</DetailContent>
         </DetailPost>

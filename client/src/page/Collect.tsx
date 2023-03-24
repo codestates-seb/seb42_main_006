@@ -5,7 +5,6 @@ import Loading from "../conponent/parts/Loading";
 import styled from "styled-components";
 import { useEffect, useState, useRef, LegacyRef } from "react";
 import { requestAuth } from "../function/request";
-import PostItem from "../conponent/post/PostItem";
 import useIntersectionObserver from "../util/useIntersectorObsevet";
 
 export interface IListItem {
@@ -123,9 +122,11 @@ export default function Collect() {
           ))}
         </Sort>
       </SearchWrapper>
-      <PostsContent>
-        <CollectItem />
-      </PostsContent>
+      <PostsContent></PostsContent>
+      {list &&
+        list.map((item: IListItem) => {
+          return <CollectItem key={item.id} item={item} />;
+        })}
       {loading && <Loading />}
       <div ref={target}></div>
     </Content>

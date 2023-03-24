@@ -5,27 +5,15 @@ import { useNavigate } from "react-router";
 import IconBtn from "../parts/IconButton";
 import { requestAuth } from "../../function/request";
 import { useState, useEffect } from "react";
-interface Posts {
-  id: number;
-  title: string;
-  category: string;
-  content: string;
-  recruitNumber: number;
-  currentNumber: number;
-  recruitStatus: string;
-  dueDate: string;
-  createAt: string;
-  modifiedAt: string;
-  memberId: number;
-  tagName: string;
-  age: string;
-  tags: string;
+import { IListItem } from "../../page/Collect";
+export interface Props {
+  item: IListItem;
 }
 
-export default function CollectItem() {
+export default function CollectItem({ item }: Props) {
   const Navigate = useNavigate();
 
-  const [posts, setPosts] = useState<Posts[]>([]);
+  const [posts, setPosts] = useState<Props[]>([]);
 
   useEffect(() => {
     requestAuth
@@ -41,68 +29,66 @@ export default function CollectItem() {
 
   return (
     <>
-      {posts.map((post) => (
-        <Wrapper key={post.id}>
-          <UserIcon>
-            <IconBtn
-              title=""
-              width="100%"
-              height=""
-              radius="100px"
-              fontWeight={400}
-              fontColor=""
-              btnType=""
-              iconType="profile"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-          </UserIcon>
-          <PostDetail onClick={() => Navigate(`/collectdeatail/${post.id}`)}>
-            <Title>{post.title}</Title>
-            <Summary>{post.content}</Summary>
-            <TagInfo>
-              <TagRight>
-                <Tag title={post.category}></Tag>
-              </TagRight>
-              <TagRight>
-                <Tag title={post.age}></Tag>
-              </TagRight>
-              <TagRight>
-                <Tag title={"모집기한:" + post.dueDate}></Tag>
-              </TagRight>
-              <TagRight>
-                <Tag title={post.tags}></Tag>
-              </TagRight>
-            </TagInfo>
-          </PostDetail>
-          <IconSort>
-            <IconBtn
-              title=""
-              width="30px"
-              height="30px"
-              radius="5px"
-              fontWeight={400}
-              fontColor="white"
-              btnType=""
-              iconType="heart"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-            <IconBtn
-              title=""
-              width="30px"
-              height="30px"
-              radius="5px"
-              fontWeight={400}
-              fontColor=""
-              btnType=""
-              iconType="retweet"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-          </IconSort>
-        </Wrapper>
-      ))}
+      <Wrapper key={item.id}>
+        <UserIcon>
+          <IconBtn
+            title=""
+            width="100%"
+            height=""
+            radius="100px"
+            fontWeight={400}
+            fontColor=""
+            btnType=""
+            iconType="profile"
+            border="none"
+            handleClick={() => console.log("click")}
+          />
+        </UserIcon>
+        <PostDetail onClick={() => Navigate(`/collectdeatail/${item.id}`)}>
+          <Title>{item.title}</Title>
+          <Summary>{item.content}</Summary>
+          <TagInfo>
+            <TagRight>
+              <Tag title={item.category}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={item.age}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={"모집기한:" + item.dueDate}></Tag>
+            </TagRight>
+            <TagRight>
+              <Tag title={item.tags}></Tag>
+            </TagRight>
+          </TagInfo>
+        </PostDetail>
+        <IconSort>
+          <IconBtn
+            title=""
+            width="30px"
+            height="30px"
+            radius="5px"
+            fontWeight={400}
+            fontColor="white"
+            btnType=""
+            iconType="heart"
+            border="none"
+            handleClick={() => console.log("click")}
+          />
+          <IconBtn
+            title=""
+            width="30px"
+            height="30px"
+            radius="5px"
+            fontWeight={400}
+            fontColor=""
+            btnType=""
+            iconType="retweet"
+            border="none"
+            handleClick={() => console.log("click")}
+          />
+        </IconSort>
+      </Wrapper>
     </>
   );
 }
