@@ -142,9 +142,12 @@ public class RecruitPostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     //모집 실패
+    @PatchMapping("/{recruit-post-id}/expired")
+    public ResponseEntity expiredRecruitPost (@PathVariable("recruit-post-id")long id){
+        service.expiredRecruitPost(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-    //모집 참여하기
 
 }
