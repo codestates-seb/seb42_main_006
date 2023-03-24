@@ -111,7 +111,7 @@ public class RecruitPostService {
     public void expiredRecruitPost(long id) {
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
         findRecruitPost.getDueDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy. MM. dd.");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
         LocalDate dateTime = LocalDate.parse(findRecruitPost.getDueDate(),formatter);
 
 
