@@ -35,9 +35,6 @@ public class AuthService {
     }
 
     public Map<String, String> reissue(String email, String refreshToken) {
-        // 토큰 유효 기간 검사
-        jwtTokenizer.isValidDateToken(refreshToken);
-
         // 유효한 회원인지 검사
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
