@@ -39,6 +39,12 @@ export default function CollectItem() {
       });
   }, []);
 
+  const isExpired = (x: string): boolean => {
+    const dueDate = new Date(x);
+    const cur = new Date();
+    return dueDate.valueOf() - cur.valueOf() > 0 ? true : false;
+  };
+
   return (
     <>
       {posts.map((post) => (
@@ -101,7 +107,9 @@ export default function CollectItem() {
               handleClick={() => console.log("click")}
             />
           </IconSort>
-          <Cover />
+          {post.recruitStatus !== "ACTIVE" && isExpired(post.dueDate) && (
+            <Cover />
+          )}
         </Wrapper>
       ))}
     </>
