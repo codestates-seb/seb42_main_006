@@ -7,7 +7,6 @@ import {
 import IconBtn from "../conponent/parts/IconButton";
 import Tag from "../conponent/parts/Tag";
 import styled from "styled-components";
-import AudioPlayer from "../conponent/postDetail/music/AudioPlayer";
 
 const Filter = styled.div`
   display: flex;
@@ -272,14 +271,14 @@ export default function Example() {
         height="36px"
         placeholder="Default"
       ></DefaultInput>
-      <AudioPlayer
+      {/* <AudioPlayer
         data={{
           url: "https://www.youtube.com/watch?v=Rrf8uQFvICE",
           thumbnail: "https://i.ytimg.com/vi/zISCDPViQ3c/mqdefault.jpg",
           title:
             "3시간 봄 내음 가득한 힐링음악 🌼 아침음악, 스트레스해소음악, 명상음악, 요가 (Sprout)",
         }}
-      ></AudioPlayer>
+      ></AudioPlayer> */}
     </Filter>
   );
 }

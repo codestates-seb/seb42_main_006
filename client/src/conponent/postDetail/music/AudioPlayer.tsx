@@ -141,12 +141,12 @@ const AudioWrapper = styled.div`
 
 type Props = {
   data: Iurls;
+  list: Iurls[];
+  setNowPlaying: React.Dispatch<React.SetStateAction<Iurls>>;
 };
 
-const AudioPlayer: React.FC<Props> = ({ data }) => {
-  const { url, thumbnail, title } = data;
-
-  const [isPlaying, setIsPlaying] = useState(false);
+const AudioPlayer: React.FC<Props> = ({ data, list, setNowPlaying }) => {
+  const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(0.5);
   const [played, setPlayed] = useState(0);
   // const [duration, setDuration] = useState(0);
@@ -170,6 +170,22 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
     playerRef.current?.seekTo(seekTo);
   };
 
+  const onEnd = () => {
+    list.forEach((x, idx) => {
+      if (x.id === data.id) {
+        setNowPlaying(list[idx + 1]);
+      }
+    });
+  };
+
+  const controlSong = (arrow: 1 | -1) => {
+    list.forEach((x, idx) => {
+      if (x.id === data.id) {
+        setNowPlaying(list[idx + Number(arrow)]);
+      }
+    });
+  };
+
   // const handleDuration = (duration: number) => {
   //   setDuration(duration);
   // };
@@ -181,11 +197,11 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
       <Container>
         <TopWrapper>
           <ImgContainer rotate={isPlaying}>
-            <ThumbnailImg src={thumbnail} alt={title} />
+            <ThumbnailImg src={data.thumbnail} alt={data.title} />
           </ImgContainer>
           <RightContainer>
             <TitleWrapper>
-              <Title>{title}</Title>
+              <Title>{data.title}</Title>
             </TitleWrapper>
             <PlayBtn>
               <IconBtn
@@ -198,7 +214,7 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
                 btnType=""
                 iconType="leftPlay"
                 border="none"
-                handleClick={() => console.log("click")}
+                handleClick={() => controlSong(-1)}
               />
               {isPlaying ? (
                 <IconBtn
@@ -237,7 +253,7 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
                 btnType=""
                 iconType="rightPlay"
                 border="none"
-                handleClick={() => console.log("click")}
+                handleClick={() => controlSong(1)}
               />
             </PlayBtn>
 
@@ -270,10 +286,11 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
           <PlayerWrapper>
             <ReactPlayer
               ref={playerRef}
-              url={url}
+              url={data.url}
               playing={isPlaying}
               volume={volume}
               onProgress={handleProgress}
+              onEnded={onEnd}
               // onDuration={handleDuration}
             />
           </PlayerWrapper>

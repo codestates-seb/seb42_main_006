@@ -1,18 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import { DefaultInput } from "../conponent/parts/InputNoH";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "../conponent/parts/InputNoH";
 
 import Selection from "../conponent/parts/Selection";
 import IconBtn from "../conponent/parts/IconButton";
 import { StyledBtn } from "../conponent/parts/Button";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation, useParams } from "react-router";
 
 import { collectPost, IData } from "../util/CollectPostApi";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { requestAuth } from "../function/request";
 
 export default function CollectPost() {
   const [title, setTitle] = useState("");
@@ -22,8 +23,26 @@ export default function CollectPost() {
   const [recruitNumber, setRecruitNumber] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const [category, setCategory] = useState("");
+
   const query = new URLSearchParams(useLocation().search);
   // 리액트 라우터에 url쿼리로 원글의 아이디랑 category받아옴
+
+  const param = useParams();
+
+  useEffect(() => {
+    if (param.mode === "edit") {
+      requestAuth.get(`/recruit-posts/${param.id}`).then((res) => {
+        console.log(res.data);
+        setTitle(res.data.title);
+        setBody(res.data.content);
+        setTags(res.data.tags);
+        setCategory(res.data.category);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
@@ -44,19 +63,42 @@ export default function CollectPost() {
   };
 
   const handleSubmit = () => {
-    if (title && body && recruitNumber && selectedDate) {
-      const data: IData = {
-        prfPostId: Number(query.get("prf-id")),
-        category: String(query.get("category")),
-        title: title,
-        content: body,
-        recruitNumber: Number(recruitNumber),
-        dueDate: selectedDate.toLocaleDateString(),
-        age: ages,
-        tags: tags,
-      };
-      collectPost(data);
-      navigate("/collectpost");
+    if (param.mode === "create") {
+      if (title && body && recruitNumber && selectedDate) {
+        const data: IData = {
+          prfPostId: Number(param.id),
+          category: String(query.get("category")),
+          title: title,
+          content: body,
+          recruitNumber: Number(recruitNumber),
+          dueDate: selectedDate.toLocaleDateString(),
+          age: ages,
+          tags: tags,
+        };
+        collectPost(data);
+        // navigate("/collectpost");
+        // requestAuth.post("/recruit-posts", data).then((res) => {
+        //   console.log(res);
+        //   if (res.data.id) navigate("/collectpost");
+        // });
+      }
+    }
+    if (param.mode === "edit") {
+      if (title && body && recruitNumber && selectedDate) {
+        const data = {
+          category: category,
+          title: title,
+          content: body,
+          recruitNumber: Number(recruitNumber),
+          dueDate: selectedDate.toLocaleDateString(),
+          age: ages,
+          tags: tags,
+        };
+        requestAuth.patch(`/recruit-posts/${param.id}`, data).then((res) => {
+          console.log(res);
+          if (res.data.id) navigate("/collectpost");
+        });
+      }
     }
   };
 
@@ -101,34 +143,38 @@ export default function CollectPost() {
           </div>
           <div>
             <Title>모집기한</Title>
-            <DateContainer>
-              <div>
-                {" "}
-                {selectedDate
-                  ? selectedDate.toLocaleDateString()
-                  : "날짜를 선택하세요."}
-              </div>
-              {showDatePicker ? (
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={handleDateChange}
-                  inline
-                />
-              ) : (
-                <IconBtn
-                  title=""
-                  width="30px"
-                  height="30px"
-                  radius="100px"
-                  fontWeight={400}
-                  fontColor=""
-                  btnType=""
-                  iconType="calender"
-                  border="none"
-                  handleClick={handleDateClick}
-                />
-              )}
-            </DateContainer>
+            <DateWrapper>
+              <DateContainer>
+                <div>
+                  {" "}
+                  {selectedDate
+                    ? selectedDate.toLocaleDateString()
+                    : "날짜를 선택하세요."}
+                </div>
+              </DateContainer>
+              <DatePick>
+                {showDatePicker ? (
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    inline
+                  />
+                ) : (
+                  <IconBtn
+                    title=""
+                    width="30px"
+                    height="30px"
+                    radius="100px"
+                    fontWeight={400}
+                    fontColor=""
+                    btnType=""
+                    iconType="calender"
+                    border="none"
+                    handleClick={handleDateClick}
+                  />
+                )}
+              </DatePick>
+            </DateWrapper>
           </div>
           <PersonContainer>
             <PersonCounter>
@@ -197,7 +243,7 @@ export default function CollectPost() {
             fontWeight={400}
             fontColor="pink"
             btnType="empty"
-            handleClick={() => navigate("/posts")}
+            handleClick={() => navigate(-1)}
           ></StyledBtn>
         </BtnWrapper>
       </Container>
@@ -210,8 +256,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 800px;
-  width: 800px;
+  width: 100%;
+  height: 100%;
+  max-height: 800px;
+  max-width: 800px;
+  min-height: 300px;
+  min-width: 500px;
   color: white;
   /* border: 2px solid #5a5959; */
   border-radius: 10px;
@@ -245,13 +295,13 @@ const DateContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-height: 40px;
   padding-left: 5px;
   font-size: 1.2rem;
   border-radius: 5px;
   border: 2px solid #5a5959;
   margin-bottom: 5px;
   margin-top: 5px;
-  z-index: 100;
 `;
 
 const PersonContainer = styled.div`
@@ -279,4 +329,14 @@ const BtnWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
+`;
+
+const DatePick = styled.div`
+  position: relative;
+  z-index: 1000px;
+`;
+
+const DateWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;

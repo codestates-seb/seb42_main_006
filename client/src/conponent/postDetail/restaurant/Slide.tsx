@@ -36,16 +36,18 @@ const StyleBtn = styled.button<{ arrow: string }>`
   ${(props) =>
     props.arrow === "90deg"
       ? css`
-          left: 0;
+          left: 5px;
         `
       : css`
-          right: 0;
+          right: 5px;
         `}
-  width: max-content;
+  width: 30px;
+  height: 30px;
   z-index: 1000;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.3);
   border: none;
   outline: none;
+  border-radius: 100px;
 
   > svg {
     transform: rotate(${(props) => props.arrow});

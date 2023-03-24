@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import IconBtn from "../parts/IconButton";
 import { requestAuth } from "../../function/request";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
 interface Posts {
   id: number;
   title: string;
@@ -25,59 +24,31 @@ interface Posts {
 
 export default function CollectItem() {
   const Navigate = useNavigate();
-  const param = useParams();
 
-  const [posts, setPosts] = useState<Posts[]>([
-    {
-      id: 1,
-      title: "영화같이봐요",
-      category: "영화",
-      content: "내용입니다",
-      recruitNumber: 5,
-      currentNumber: 3,
-      recruitStatus: "active",
-      dueDate: "2023-03-08",
-      createAt: "2023-02-25T17:41:46",
-      modifiedAt: "2023-02-25T18:26:13",
-      memberId: 1,
-      tagName: "박새로이",
-      age: "20대30대",
-      tags: "#홍대#아이언맨",
-    },
-    {
-      id: 2,
-      title: "맛집같이가봐요",
-      category: "맛집",
-      content: "내용입니다",
-      recruitNumber: 8,
-      currentNumber: 3,
-      recruitStatus: "active",
-      dueDate: "2023-03-08",
-      createAt: "2023-02-25T17:41:46",
-      modifiedAt: "2023-02-25T18:26:13",
-      memberId: 1,
-      tagName: "홍길동",
-      age: "30대40대",
-      tags: "#건대#맛집#냉모밀",
-    },
-  ]);
+  const [posts, setPosts] = useState<Posts[]>([]);
 
   useEffect(() => {
     requestAuth
-      .get<Posts[]>(`/recruit-posts?page=X&size=Y&sorting=Z`)
+      .get(`/recruit-posts/all?page=3&size=5&sorting=1`)
       .then((res) => {
-        setPosts(res.data);
-        console.log(res.data);
+        setPosts(res.data.data);
+        console.log(res.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
+  const isExpired = (x: string): boolean => {
+    const dueDate = new Date(x);
+    const cur = new Date();
+    return dueDate.valueOf() - cur.valueOf() > 0 ? true : false;
+  };
+
   return (
     <>
-      {posts.map((posts) => (
-        <Wrapper>
+      {posts.map((post) => (
+        <Wrapper key={post.id}>
           <UserIcon>
             <IconBtn
               title=""
@@ -92,31 +63,29 @@ export default function CollectItem() {
               handleClick={() => console.log("click")}
             />
           </UserIcon>
-          <PostDetail
-            onClick={() => Navigate(`/collectdeatail/${param.recruiteId}`)}
-          >
-            <Title>{posts.title}</Title>
-            <Summary>{posts.content}</Summary>
+          <PostDetail onClick={() => Navigate(`/collectdeatail/${post.id}`)}>
+            <Title>{post.title}</Title>
+            <Summary>{post.content}</Summary>
             <TagInfo>
               <TagRight>
-                <Tag title={posts.category}></Tag>
+                <Tag title={post.category}></Tag>
               </TagRight>
               <TagRight>
-                <Tag title={posts.age}></Tag>
+                <Tag title={post.age}></Tag>
               </TagRight>
               <TagRight>
-                <Tag title={"모집기한:" + posts.dueDate}></Tag>
+                <Tag title={"모집기한:" + post.dueDate}></Tag>
               </TagRight>
               <TagRight>
-                <Tag title={posts.tags}></Tag>
+                <Tag title={post.tags}></Tag>
               </TagRight>
             </TagInfo>
           </PostDetail>
           <IconSort>
             <IconBtn
               title=""
-              width="60px"
-              height="36px"
+              width="30px"
+              height="30px"
               radius="5px"
               fontWeight={400}
               fontColor="white"
@@ -127,8 +96,8 @@ export default function CollectItem() {
             />
             <IconBtn
               title=""
-              width="40px"
-              height="40px"
+              width="30px"
+              height="30px"
               radius="5px"
               fontWeight={400}
               fontColor=""
@@ -138,6 +107,9 @@ export default function CollectItem() {
               handleClick={() => console.log("click")}
             />
           </IconSort>
+          {post.recruitStatus !== "ACTIVE" && isExpired(post.dueDate) && (
+            <Cover />
+          )}
         </Wrapper>
       ))}
     </>
@@ -154,6 +126,17 @@ const Wrapper = styled.div`
   border-radius: 5px;
   background-color: #222222;
   margin-bottom: 10px;
+  position: relative;
+`;
+
+const Cover = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 300;
 `;
 
 const PostDetail = styled.div`
