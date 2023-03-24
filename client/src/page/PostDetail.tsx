@@ -238,7 +238,11 @@ export default function PostDetail() {
                     fontWeight={400}
                     fontColor="pink"
                     btnType="empty"
-                    handleClick={() => navigate(`/collectpost/${param.id}`)}
+                    handleClick={() =>
+                      navigate(
+                        `/collectpost/create/${param.id}?category=${data.category}`
+                      )
+                    }
                   ></StyledBtn>
                 </>
               )}
