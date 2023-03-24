@@ -38,18 +38,15 @@ requestAuth.interceptors.response.use(
     const originalConfig = _err?.config;
 
     if (response && response.status === 401) {
-      // const access_token = sessionStorage.getItem("auth"); // 현재 만료된 access token;
       const email = sessionStorage.getItem("user");
-      const refresh = sessionStorage.getItem("refresh"); // 리프레시 토큰이 있을 경우 가져온다.
+      const refresh = sessionStorage.getItem("refresh");
       if (!!refresh === false) {
         // refresh token이 쿠키에서 삭제 또는 만료 되었을 경우
         console.log("리프레시 토큰 쿠키 삭제 또는 만료됨 ");
-        // 만료 처리
       } else {
         if (!!email) {
           try {
             const emailaddr = JSON.parse(email);
-            // 만료된 access token과 refresh token을 이용해 리프레시api에 갱신 요청
             const data = await request.get(`/reissue`, {
               headers: {
                 RefreshToken: refresh,
