@@ -9,7 +9,6 @@ export const requestAuth = axios.create({
   headers: {
     "Content-type": "application/json",
   },
-  timeout: 5000,
 });
 
 requestAuth.interceptors.request.use(

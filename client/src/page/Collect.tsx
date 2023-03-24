@@ -57,7 +57,7 @@ export default function Collect() {
         setLoading(true);
 
         const res = await requestAuth.get(
-          `/recruit-posts?page=${page}&size=10&sorting=1${
+          `/recruit-posts/all?page=${page}&size=10&sorting=1${
             category !== "전체" ? `&category=${category}` : ""
           }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
         );
