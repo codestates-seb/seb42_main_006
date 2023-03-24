@@ -21,6 +21,8 @@ public enum ExceptionCode {
 
     RECRUITPOST_CLOSED(404,"모집을 중지합니다."),
 
+    RECRUITPOST_EXPIRED(404,"모집이 만료되었습니다."),
+
     PRFPOSTCOMMENT_NOT_FOUND(404,"게시글 댓글이 존재하지 않습니다."),
 
     RECRUITPOSTCOMMENT_NOT_FOUND(404,"모집글 댓글이 존재하지 않습니다."),
