@@ -113,7 +113,7 @@ public class RecruitPost extends Auditable {
 
     public void setDueDate(String dueDate)  {
         this.dueDate = dueDate;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
         LocalDate dateTime = LocalDate.parse(dueDate,formatter);
 
     }
