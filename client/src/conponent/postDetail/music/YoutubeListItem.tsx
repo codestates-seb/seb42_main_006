@@ -1,6 +1,41 @@
+import React from "react";
 import styled from "styled-components";
 import { Delete } from "../../../icons/Icon";
 import { Iurls } from "../../../page/AddPost";
+
+interface ListItemProp {
+  item: Iurls;
+  onDelete?: (x: string) => any;
+  mode: string;
+  onSelect?: (x: Iurls) => void;
+}
+
+function YoutubeListItem({ item, onDelete, mode, onSelect }: ListItemProp) {
+  const selectItem = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onSelect && onSelect(item);
+  };
+
+  const deleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onDelete && onDelete(item.url);
+  };
+  return (
+    <StyledList onClick={selectItem}>
+      <img src={item.thumbnail} alt="thumbnail" />
+      <div>
+        <div>{item.title}</div>
+      </div>
+      {mode === "edit" && (
+        <DelBtn onClick={deleteItem}>
+          <Delete></Delete>
+        </DelBtn>
+      )}
+    </StyledList>
+  );
+}
+
+export default YoutubeListItem;
 
 const StyledList = styled.div`
   padding: 14px;
@@ -38,27 +73,3 @@ const DelBtn = styled.button`
   outline: none;
   border: none;
 `;
-
-interface ListItemProp {
-  item: Iurls;
-  onDelete?: (x: string) => any;
-  mode: string;
-}
-
-function YoutubeListItem({ item, onDelete, mode }: ListItemProp) {
-  return (
-    <StyledList>
-      <img src={item.thumbnail} alt="thumbnail" />
-      <div>
-        <div>{item.title}</div>
-      </div>
-      {mode === "edit" && (
-        <DelBtn onClick={() => onDelete && onDelete(item.url)}>
-          <Delete></Delete>
-        </DelBtn>
-      )}
-    </StyledList>
-  );
-}
-
-export default YoutubeListItem;

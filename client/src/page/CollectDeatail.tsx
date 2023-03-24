@@ -37,19 +37,19 @@ export default function CollectDeatail() {
   };
   const [post, setPost] = useState<Post>({
     id: 1,
-    title: "제목을 입력해주세요",
-    category: "영화",
-    content: "게시글 내용을적어주세요",
+    title: "",
+    category: "",
+    content: "",
     recruitNumber: 5,
     currentNumber: 3,
-    recruitStatus: "active",
-    dueDate: "2023-03-08",
-    createAt: "2023-02-25T17:41:46",
-    modifiedAt: "2023-02-25T18:26:13",
+    recruitStatus: "",
+    dueDate: "",
+    createAt: "",
+    modifiedAt: "",
     memberId: 1,
-    nickName: "홍길동",
-    age: "20대30대",
-    tags: "#홍대#맛집#냉모밀",
+    nickName: "",
+    age: "",
+    tags: "",
   });
   const [render, setRender] = useState({});
 
@@ -158,7 +158,7 @@ export default function CollectDeatail() {
                   btnType=""
                   iconType="write"
                   border="none"
-                  handleClick={() => setIsEdit(!isEdit)}
+                  handleClick={() => navigate(`/collectpost/edit/${param.id}`)}
                 />
                 <IconBtn
                   title=""

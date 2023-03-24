@@ -34,6 +34,7 @@ export default function Posts() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [trig, setTrig] = useState({});
+  const [sort, setSort] = useState(1);
 
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(() => {
@@ -47,6 +48,10 @@ export default function Posts() {
     e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
   };
 
+  const handleSortClick = (x: number) => {
+    setSort(x);
+  };
+
   const handleSearch = () => {
     setKeyword(searchValue);
   };
@@ -58,7 +63,7 @@ export default function Posts() {
         setLoading(true);
 
         const res = await requestAuth.get(
-          `/prf-posts?page=${page}&size=10&sorting=1${
+          `/prf-posts?page=${page}&size=10&sorting=${sort}${
             category !== "전체" ? `&category=${category}` : ""
           }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
         );
@@ -101,7 +106,7 @@ export default function Posts() {
     setPage(1);
     setList([]);
     setTrig({});
-  }, [category, keyword]);
+  }, [category, keyword, sort]);
 
   return (
     <Content>
@@ -114,15 +119,28 @@ export default function Posts() {
           onSearch={handleSearch}
         ></Search>
         <Sort>
-          {["전체", "영화", "음악", "맛집"].map((x) => (
-            <CategoryBtn
-              isSelect={x === category}
-              onClick={handleCatClick}
-              key={x}
-            >
-              {x}
-            </CategoryBtn>
-          ))}
+          <div>
+            {["전체", "영화", "음악", "맛집"].map((x) => (
+              <CategoryBtn
+                isSelect={x === category}
+                onClick={handleCatClick}
+                key={x}
+              >
+                {x}
+              </CategoryBtn>
+            ))}
+          </div>
+          <div>
+            {["최신순", "인기순"].map((x, idx) => (
+              <CategoryBtn
+                isSelect={idx === sort - 1}
+                onClick={() => handleSortClick(idx + 1)}
+                key={x}
+              >
+                {x}
+              </CategoryBtn>
+            ))}
+          </div>
         </Sort>
       </SearchWrapper>
       {list &&
@@ -173,7 +191,7 @@ const SearchWrapper = styled.div`
 const Sort = styled.div`
   display: flex;
   width: 100%;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 10px;
   color: white;
 `;
@@ -192,7 +210,7 @@ const CategoryBtn = styled.button<CategoryBtnProp>`
   padding: 4px 8px;
   border: none;
   outline: none;
-  color: #fff;
+  color: ${(props) => (props.isSelect ? "#f36" : "#fff")};
   border-bottom: ${(props) => (props.isSelect ? "2px solid #f36" : "none")};
 
   &:hover {

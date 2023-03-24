@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import AudioPlayer from "./AudioPlayer";
 import YoutubeList from "./YoutubeList";
@@ -7,7 +7,6 @@ import { Iurls } from "../../../page/AddPost";
 
 interface PlayerProp {
   list: Iurls[];
-  nowPlaying: Iurls;
   setList: React.Dispatch<React.SetStateAction<Iurls[]>>;
 }
 
@@ -19,11 +18,26 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-function Player({ list, nowPlaying, setList }: PlayerProp) {
+function Player({ list, setList }: PlayerProp) {
+  const [nowPlaying, setNowPlaying] = useState<Iurls>(list[0]);
+
+  const onSelect = (x: Iurls) => {
+    setNowPlaying(x);
+  };
+
   return (
     <Wrapper>
-      <AudioPlayer data={nowPlaying}></AudioPlayer>
-      <YoutubeList list={list} setList={setList} mode="read"></YoutubeList>
+      <AudioPlayer
+        data={nowPlaying}
+        list={list}
+        setNowPlaying={setNowPlaying}
+      ></AudioPlayer>
+      <YoutubeList
+        list={list}
+        setList={setList}
+        onSelect={onSelect}
+        mode="read"
+      ></YoutubeList>
     </Wrapper>
   );
 }

@@ -141,10 +141,12 @@ const AudioWrapper = styled.div`
 
 type Props = {
   data: Iurls;
+  list: Iurls[];
+  setNowPlaying: React.Dispatch<React.SetStateAction<Iurls>>;
 };
 
-const AudioPlayer: React.FC<Props> = ({ data }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+const AudioPlayer: React.FC<Props> = ({ data, list, setNowPlaying }) => {
+  const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(0.5);
   const [played, setPlayed] = useState(0);
   // const [duration, setDuration] = useState(0);
@@ -166,6 +168,22 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
     const seekTo = parseFloat(event.target.value);
     setPlayed(seekTo);
     playerRef.current?.seekTo(seekTo);
+  };
+
+  const onEnd = () => {
+    list.forEach((x, idx) => {
+      if (x.id === data.id) {
+        setNowPlaying(list[idx + 1]);
+      }
+    });
+  };
+
+  const controlSong = (arrow: 1 | -1) => {
+    list.forEach((x, idx) => {
+      if (x.id === data.id) {
+        setNowPlaying(list[idx + Number(arrow)]);
+      }
+    });
   };
 
   // const handleDuration = (duration: number) => {
@@ -196,7 +214,7 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
                 btnType=""
                 iconType="leftPlay"
                 border="none"
-                handleClick={() => console.log("click")}
+                handleClick={() => controlSong(-1)}
               />
               {isPlaying ? (
                 <IconBtn
@@ -235,7 +253,7 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
                 btnType=""
                 iconType="rightPlay"
                 border="none"
-                handleClick={() => console.log("click")}
+                handleClick={() => controlSong(1)}
               />
             </PlayBtn>
 
@@ -272,6 +290,7 @@ const AudioPlayer: React.FC<Props> = ({ data }) => {
               playing={isPlaying}
               volume={volume}
               onProgress={handleProgress}
+              onEnded={onEnd}
               // onDuration={handleDuration}
             />
           </PlayerWrapper>

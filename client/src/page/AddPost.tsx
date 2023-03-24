@@ -89,7 +89,8 @@ export default function AddPost() {
         url.thumbnail = res.items[0].snippet.thumbnails.medium.url;
         url.title = res.items[0].snippet.title;
       })
-      .then(() => setUrls((prev) => [url, ...prev]));
+      .then(() => setUrls((prev) => [url, ...prev]))
+      .catch((err) => console.log(err));
   };
 
   const handleSubmit = async () => {

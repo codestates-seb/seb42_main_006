@@ -9,7 +9,6 @@ export const requestAuth = axios.create({
   headers: {
     "Content-type": "application/json",
   },
-  timeout: 5000,
 });
 
 requestAuth.interceptors.request.use(
@@ -38,7 +37,7 @@ requestAuth.interceptors.response.use(
     const { response } = _err;
     const originalConfig = _err?.config;
 
-    if (response && (response.status === 401 || response.status === 400)) {
+    if (response && response.status === 401) {
       // const access_token = sessionStorage.getItem("auth"); // 현재 만료된 access token;
       const email = sessionStorage.getItem("user");
       const refresh = sessionStorage.getItem("refresh"); // 리프레시 토큰이 있을 경우 가져온다.

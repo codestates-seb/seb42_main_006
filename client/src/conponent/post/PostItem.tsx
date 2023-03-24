@@ -97,7 +97,6 @@ const Title = styled.span`
   font-size: 20px;
   font-weight: bold;
   color: white;
-  margin-bottom: 10px;
   overflow: hidden;
   white-space: pre;
   /* text-overflow: ellipsis; */

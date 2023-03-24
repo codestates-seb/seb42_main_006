@@ -238,7 +238,11 @@ export default function PostDetail() {
                     fontWeight={400}
                     fontColor="pink"
                     btnType="empty"
-                    handleClick={() => navigate(`/collectpost/${param.id}`)}
+                    handleClick={() =>
+                      navigate(
+                        `/collectpost/create/${param.id}?category=${data.category}`
+                      )
+                    }
                   ></StyledBtn>
                 </>
               )}
@@ -246,23 +250,26 @@ export default function PostDetail() {
           </TitleContainer>
           <BoxContainer>
             <Boxs>
-              {data.category === "영화" && <YoutubePlayer item={list[0]} />}
-              {data.category === "음악" && list.length > 0 && (
-                <Player
-                  list={list}
-                  nowPlaying={list[0]}
-                  setList={setList}
-                ></Player>
-              )}
-              {data.category === "맛집" && (
-                <Slide
-                  url={`${process.env.REACT_APP_S3_URL + data.imageKey}`}
-                  loc={{ lat: list[0].url, lon: list[0].thumbnail }}
-                />
+              {list.length > 0 && (
+                <>
+                  {data.category === "영화" && <YoutubePlayer item={list[0]} />}
+                  {data.category === "음악" && list.length > 0 && (
+                    <Player list={list} setList={setList}></Player>
+                  )}
+                  {data.category === "맛집" && (
+                    <Slide
+                      url={`${process.env.REACT_APP_S3_URL + data.imageKey}`}
+                      loc={{ lat: list[0].url, lon: list[0].thumbnail }}
+                    />
+                  )}
+                </>
               )}
             </Boxs>
             <ContentBox>
-              <Spre>{data.content}</Spre>
+              <Spre>
+                <Sspan>{data.memberName} </Sspan>
+                {data.content}
+              </Spre>
               <TagWrap>
                 {splitTag(data.tags).map((x) => (
                   <Tag title={x} key={x} />
@@ -290,4 +297,10 @@ const TitleBtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 5px;
+`;
+
+const Sspan = styled.span`
+  display: inline-block;
+  font-weight: 700;
+  padding-right: 4px;
 `;
