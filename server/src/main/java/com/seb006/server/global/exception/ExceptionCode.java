@@ -8,6 +8,10 @@ public enum ExceptionCode {
     MEMBER_NICKNAME_EXISTS(409, "이미 등록된 닉네임입니다."),
     MEMBER_QUIT(404, "탈퇴한 회원입니다."),
 
+    INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
+    TOKEN_NOT_FOUND(404, "해당하는 토큰이 존재하지 않습니다."),
+    LOGOUT_AUTHORIZATION(401, "로그아웃 되었습니다."),
+
     PRFPOST_NOT_FOUND(404, "해당 게시글이 존재하지 않습니다."),
     PRFPOSTLIKE_NOT_FOUND(404, "해당 게시글에 좋아요를 하지 않았습니다."),
     PRFPOSTLIKE_EXISTS(409, "이미 좋아요한 게시글입니다."),
@@ -16,6 +20,8 @@ public enum ExceptionCode {
     RECRUITPOST_NOT_FOUND(404, "모집글이 존재하지 않습니다."),
 
     RECRUITPOST_CLOSED(404,"모집을 중지합니다."),
+
+    RECRUITPOST_EXPIRED(404,"모집이 만료되었습니다."),
 
     PRFPOSTCOMMENT_NOT_FOUND(404,"게시글 댓글이 존재하지 않습니다."),
 

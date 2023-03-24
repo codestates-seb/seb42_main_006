@@ -20,6 +20,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
@@ -81,9 +82,9 @@ public class RecruitPostController {
 
     @GetMapping("/all")
     public ResponseEntity getRecruitPosts(@Nullable @AuthenticationPrincipal Member member,
-                                          @RequestParam int page,
-                                          @RequestParam int size,
-                                          @RequestParam int sorting){
+                                          @Positive @RequestParam(defaultValue = "1") int page,
+                                          @Positive @RequestParam(defaultValue = "10") int size,
+                                          @Positive @RequestParam(defaultValue = "1") int sorting){
 
         Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size,sorting);
         List<RecruitPost> recruitPosts = recruitPostPage.getContent();
@@ -141,9 +142,12 @@ public class RecruitPostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     //모집 실패
+    @PatchMapping("/{recruit-post-id}/expired")
+    public ResponseEntity expiredRecruitPost (@PathVariable("recruit-post-id")long id){
+        service.expiredRecruitPost(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-    //모집 참여하기
 
 }

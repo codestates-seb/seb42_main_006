@@ -24,6 +24,7 @@ interface Post {
   age: string;
   tags: string;
   liked: boolean;
+  joined?: any;
 }
 
 export default function CollectDeatail() {
@@ -32,7 +33,7 @@ export default function CollectDeatail() {
   // const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
   const [showOption, setShowOption] = useState(false);
-  const [data, setData] = useState<Post>();
+  const [isCount, setIsCount] = useState(false);
 
   // const toggleOptions = () => {
   //   setShowOption((prevState) => !prevState);
@@ -60,7 +61,7 @@ export default function CollectDeatail() {
 
   useEffect(() => {
     requestAuth
-      .get<Post>(`/recruit-posts/${param.id}`)
+      .get(`recruit-posts/${param.id}`)
       .then((res) => {
         setPost(res.data);
         console.log(res.data);
@@ -72,7 +73,7 @@ export default function CollectDeatail() {
 
   const handleSubmit = (x: { content: string }) => {
     requestAuth
-      .post(`/recruit-comments/${param.id}`, x)
+      .post(`recruit-comments/${param.id}`, x)
       .then(() => setRender({}))
       .catch((error) => {
         console.log(error);
@@ -81,10 +82,54 @@ export default function CollectDeatail() {
 
   // 쓰레기통 누르면 삭제되는 요청 보내기
   const handleDelete = () => {
-    requestAuth.delete(`/recruit-posts/${param.id}`).then(() => {
+    requestAuth.delete(`recruit-posts/${param.id}`).then(() => {
       setRender({});
       navigate("/collect");
     });
+  };
+
+  const handleLike = () => {
+    console.log(post?.liked);
+    if (post?.liked) {
+      requestAuth
+        .delete(`like/recruit-posts/${param.id}`, {})
+        .then(() => {
+          setPost({ ...post, liked: false });
+          console.log(post?.liked);
+        })
+        .catch((err) => console.log(err));
+    } else if (post?.liked === false) {
+      requestAuth
+        .post(`like/recruit-posts/${param.id}`, {})
+        .then((res) => {
+          setPost({ ...post, liked: true });
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleJoin = () => {
+    if (post.currentNumber <= post.recruitNumber) {
+      requestAuth
+        .post(`/recruit-posts/${post.id}/participation`, {})
+        .then((res) => {
+          setPost(res.data);
+          setIsCount(true);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleExit = () => {
+    if (post.currentNumber <= post.recruitNumber) {
+      requestAuth
+        .post(`/recruit-posts/${post.id}/participation`, {})
+        .then((res) => {
+          setPost(res.data);
+          setIsCount(false);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -108,18 +153,50 @@ export default function CollectDeatail() {
           </TopInfoLeft>
           <TopInfoRight>
             <TagRight>
-              <StyledBtn
-                title={
-                  "참가인원" + post.currentNumber + "/" + post.recruitNumber
-                }
-                width="100px"
+              <IconBtn
+                title=""
+                width="30px"
                 height="30px"
-                radius="50px"
+                radius="5px"
                 fontWeight={400}
-                fontColor="pink"
-                btnType="empty"
-                handleClick={() => console.log("click")}
-              ></StyledBtn>
+                fontColor="#f36"
+                btnType=""
+                iconType={post?.liked ? "fullheart" : "heart"}
+                border="none"
+                handleClick={handleLike}
+              />
+            </TagRight>
+
+            <TagRight>
+              {isCount ? (
+                <StyledBtn
+                  title={
+                    "함께하기 " + post.currentNumber + "/" + post.recruitNumber
+                  }
+                  width="100px"
+                  height="30px"
+                  radius="50px"
+                  fontWeight={400}
+                  fontColor="pink"
+                  btnType="empty"
+                  disabled={post.currentNumber >= post.recruitNumber}
+                  handleClick={handleJoin}
+                ></StyledBtn>
+              ) : (
+                <StyledBtn
+                  title={
+                    "함께하기 " + post.currentNumber + "/" + post.recruitNumber
+                  }
+                  width="100px"
+                  height="30px"
+                  radius="50px"
+                  fontWeight={400}
+                  fontColor="pink"
+                  btnType="empty"
+                  disabled={post.currentNumber >= post.recruitNumber}
+                  handleClick={handleExit}
+                ></StyledBtn>
+              )}
             </TagRight>
             <TagRight>
               <StyledBtn
@@ -130,7 +207,7 @@ export default function CollectDeatail() {
                 fontWeight={400}
                 fontColor="white"
                 btnType="full"
-                handleClick={() => console.log("click")}
+                handleClick={() => console.log(navigate("/posts"))}
               ></StyledBtn>
             </TagRight>
           </TopInfoRight>
@@ -199,16 +276,6 @@ export default function CollectDeatail() {
               <Tag title={post.tags}></Tag>
             </TagRight>
           </TagInfo>
-          <StyledBtn
-            title="함께하기"
-            width="100px"
-            height="30px"
-            radius="50px"
-            fontWeight={400}
-            fontColor="pink"
-            btnType="empty"
-            handleClick={() => console.log("click")}
-          ></StyledBtn>
         </Tags>
         <UserRetweets>
           <RetweetContainer>

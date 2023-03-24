@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,6 @@ public interface RecruitPostRepository extends JpaRepository<RecruitPost,Long> {
     @Query("select p from RecruitPost p where p.category=:category and (p.tags like %:keyword% or p.title like %:keyword%)")
     Page<RecruitPost> findByCategoryAndKeyword(Pageable pageable, String category, String keyword);
 
+    List<RecruitPost> findByModifiedAtLessThan(LocalDateTime day);
 }
 

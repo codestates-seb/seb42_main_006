@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 import { StyledBtn } from "./parts/Button";
+import UserProfile from "./parts/UserProfile";
 
 const HeaderStyle = styled.div`
   height: 3.5rem;
@@ -35,28 +36,32 @@ export default function Header() {
     <HeaderStyle>
       <Logo src={logo} alt="logo" />
 
-      <BtnWrapper>
-        <StyledBtn
-          title="LOG IN"
-          width="100px"
-          height="36px"
-          radius="10px"
-          fontWeight={400}
-          fontColor="white"
-          btnType="full"
-          handleClick={() => navigate("/login")}
-        ></StyledBtn>
-        <StyledBtn
-          title="SIGN UP"
-          width="100px"
-          height="36px"
-          radius="10px"
-          fontWeight={400}
-          fontColor="pink"
-          btnType="empty"
-          handleClick={() => navigate("/signup")}
-        ></StyledBtn>
-      </BtnWrapper>
+      {sessionStorage.getItem("auth") ? (
+        <UserProfile></UserProfile>
+      ) : (
+        <BtnWrapper>
+          <StyledBtn
+            title="LOG IN"
+            width="100px"
+            height="36px"
+            radius="10px"
+            fontWeight={400}
+            fontColor="white"
+            btnType="full"
+            handleClick={() => navigate("/login")}
+          ></StyledBtn>
+          <StyledBtn
+            title="SIGN UP"
+            width="100px"
+            height="36px"
+            radius="10px"
+            fontWeight={400}
+            fontColor="pink"
+            btnType="empty"
+            handleClick={() => navigate("/signup")}
+          ></StyledBtn>
+        </BtnWrapper>
+      )}
     </HeaderStyle>
   );
 }

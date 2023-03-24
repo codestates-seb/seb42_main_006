@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +60,10 @@ public class RecruitPostService {
     }
 
     public RecruitPost findRecruitPost(long id){
+        Optional<RecruitPost> optionalRecruitPost = recruitPostRepository.findById(id);
+        if(optionalRecruitPost.isPresent()){
+            checkRecruitPostStatus(optionalRecruitPost.get());
+        }
         return findVerifiedRecruitPost(id);
     }
     // 모집글 리스트 보기 최신순
@@ -101,6 +107,35 @@ public class RecruitPostService {
 
         recruitPostRepository.save(findRecruitPost);
 
+    }
+    public void expiredRecruitPost(long id) {
+        RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
+        findRecruitPost.getDueDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        LocalDate dateTime = LocalDate.parse(findRecruitPost.getDueDate(),formatter);
+
+
+        if (findRecruitPost.getCurrentNumber() == 0 && LocalDate.now().isAfter(dateTime)) {
+            findRecruitPost.setRecruitStatus(RecruitPost.RecruitStatus.EXPIRED);
+
+        }
+    }
+
+    public void  dbExpiredRecruitPost(long id) {
+        RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
+        int status = findRecruitPost.getRecruitStatus().getStatusNumber();
+        if(findRecruitPost.getCurrentNumber() == 0 && status >= 3){
+            recruitPostRepository.deleteById(id);
+
+        }
+    }
+    private void checkRecruitPostStatus(RecruitPost recruitPost) {
+
+        if (recruitPost.getRecruitStatus() == RecruitPost.RecruitStatus.CLOSE) {
+            throw new BusinessLogicException(ExceptionCode.RECRUITPOST_CLOSED);
+        }if(recruitPost.getRecruitStatus() == RecruitPost.RecruitStatus.EXPIRED){
+            throw new BusinessLogicException(ExceptionCode.RECRUITPOST_EXPIRED);
+        }
     }
 
 }

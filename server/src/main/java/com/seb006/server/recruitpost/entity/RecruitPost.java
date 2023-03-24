@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,13 @@ public class RecruitPost extends Auditable {
 
     public void currentNumberUp(){
         this.currentNumber++;
+    }
+
+    public void setDueDate(String dueDate)  {
+        this.dueDate = dueDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        LocalDate dateTime = LocalDate.parse(dueDate,formatter);
+
     }
 
 }

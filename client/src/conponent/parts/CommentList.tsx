@@ -47,6 +47,7 @@ function CommentList({ postId, from, reRender }: ICommentListProps) {
       .catch((error) => {
         console.log(error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [render, reRender]);
 
   return (

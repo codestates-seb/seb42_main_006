@@ -7,9 +7,12 @@ import com.seb006.server.auth.handler.MemberAuthenticationEntryPoint;
 import com.seb006.server.auth.handler.MemberAuthenticationFailureHandler;
 import com.seb006.server.auth.handler.MemberAuthenticationSuccessHandler;
 import com.seb006.server.auth.jwt.JwtTokenizer;
+import com.seb006.server.auth.redis.repository.LogoutAccessTokenRedisRepository;
 import com.seb006.server.auth.redis.repository.RefreshTokenRepository;
 import com.seb006.server.auth.userdetails.CustomUserDetailsService;
 import com.seb006.server.auth.utils.CustomAuthorityUtils;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,19 +35,25 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    @Getter
+    @Value("${config.domain}")
+    private String domain;
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final CustomUserDetailsService customUserDetailsService;
+    private final LogoutAccessTokenRedisRepository logoutAccessTokenRedisRepository;
 
     public SecurityConfiguration(JwtTokenizer jwtTokenizer,
                                  CustomAuthorityUtils authorityUtils,
                                  RefreshTokenRepository refreshTokenRepository,
-                                 CustomUserDetailsService customUserDetailsService) {
+                                 CustomUserDetailsService customUserDetailsService,
+                                 LogoutAccessTokenRedisRepository logoutAccessTokenRedisRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.refreshTokenRepository = refreshTokenRepository;
         this.customUserDetailsService = customUserDetailsService;
+        this.logoutAccessTokenRedisRepository = logoutAccessTokenRedisRepository;
     }
 
     @Bean
@@ -66,8 +75,28 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/members/mypage").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/members/**").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/edit/**").hasRole("USER")
-                        .antMatchers(HttpMethod.POST, "/members").permitAll()
+                        .antMatchers(HttpMethod.POST, "/members/logout").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/members").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/prf-posts").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/prf-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/prf-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/prf-comments/**").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/prf-comments/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/prf-comments/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/recruit-posts").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/recruit-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/recruit-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/recruit-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/recruit-comments/**").hasRole("USER")
+                        .antMatchers(HttpMethod.PATCH, "/recruit-comments/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/recruit-comments/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/like/prf-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/like/prf-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/like/recruit-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/like/recruit-posts/**").hasRole("USER")
+
                         .anyRequest().permitAll()
                 );
 
@@ -82,7 +111,7 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", domain));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
@@ -105,7 +134,8 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter =
-                    new JwtVerificationFilter(jwtTokenizer, authorityUtils, customUserDetailsService);
+                    new JwtVerificationFilter(jwtTokenizer, authorityUtils,
+                            customUserDetailsService, logoutAccessTokenRedisRepository);
 
             builder
                     .addFilter(jwtAuthenticationFilter)

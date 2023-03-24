@@ -23,9 +23,8 @@ export default function CollectPost() {
   const [recruitNumber, setRecruitNumber] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
-
+  const navigate = useNavigate();
   const [category, setCategory] = useState("");
-
   const query = new URLSearchParams(useLocation().search);
   // 리액트 라우터에 url쿼리로 원글의 아이디랑 category받아옴
 
@@ -105,8 +104,6 @@ export default function CollectPost() {
   // const handleChange = () => {
   //   setChecked(!checked);
   // };
-
-  const navigate = useNavigate();
 
   return (
     <>

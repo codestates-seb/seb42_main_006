@@ -17,6 +17,7 @@ interface YoutubeListProp {
   setList: React.Dispatch<React.SetStateAction<Iurls[]>>;
   mode: "read" | "edit";
   onDelete?: (x: string) => void;
+  onSelect?: (x: Iurls) => void;
 }
 
 export default function YoutubeList({
@@ -24,6 +25,7 @@ export default function YoutubeList({
   setList,
   mode,
   onDelete,
+  onSelect,
 }: YoutubeListProp) {
   const onDragEnd = (result: any) => {
     if (!result.destination) {
@@ -61,7 +63,8 @@ export default function YoutubeList({
                             key={index}
                             mode={mode}
                             onDelete={onDelete}
-                          ></YoutubeListItem>
+                            onSelect={onSelect}
+                          />
                         </li>
                       )}
                     </Draggable>

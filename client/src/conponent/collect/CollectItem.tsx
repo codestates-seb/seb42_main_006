@@ -3,8 +3,8 @@ import Tag from "../parts/Tag";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import IconBtn from "../parts/IconButton";
-import { requestAuth } from "../../function/request";
-import { useState, useEffect } from "react";
+// import { requestAuth } from "../../function/request";
+// import { useState, useEffect } from "react";
 import { IListItem } from "../../page/Collect";
 export interface Props {
   item: IListItem;
@@ -13,19 +13,25 @@ export interface Props {
 export default function CollectItem({ item }: Props) {
   const Navigate = useNavigate();
 
-  const [posts, setPosts] = useState<Props[]>([]);
+  // const [posts, setPosts] = useState<Props[]>([]);
 
-  useEffect(() => {
-    requestAuth
-      .get(`/recruit-posts/all?page=3&size=5&sorting=1`)
-      .then((res) => {
-        setPosts(res.data.data);
-        console.log(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   requestAuth
+  //     .get(`/recruit-posts/all?page=3&size=5&sorting=1`)
+  //     .then((res) => {
+  //       setPosts(res.data.data);
+  //       console.log(res.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  const isExpired = (x: string): boolean => {
+    const dueDate = new Date(x);
+    const cur = new Date();
+    return dueDate.valueOf() - cur.valueOf() > 0 ? true : false;
+  };
 
   return (
     <>
@@ -64,30 +70,23 @@ export default function CollectItem({ item }: Props) {
         </PostDetail>
         <IconSort>
           <IconBtn
-            title=""
-            width="30px"
+            title={
+              item.likeCount && item.likeCount > 0 ? `${item.likeCount}` : ""
+            }
+            width=""
             height="30px"
             radius="5px"
             fontWeight={400}
-            fontColor="white"
+            fontColor="pink"
             btnType=""
-            iconType="heart"
+            iconType={item.liked ? "fullheart" : "heart"}
             border="none"
-            handleClick={() => console.log("click")}
-          />
-          <IconBtn
-            title=""
-            width="30px"
-            height="30px"
-            radius="5px"
-            fontWeight={400}
-            fontColor=""
-            btnType=""
-            iconType="retweet"
-            border="none"
-            handleClick={() => console.log("click")}
+            handleClick={() => {}}
           />
         </IconSort>
+        {item.recruitStatus !== "ACTIVE" && isExpired(item.dueDate) && (
+          <Cover />
+        )}
       </Wrapper>
     </>
   );
@@ -95,14 +94,26 @@ export default function CollectItem({ item }: Props) {
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-between; /* space-between으로 변경 */
+  align-items: center;
   width: 100%;
-  max-height: 150px;
-  padding: 10px;
+  height: 150px;
   border: 1px solid #4a4a4a;
   border-radius: 5px;
   background-color: #222222;
-  margin-bottom: 10px;
+  padding: 16px; /* 3개의 간격을 주기 위해 padding을 추가 */
+  gap: 16px;
+`;
+
+const Cover = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 300;
 `;
 
 const PostDetail = styled.div`
@@ -144,7 +155,7 @@ const Summary = styled.div`
 const IconSort = styled.div`
   display: flex;
   justify-content: center;
-  width: 5rem;
+  width: 2rem;
 `;
 
 const UserIcon = styled.div`
