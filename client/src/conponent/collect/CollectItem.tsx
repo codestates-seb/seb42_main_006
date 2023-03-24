@@ -29,7 +29,7 @@ export default function CollectItem() {
 
   useEffect(() => {
     requestAuth
-      .get(`/recruit-posts?page=1&size=10&sorting=1`)
+      .get(`/recruit-posts/all?page=3&size=5&sorting=1`)
       .then((res) => {
         setPosts(res.data.data);
         console.log(res.data.data);
