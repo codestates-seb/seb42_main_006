@@ -74,7 +74,6 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PATCH, "/members/edit/**").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/members/logout").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/members").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/reissue").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/prf-posts").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/prf-posts/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/prf-posts/**").hasRole("USER")
