@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import styled from "styled-components";
 import IconBtn from "../../parts/IconButton";
 import { keyframes } from "styled-components";
-import { Iurls } from "../../../page/AddPost";
+import { IYoutubeInfo as Iurls } from "../../../util/PostApi";
 
 const Container = styled.div`
   display: flex;

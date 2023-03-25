@@ -6,7 +6,7 @@ import { ValidInput } from "../conponent/parts/Input";
 import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
-import { request } from "../function/request";
+import { loginApi } from "../util/memberApi";
 
 interface LoginType {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,24 +20,17 @@ function Login({ setIsLogin }: LoginType) {
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (emailValid && passwordValid) {
-      request
-        .post("/members/login", {
-          username: email,
-          password,
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            sessionStorage.setItem("auth", res.headers["authorization"]);
-            sessionStorage.setItem("refresh", res.headers["refresh"]);
-            sessionStorage.setItem("user", JSON.stringify(res.data));
-            setIsLogin(true);
-            navigate("/posts");
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const res = await loginApi({ username: email, password });
+        if (res.status === 200) {
+          setIsLogin(true);
+          navigate("/posts");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

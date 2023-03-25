@@ -2,18 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import Tag from "../parts/Tag";
 import IconBtn from "../parts/IconButton";
-import { IListItem } from "../../page/Posts";
+import { IItemDetail } from "../../util/PostApi";
 import { useNavigate } from "react-router";
 import logo from "../../icons/logo.svg";
+import { splitTag } from "../../function/validFn";
 
 interface Props {
-  item: IListItem;
+  item: IItemDetail;
 }
 
 function PostItem({ item }: Props) {
   const navigate = useNavigate();
-  const splitTag = (x: string) => x.split("#").splice(1);
-  const thumbnailUrl = (item: IListItem) => {
+
+  const thumbnailUrl = (item: IItemDetail) => {
     if (item.category === "맛집")
       return `${process.env.REACT_APP_S3_URL + item.imageKey}`;
     else return item.urls[0]?.thumbnail;
@@ -32,11 +33,13 @@ function PostItem({ item }: Props) {
         {thumbnailUrl(item) && <img src={thumbnailUrl(item)} alt="thumbnail" />}
       </ImgWrapper>
       <PostDetail>
-        <Title>{item.title}</Title>
+        <TitleWrapper>
+          <Title>{item.title}</Title>
+        </TitleWrapper>
         <Summary>{item.content}</Summary>
         <TagWrapper>
           {splitTag(item.tags).map((x) => (
-            <Tag title={x} key={x}></Tag>
+            <Tag key={x}>{x}</Tag>
           ))}
         </TagWrapper>
       </PostDetail>
@@ -73,6 +76,11 @@ const PostDetail = styled.div`
   overflow: hidden;
 `;
 
+const TitleWrapper = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
+
 const ImgWrapper = styled.div`
   width: 15%;
   height: 80%;
@@ -93,14 +101,15 @@ const ImgWrapper = styled.div`
   }
 `;
 
-const Title = styled.span`
+const Title = styled.h1`
+  width: 100%;
   font-size: 20px;
   font-weight: bold;
   color: white;
   overflow: hidden;
   white-space: pre;
-  /* text-overflow: ellipsis; */
-  text-overflow: clip;
+  text-overflow: ellipsis;
+  /* text-overflow: clip; */
 `;
 const Summary = styled.div`
   font-size: 13px;

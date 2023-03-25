@@ -6,7 +6,7 @@ import { ValidInput } from "../conponent/parts/InputNoH";
 import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
-import { request } from "../function/request";
+import { emailCheckApi, signUpApi } from "../util/memberApi";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,8 +18,6 @@ const Background = styled.div`
   margin: auto;
   max-width: 400px;
   min-width: 300px;
-  /* border: 2px solid #5a5959;
-  background-color: #222222; */
   border-radius: 15px;
   padding: 20px;
   display: flex;
@@ -51,7 +49,7 @@ const InputTitle = styled.span`
 function Signup() {
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
-  const [nickname, setNickname] = useState("");
+  const [nickName, setNickName] = useState("");
   const [nickValid, setNickValid] = useState(true);
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(true);
@@ -61,40 +59,29 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const valid =
+      emailValid && nickValid && passwordValid && passwordRepeatValid;
+
     if (emailCheck === true) {
-      if (
-        emailCheck &&
-        emailValid &&
-        nickValid &&
-        passwordValid &&
-        passwordRepeatValid
-      ) {
-        request
-          .post("/members/sign-up", { email, password, nickName: nickname })
-          .then((res) => {
-            if (res.status === 201) {
-              navigate("/login");
-            }
-          })
-          .then((err) => {});
+      if (valid) {
+        try {
+          const res = await signUpApi({ email, password, nickName });
+          if (res.status === 201) navigate("/login");
+        } catch (err) {
+          console.log(err);
+        }
       }
     } else {
       if (email.length > 0 && emailValid) {
-        request
-          .post("/members/email-check", { email })
-          .then((res) => {
-            if (res.status === 200) {
-              setEmailCheck(true);
-            }
-          })
-          .catch((err) => {
-            if (err.response.status === 409) {
-              console.log(err);
-              setEmailCheck(false);
-              setEmailValid(false);
-            }
-          });
+        try {
+          const res = await emailCheckApi(email);
+          if (res.status === 200) setEmailCheck(true);
+        } catch (err) {
+          console.log(err);
+          setEmailCheck(false);
+          setEmailValid(false);
+        }
       }
     }
   };
@@ -126,8 +113,8 @@ function Signup() {
               <ValidInput
                 width="100%"
                 placeholder="Nickname"
-                value={nickname}
-                setValue={setNickname}
+                value={nickName}
+                setValue={setNickName}
                 valid={nickValid}
                 setValid={setNickValid}
                 errorMsg="닉네임을 확인해주세요."

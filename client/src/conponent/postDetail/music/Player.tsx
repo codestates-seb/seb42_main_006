@@ -3,7 +3,7 @@ import styled from "styled-components";
 import AudioPlayer from "./AudioPlayer";
 import YoutubeList from "./YoutubeList";
 
-import { Iurls } from "../../../page/AddPost";
+import { IYoutubeInfo as Iurls } from "../../../util/PostApi";
 
 interface PlayerProp {
   list: Iurls[];

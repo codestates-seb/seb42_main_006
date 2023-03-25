@@ -11,3 +11,5 @@ export const validFn = (type: string) => {
 
   return (x: string): boolean => emailReg[type].test(x);
 };
+
+export const splitTag = (x: string) => x.split("#").splice(1);

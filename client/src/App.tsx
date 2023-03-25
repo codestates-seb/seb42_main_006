@@ -53,7 +53,7 @@ function App() {
               path="/login"
               element={<Login setIsLogin={setIsLogin} />}
             ></Route>
-            <Route path="/addpost/:mode/:id" element={<AddPost />}></Route>
+            <Route path="/addpost/:mode/" element={<AddPost />}></Route>
             <Route
               path="/collectdeatail/:id"
               element={<CollectDeatail />}

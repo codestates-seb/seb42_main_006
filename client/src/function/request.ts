@@ -9,13 +9,16 @@ export const requestAuth = axios.create({
   headers: {
     "Content-type": "application/json",
   },
+  timeout: 30000,
 });
 
 requestAuth.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem("auth");
 
-    config.headers.Authorization = token ? token : "";
+    if (!!token) {
+      config.headers.Authorization = token;
+    }
 
     return config;
   },
