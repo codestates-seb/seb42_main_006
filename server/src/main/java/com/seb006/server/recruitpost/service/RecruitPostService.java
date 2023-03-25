@@ -50,6 +50,8 @@ public class RecruitPostService {
                 .ifPresent(recruitStatus -> findRecruitPost.setRecruitStatus(recruitStatus));
         Optional.ofNullable(recruitPost.getRecruitNumber())
                 .ifPresent(recruitNumber -> findRecruitPost.setRecruitNumber(recruitNumber));
+        Optional.ofNullable(recruitPost.getDueDate())
+                .ifPresent(dueDate->findRecruitPost.setDueDate(dueDate));
         Optional.ofNullable(recruitPost.getAge())
                 .ifPresent(age -> findRecruitPost.setAge(age));
         Optional.ofNullable(recruitPost.getTags())
@@ -111,7 +113,7 @@ public class RecruitPostService {
     public void expiredRecruitPost(long id) {
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
         findRecruitPost.getDueDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
         LocalDate dateTime = LocalDate.parse(findRecruitPost.getDueDate(),formatter);
 
 

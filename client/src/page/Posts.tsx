@@ -3,7 +3,7 @@ import Loading from "../conponent/parts/Loading";
 import { SearchInput } from "../conponent/parts/InputNoH";
 import IconBtn from "../conponent/parts/IconButton";
 import styled from "styled-components";
-import { useEffect, useState, useRef, LegacyRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { requestAuth } from "../function/request";
 import PostItem from "../conponent/post/PostItem";
 import { Iurls } from "./AddPost";
@@ -33,15 +33,27 @@ export default function Posts() {
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [trig, setTrig] = useState({});
+  const [sort, setSort] = useState(1);
 
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(() => {
-    setPage((page) => page + 1);
+    if (page < (result?.pageInfo.totalPages || 1) + 1) {
+      setPage((page) => page + 1);
+    }
   });
   const navigate = useNavigate();
 
   const handleCatClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
+  };
+
+  const handleSortClick = (x: number) => {
+    setSort(x);
+  };
+
+  const handleSearch = () => {
+    setKeyword(searchValue);
   };
 
   //page 늘어날때마다 get요청
@@ -51,7 +63,7 @@ export default function Posts() {
         setLoading(true);
 
         const res = await requestAuth.get(
-          `/prf-posts?page=${page}&size=10&sorting=1${
+          `/prf-posts?page=${page}&size=10&sorting=${sort}${
             category !== "전체" ? `&category=${category}` : ""
           }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
         );
@@ -64,27 +76,19 @@ export default function Posts() {
 
       setLoading(false);
     };
-    if (page < result?.pageInfo.totalPages + 1 || page === 1) {
+    if (page < (result?.pageInfo.totalPages || 1) + 1) {
       ajaxWithLoading();
     }
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, trig]);
 
-  //카테고리 바뀔때 초기화
-  useEffect(() => {
-    setPage(1);
-    setList([]);
-  }, [category, keyword]);
-
-  //page 1일때 옵저버 등록하고 마지막 page에서 제거
+  // page 1일때 옵저버 등록하고 마지막 page에서 제거
   useEffect(() => {
     if (page === 1) observe(target.current);
-
-    const listCount = result?.data.length;
-    const totalCount = result?.pageInfo.totalPages;
-
-    if (0 === listCount || totalCount === page) {
+    if (0 === result?.data.length || result?.pageInfo.totalPages <= page) {
       unobserve(target.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   //로딩중일땐 옵저버 제거(중복요청 방지!!)
@@ -94,7 +98,15 @@ export default function Posts() {
     } else {
       observe(target.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
+
+  //카테고리 바뀔때 초기화
+  useEffect(() => {
+    setPage(1);
+    setList([]);
+    setTrig({});
+  }, [category, keyword, sort]);
 
   return (
     <Content>
@@ -104,17 +116,31 @@ export default function Posts() {
           placeholder="키워드를 입력해주세요."
           value={searchValue}
           setValue={setSearchValue}
+          onSearch={handleSearch}
         ></Search>
         <Sort>
-          {["전체", "영화", "음악", "맛집"].map((x) => (
-            <CategoryBtn
-              isSelect={x === category}
-              onClick={handleCatClick}
-              key={x}
-            >
-              {x}
-            </CategoryBtn>
-          ))}
+          <div>
+            {["전체", "영화", "음악", "맛집"].map((x) => (
+              <CategoryBtn
+                isSelect={x === category}
+                onClick={handleCatClick}
+                key={x}
+              >
+                {x}
+              </CategoryBtn>
+            ))}
+          </div>
+          <div>
+            {["최신순", "인기순"].map((x, idx) => (
+              <CategoryBtn
+                isSelect={idx === sort - 1}
+                onClick={() => handleSortClick(idx + 1)}
+                key={x}
+              >
+                {x}
+              </CategoryBtn>
+            ))}
+          </div>
         </Sort>
       </SearchWrapper>
       {list &&
@@ -165,7 +191,7 @@ const SearchWrapper = styled.div`
 const Sort = styled.div`
   display: flex;
   width: 100%;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 10px;
   color: white;
 `;
@@ -184,7 +210,7 @@ const CategoryBtn = styled.button<CategoryBtnProp>`
   padding: 4px 8px;
   border: none;
   outline: none;
-  color: #fff;
+  color: ${(props) => (props.isSelect ? "#f36" : "#fff")};
   border-bottom: ${(props) => (props.isSelect ? "2px solid #f36" : "none")};
 
   &:hover {

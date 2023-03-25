@@ -90,29 +90,33 @@ interface MyBoardBodyLiStyleProps {
 const MyBoardBodyLi = styled.li<MyBoardBodyLiStyleProps>`
   display: flex;
   padding-left: ${(props) => (props.isNone ? "2.5rem" : null)};
+  align-items: center;
   justify-content: ${(props) => (props.isNone ? "center" : null)};
   font-size: 0.88rem;
   line-height: 2.15;
   border-bottom: 1px dashed #151515;
   cursor: pointer;
-  .MyBoardTitle {
-    width: ${minHead};
-    text-align: center;
+  &:hover {
+    color: #ff3366;
   }
-  .MyBoardContent {
+`;
+const MyBoardTitle = styled.strong`
+  width: ${minHead};
+  text-align: center;
+`;
+
+const MyBoradContent = styled.div`
+  width: calc(100% - ${minHead});
+  > a {
     overflow: hidden;
-    width: calc(100% - ${minHead});
+    display: block;
+    width: 100%;
     padding: 0 0.5rem;
+    font-size: 0.88rem;
     font-weight: 400;
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
-    > a {
-      font-size: 0.88rem;
-    }
-  }
-  &:hover {
-    color: #ff3366;
   }
 `;
 
@@ -120,7 +124,7 @@ const LoadingBox = styled.div`
   position: absolute;
   display: flex;
   width: 100%;
-  height: 30rem;
+  height: 100vh;
   align-items: center;
   justify-content: center;
   top: 0;
@@ -163,9 +167,9 @@ export default function Mypage() {
   let listData: any = [];
   listData = list;
 
+  const limit = 5;
   const totalPage = listData.pageInfo && listData.pageInfo.totalPages;
 
-  const limit = 5;
   const [curr, setCurr] = useState(1);
   const [total, setTotal] = useState(
     listData.pageInfo && listData.pageInfo.totalPages
@@ -271,14 +275,23 @@ export default function Mypage() {
                 {listData.data &&
                   listData.data.map((el: any, idx: number) => (
                     <MyBoardBodyLi key={el.id}>
-                      <strong className="MyBoardTitle">
+                      <MyBoardTitle>
                         {listData.pageInfo.totalElements -
                           (curr - 1) * 10 -
                           idx}
-                      </strong>
-                      <div className="MyBoardContent">
-                        <Link to={`/postdetail/${el.id}`}>{el.title}</Link>
-                      </div>
+                      </MyBoardTitle>
+                      <MyBoradContent>
+                        <Link
+                          to={
+                            tab === tabArray[1].title ||
+                            tab === tabArray[2].title
+                              ? `/collectdeatail/${el.id}`
+                              : `/postdetail/${el.id}`
+                          }
+                        >
+                          {el.title}
+                        </Link>
+                      </MyBoradContent>
                     </MyBoardBodyLi>
                   ))}
               </MyBoardBody>

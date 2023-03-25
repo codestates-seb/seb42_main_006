@@ -68,6 +68,7 @@ export default function AddPost() {
         setCurCategory(res.data.category);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelUrls = (item: string) => {
@@ -88,7 +89,8 @@ export default function AddPost() {
         url.thumbnail = res.items[0].snippet.thumbnails.medium.url;
         url.title = res.items[0].snippet.title;
       })
-      .then(() => setUrls((prev) => [url, ...prev]));
+      .then(() => setUrls((prev) => [url, ...prev]))
+      .catch((err) => console.log(err));
   };
 
   const handleSubmit = async () => {
@@ -103,7 +105,7 @@ export default function AddPost() {
         };
         const res = await requestAuth.post("/prf-posts", data);
         console.log(res);
-        if (res.data.id) navigate("/");
+        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
       } else if (curCategory === "음악") {
         const data: Idata = {
           title: title,
@@ -114,7 +116,7 @@ export default function AddPost() {
         };
         const res = await requestAuth.post("/prf-posts", data);
         console.log(res);
-        if (res.data.id) navigate("/");
+        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
       } else {
         const imageKey = await UploadImg(file);
         if (imageKey) {
@@ -128,7 +130,7 @@ export default function AddPost() {
           };
           const res = await requestAuth.post("/prf-posts", data);
           console.log(res);
-          if (res.data.id) navigate("/");
+          if (res.data.id) navigate(`/postdetail/${res.data.id}`);
         }
       }
     } else if (param.mode === "edit") {
@@ -143,7 +145,7 @@ export default function AddPost() {
         };
         const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
         console.log(res);
-        if (res.data.id) navigate("/");
+        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
       } else if (curCategory === "음악") {
         const data: IEditData = {
           title: title,
@@ -167,7 +169,7 @@ export default function AddPost() {
         };
         const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
         console.log(res);
-        if (res.data.id) navigate("/");
+        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
       } else {
         let Key: any;
         const data: IEditData = {
@@ -184,7 +186,7 @@ export default function AddPost() {
         }
         const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
         console.log(res);
-        if (res.data.id) navigate("/");
+        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
       }
     }
   };
@@ -275,7 +277,7 @@ export default function AddPost() {
           fontWeight={400}
           fontColor="pink"
           btnType="empty"
-          handleClick={() => navigate("/posts")}
+          handleClick={() => navigate(-1)}
         ></StyledBtn>
       </BtnWrapper>
     </Background>

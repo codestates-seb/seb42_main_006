@@ -22,22 +22,13 @@ export const ModalBox = styled.div`
   background: #222;
   border: 1px solid #5a5959;
   border-radius: 0.63rem;
-  .modalTxt {
-    padding: 1rem;
-    font-size: 0.85rem;
-    line-height: 1.3;
-    white-space: pre-line;
-    .siteName {
-      font-weight: 400;
-      color: #ff3366;
-    }
-  }
-  .buttonBox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-  }
+`;
+
+export const ModalTxt = styled.p`
+  padding: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  white-space: pre-line;
 `;
 
 export const ModalTitle = styled.h3`
@@ -50,6 +41,13 @@ export const ModalTitle = styled.h3`
   border-bottom: 1px solid #5a5959;
 `;
 
+export const ModalBtnBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+`;
+
 export const CloseBtn = styled.button`
   position: absolute;
   top: 0.8rem;
@@ -57,13 +55,36 @@ export const CloseBtn = styled.button`
   color: #5a5959;
 `;
 
+export const ModalBtn = styled.button`
+  display: flex;
+  width: 4.5rem;
+  padding: 0.36rem 0.5rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.045em;
+  background: #ff3366;
+  border-radius: 0.2rem;
+  color: #fff;
+`;
+
 interface ModalProps {
   title: string;
   text: string;
+  btnName?: string;
   handleModal: () => void;
+  handleClick: () => void;
 }
 
-export default function Modal({ title, text, handleModal }: ModalProps) {
+export default function Modal({
+  title,
+  text,
+  btnName,
+  handleModal,
+  handleClick,
+}: ModalProps) {
   return (
     <ModalWrap>
       <ModalBox>
@@ -71,7 +92,12 @@ export default function Modal({ title, text, handleModal }: ModalProps) {
           <CloseIcon />
         </CloseBtn>
         <ModalTitle>{title}</ModalTitle>
-        <p className="modalTxt">{text}</p>
+        <ModalTxt>{text}</ModalTxt>
+        {btnName && (
+          <ModalBtnBox>
+            <ModalBtn onClick={handleClick}>{btnName}</ModalBtn>
+          </ModalBtnBox>
+        )}
       </ModalBox>
     </ModalWrap>
   );
