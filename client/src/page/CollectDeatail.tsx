@@ -23,18 +23,23 @@ interface Post {
   nickName: string;
   age: string;
   tags: string;
+  liked: boolean;
+  joined?: any;
 }
 
 export default function CollectDeatail() {
   const param = useParams();
-  const [showOptions, setShowOptions] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  // const [showOptions, setShowOptions] = useState(false);
+  // const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
+  const [showOption, setShowOption] = useState(false);
+  const [isCount, setIsCount] = useState(false);
 
-  const toggleOptions = () => {
-    setShowOptions((prevState) => !prevState);
-    setIsEdit(false);
-  };
+  // const toggleOptions = () => {
+  //   setShowOption((prevState) => !prevState);
+  //   setIsEdit(false);
+  // };
+
   const [post, setPost] = useState<Post>({
     id: 1,
     title: "",
@@ -50,12 +55,13 @@ export default function CollectDeatail() {
     nickName: "",
     age: "",
     tags: "",
+    liked: false,
   });
   const [render, setRender] = useState({});
 
   useEffect(() => {
     requestAuth
-      .get<Post>(`/recruit-posts/${param.id}`)
+      .get(`recruit-posts/${param.id}`)
       .then((res) => {
         setPost(res.data);
         console.log(res.data);
@@ -67,7 +73,7 @@ export default function CollectDeatail() {
 
   const handleSubmit = (x: { content: string }) => {
     requestAuth
-      .post(`/recruit-comments/${param.id}`, x)
+      .post(`recruit-comments/${param.id}`, x)
       .then(() => setRender({}))
       .catch((error) => {
         console.log(error);
@@ -76,10 +82,54 @@ export default function CollectDeatail() {
 
   // 쓰레기통 누르면 삭제되는 요청 보내기
   const handleDelete = () => {
-    requestAuth.delete(`/recruit-posts/${param.id}`).then(() => {
+    requestAuth.delete(`recruit-posts/${param.id}`).then(() => {
       setRender({});
       navigate("/collect");
     });
+  };
+
+  const handleLike = () => {
+    console.log(post?.liked);
+    if (post?.liked) {
+      requestAuth
+        .delete(`like/recruit-posts/${param.id}`, {})
+        .then(() => {
+          setPost({ ...post, liked: false });
+          console.log(post?.liked);
+        })
+        .catch((err) => console.log(err));
+    } else if (post?.liked === false) {
+      requestAuth
+        .post(`like/recruit-posts/${param.id}`, {})
+        .then((res) => {
+          setPost({ ...post, liked: true });
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleJoin = () => {
+    if (post.currentNumber <= post.recruitNumber) {
+      requestAuth
+        .post(`/recruit-posts/${post.id}/participation`, {})
+        .then((res) => {
+          setPost(res.data);
+          setIsCount(true);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleExit = () => {
+    if (post.currentNumber <= post.recruitNumber) {
+      requestAuth
+        .post(`/recruit-posts/${post.id}/participation`, {})
+        .then((res) => {
+          setPost(res.data);
+          setIsCount(false);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -105,29 +155,48 @@ export default function CollectDeatail() {
             <TagRight>
               <IconBtn
                 title=""
-                width="50px"
+                width="30px"
                 height="30px"
-                radius="50px"
+                radius="5px"
                 fontWeight={400}
-                fontColor="white"
+                fontColor="#f36"
                 btnType=""
-                iconType="heart"
-                handleClick={() => console.log("click")}
+                iconType={post?.liked ? "fullheart" : "heart"}
+                border="none"
+                handleClick={handleLike}
               />
             </TagRight>
+
             <TagRight>
-              <StyledBtn
-                title={
-                  "참가인원" + post.currentNumber + "/" + post.recruitNumber
-                }
-                width="100px"
-                height="30px"
-                radius="50px"
-                fontWeight={400}
-                fontColor="pink"
-                btnType="empty"
-                handleClick={() => console.log("click")}
-              ></StyledBtn>
+              {isCount ? (
+                <StyledBtn
+                  title={
+                    "함께하기 " + post.currentNumber + "/" + post.recruitNumber
+                  }
+                  width="100px"
+                  height="30px"
+                  radius="50px"
+                  fontWeight={400}
+                  fontColor="pink"
+                  btnType="empty"
+                  disabled={post.currentNumber >= post.recruitNumber}
+                  handleClick={handleJoin}
+                ></StyledBtn>
+              ) : (
+                <StyledBtn
+                  title={
+                    "함께하기 " + post.currentNumber + "/" + post.recruitNumber
+                  }
+                  width="100px"
+                  height="30px"
+                  radius="50px"
+                  fontWeight={400}
+                  fontColor="pink"
+                  btnType="empty"
+                  disabled={post.currentNumber >= post.recruitNumber}
+                  handleClick={handleExit}
+                ></StyledBtn>
+              )}
             </TagRight>
             <TagRight>
               <StyledBtn
@@ -138,7 +207,7 @@ export default function CollectDeatail() {
                 fontWeight={400}
                 fontColor="white"
                 btnType="full"
-                handleClick={() => console.log("click")}
+                handleClick={() => console.log(navigate("/posts"))}
               ></StyledBtn>
             </TagRight>
           </TopInfoRight>
@@ -146,7 +215,7 @@ export default function CollectDeatail() {
         <DetailPost>
           <TitleContent>
             <Title>{post.title}</Title>
-            {showOptions && (
+            {showOption && (
               <>
                 <IconBtn
                   title=""
@@ -174,18 +243,21 @@ export default function CollectDeatail() {
                 />
               </>
             )}
-            <IconBtn
-              title=""
-              width="40px"
-              height="40px"
-              radius="5px"
-              fontWeight={400}
-              fontColor="pink"
-              btnType=""
-              iconType="treeDot"
-              border="none"
-              handleClick={toggleOptions}
-            />
+            {JSON.parse(sessionStorage.getItem("user") as string).id ===
+              post.memberId && (
+              <IconBtn
+                title=""
+                width="40px"
+                height="40px"
+                radius="5px"
+                fontWeight={400}
+                fontColor="pink"
+                btnType=""
+                iconType="treeDot"
+                border="none"
+                handleClick={() => setShowOption(!showOption)}
+              />
+            )}
           </TitleContent>
           <DetailContent>{post.content}</DetailContent>
         </DetailPost>
@@ -204,16 +276,6 @@ export default function CollectDeatail() {
               <Tag title={post.tags}></Tag>
             </TagRight>
           </TagInfo>
-          <StyledBtn
-            title="함께하기"
-            width="100px"
-            height="30px"
-            radius="50px"
-            fontWeight={400}
-            fontColor="pink"
-            btnType="empty"
-            handleClick={() => console.log("click")}
-          ></StyledBtn>
         </Tags>
         <UserRetweets>
           <RetweetContainer>
