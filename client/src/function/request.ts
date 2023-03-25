@@ -21,7 +21,7 @@ requestAuth.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 requestAuth.interceptors.response.use(
@@ -61,5 +61,5 @@ requestAuth.interceptors.response.use(
       }
     }
     return Promise.reject(err);
-  },
+  }
 );

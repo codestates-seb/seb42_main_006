@@ -40,6 +40,7 @@ interface prop extends StyleProp {
   handleClick: () => void;
   style?: React.CSSProperties;
   className?: any;
+  disabled?: any;
 }
 
 export function StyledBtn({
@@ -53,6 +54,7 @@ export function StyledBtn({
   handleClick,
   style,
   className,
+  disabled,
 }: prop) {
   const handler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -69,6 +71,7 @@ export function StyledBtn({
       onClick={handler}
       style={style}
       className={className}
+      disabled={disabled}
     >
       {title}
     </Button>
