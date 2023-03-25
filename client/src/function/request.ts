@@ -24,7 +24,7 @@ requestAuth.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 requestAuth.interceptors.response.use(
@@ -40,7 +40,7 @@ requestAuth.interceptors.response.use(
       const email = sessionStorage.getItem("user");
       const refresh = sessionStorage.getItem("refresh");
       if (!!refresh === false) {
-        console.log("리프레시 토큰 삭제 또는 만료됨 ");
+        throw new Error("리프레시 토큰 삭제 또는 만료됨");
       } else {
         if (!!email) {
           try {
@@ -64,5 +64,5 @@ requestAuth.interceptors.response.use(
       }
     }
     return Promise.reject(err);
-  }
+  },
 );

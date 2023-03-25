@@ -117,13 +117,7 @@ export default function AddPost() {
         alert(err);
       }
     } else if (param.mode === "edit") {
-      const [newUrl, delUrl] = submitUrl(
-        "edit",
-        curCategory,
-        urls,
-        latLon,
-        origin,
-      );
+      const [newUrl, delUrl] = submitUrl("edit", curCategory, urls, latLon, origin);
       const data: IEditData = {
         title: title,
         category: curCategory,
@@ -134,10 +128,7 @@ export default function AddPost() {
       };
       if (imageKey) data.imageKey = imageKey;
       try {
-        const res = await requestAuth.patch(
-          `/prf-posts/${location.state.id}`,
-          data,
-        );
+        const res = await requestAuth.patch(`/prf-posts/${location.state.id}`, data);
         console.log(res);
         if (res.data.id) navigate(`/postdetail/${res.data.id}`);
       } catch (err) {
@@ -186,11 +177,7 @@ export default function AddPost() {
                 <>
                   <MapSearch latLon={latLon} setLatLon={setLatLon} />
                   <InputTitle>사진</InputTitle>
-                  <FileInput
-                    width="100%"
-                    value={file}
-                    setValue={setfile}
-                  ></FileInput>
+                  <FileInput width="100%" value={file} setValue={setfile}></FileInput>
                 </>
               );
             default:

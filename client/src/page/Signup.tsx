@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 import { ValidInput } from "../conponent/parts/InputNoH";
@@ -7,6 +6,7 @@ import { StyledBtn } from "../conponent/parts/Button";
 
 import { validFn } from "../function/validFn";
 import { emailCheckApi, signUpApi } from "../util/memberApi";
+import useModal from "../conponent/Modal/useModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ function Signup() {
   const [passwordRepeatValid, setPasswordRepeatValid] = useState(true);
   const [emailCheck, setEmailCheck] = useState<boolean>();
 
-  const navigate = useNavigate();
+  const [modal] = useModal();
 
   const handleSubmit = async () => {
     const valid =
@@ -67,9 +67,10 @@ function Signup() {
       if (valid) {
         try {
           const res = await signUpApi({ email, password, nickName });
-          if (res.status === 201) navigate("/login");
+          if (res.status === 201) modal({ type: "가입성공" });
         } catch (err) {
           console.log(err);
+          modal({ type: "가입실패" });
         }
       }
     } else {

@@ -83,6 +83,7 @@ export default function Posts() {
       setList([]);
       setTrig({});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, keyword, sort]);
 
   return (

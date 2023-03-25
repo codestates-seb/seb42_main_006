@@ -79,11 +79,6 @@ export const UpdateImg = async (file: File | undefined, fileKey: string) => {
   }
 };
 
-// export const postSubmit = async (data: IPostSubmitData) => {
-//   if (mode === "create") {
-//   }
-// };
-
 export const getPostList = async (
   page: number,
   sort: number,
@@ -142,21 +137,14 @@ export const submitUrl = (
         del: () =>
           origin.urls
             .filter((x: IYoutubeInfo): boolean => {
-              let result = true;
-              for (let item of urls) {
-                if (x.title === item.title) result = false;
-              }
-              return result;
+              return !urls.some((other) => other.title === x.title);
             })
             .map((x: IYoutubeInfo) => {
               return { urlId: x.id };
             }),
       },
       맛집: {
-        new: () =>
-          urls.length > 0
-            ? [{ title: "", url: latLon.lat, thumbnail: latLon.lon }]
-            : [urls[0]],
+        new: () => [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
         del: () => [{ urlId: origin.urls[0].id }],
       },
     };

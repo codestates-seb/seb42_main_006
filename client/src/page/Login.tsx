@@ -8,6 +8,8 @@ import { StyledBtn } from "../conponent/parts/Button";
 import { validFn } from "../function/validFn";
 import { loginApi } from "../util/memberApi";
 
+import useModal from "../conponent/Modal/useModal";
+
 interface LoginType {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -17,6 +19,8 @@ function Login({ setIsLogin }: LoginType) {
   const [emailValid, setEmailValid] = useState(true);
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(true);
+
+  const [modal] = useModal();
 
   const navigate = useNavigate();
 
@@ -30,6 +34,7 @@ function Login({ setIsLogin }: LoginType) {
         }
       } catch (err) {
         console.log(err);
+        modal({ type: "로그인실패" });
       }
     }
   };
