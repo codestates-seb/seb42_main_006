@@ -15,6 +15,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { requestAuth } from "../function/request";
 
+import moment from "moment";
+
 export default function CollectPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -25,9 +27,8 @@ export default function CollectPost() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
-  const query = new URLSearchParams(useLocation().search);
   // 리액트 라우터에 url쿼리로 원글의 아이디랑 category받아옴
-
+  const query = new URLSearchParams(useLocation().search);
   const param = useParams();
 
   useEffect(() => {
@@ -43,8 +44,14 @@ export default function CollectPost() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+  const koreanTime = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Seoul",
+  });
+  const tomorrow = new Date(koreanTime);
+  tomorrow.setDate(tomorrow.getDate());
+
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(moment(date).add(1, "day").toDate());
     setShowDatePicker(false);
   };
 
@@ -63,7 +70,7 @@ export default function CollectPost() {
 
   const handleSubmit = () => {
     if (param.mode === "create") {
-      if (title && body && recruitNumber && selectedDate) {
+      if (title && body && recruitNumber && selectedDate && ages) {
         const data: IData = {
           prfPostId: Number(param.id),
           category: String(query.get("category")),
@@ -75,15 +82,13 @@ export default function CollectPost() {
           tags: tags,
         };
         collectPost(data);
-        navigate("/collectpost");
-        // requestAuth.post("/recruit-posts", data).then((res) => {
-        //   console.log(res);
-        //   if (res.data.id) navigate("/collectpost");
-        // });
+        navigate(-1);
+      } else {
+        alert("필수 입력 항목을 모두 작성해주세요.");
       }
     }
     if (param.mode === "edit") {
-      if (title && body && recruitNumber && selectedDate) {
+      if (title && body && recruitNumber && selectedDate && ages) {
         const data = {
           category: category,
           title: title,
@@ -95,15 +100,20 @@ export default function CollectPost() {
         };
         requestAuth.patch(`/recruit-posts/${param.id}`, data).then((res) => {
           console.log(res);
-          if (res.data.id) navigate("/collectpost");
+          if (res.data.id) navigate(-1);
         });
+      } else {
+        alert("필수 입력 항목을 모두 작성해주세요.");
       }
     }
   };
 
-  // const handleChange = () => {
-  //   setChecked(!checked);
-  // };
+  const ageGroups = [
+    { id: "10대", label: "10대" },
+    { id: "20대", label: "20대" },
+    { id: "30대", label: "30대" },
+    { id: "40대", label: "40대" },
+  ];
 
   return (
     <>
@@ -158,6 +168,7 @@ export default function CollectPost() {
                     selected={selectedDate}
                     onChange={handleDateChange}
                     inline
+                    minDate={tomorrow}
                   />
                 ) : (
                   <IconBtn
@@ -181,45 +192,27 @@ export default function CollectPost() {
               <Title>모집인원</Title>
               <Selection
                 width="80%"
-                opt={["2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+                opt={["인원", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                 setCategory={setRecruitNumber}
               ></Selection>
             </PersonCounter>
             <div>
               <Title>연령대</Title>
               <CheckboxContainer>
-                <input
-                  type="checkbox"
-                  id="10대"
-                  name="age"
-                  value="10대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="10대">10대</label>
-                <input
-                  type="checkbox"
-                  id="20대"
-                  name="age"
-                  value="20대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="20대">20대</label>
-                <input
-                  type="checkbox"
-                  id="30대"
-                  name="age"
-                  value="30대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="30대">30대</label>
-                <input
-                  type="checkbox"
-                  id="40대"
-                  name="age"
-                  value="40대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="40대">40대</label>
+                <>
+                  {ageGroups.map((ageGroup) => (
+                    <div key={ageGroup.id}>
+                      <input
+                        type="checkbox"
+                        id={ageGroup.id}
+                        name="age"
+                        value={ageGroup.label}
+                        onChange={handleAgeChange}
+                      />
+                      <label htmlFor={ageGroup.id}>{ageGroup.label}</label>
+                    </div>
+                  ))}
+                </>
               </CheckboxContainer>
             </div>
           </PersonContainer>
@@ -307,7 +300,6 @@ const DateContainer = styled.div`
 const PersonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
   width: 100%;
 `;
 
