@@ -15,6 +15,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { requestAuth } from "../function/request";
 
+import moment from "moment";
+
 export default function CollectPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -46,10 +48,10 @@ export default function CollectPost() {
     timeZone: "Asia/Seoul",
   });
   const tomorrow = new Date(koreanTime);
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setDate(tomorrow.getDate());
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(moment(date).add(1, "day").toDate());
     setShowDatePicker(false);
   };
 
@@ -183,7 +185,7 @@ export default function CollectPost() {
               <Title>모집인원</Title>
               <Selection
                 width="80%"
-                opt={["2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+                opt={["인원", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                 setCategory={setRecruitNumber}
               ></Selection>
             </PersonCounter>
@@ -309,7 +311,6 @@ const DateContainer = styled.div`
 const PersonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
   width: 100%;
 `;
 
