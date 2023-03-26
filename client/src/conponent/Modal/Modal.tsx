@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CloseIcon } from "../icons/MyIcon";
+import { CloseIcon } from "../../icons/MyIcon";
 
 export const ModalWrap = styled.div`
   position: fixed;
@@ -57,7 +57,7 @@ export const CloseBtn = styled.button`
 
 export const ModalBtn = styled.button`
   display: flex;
-  width: 4.5rem;
+  min-width: 4.5rem;
   padding: 0.36rem 0.5rem;
   align-items: center;
   justify-content: center;
@@ -70,7 +70,7 @@ export const ModalBtn = styled.button`
   color: #fff;
 `;
 
-interface ModalProps {
+export interface ModalProps {
   title: string;
   text: string;
   btnName?: string;

@@ -1,6 +1,6 @@
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
-import { Iurls } from "../../../page/AddPost";
+import { IYoutubeInfo as Iurls } from "../../../util/PostApi";
 
 const Wrapper = styled.div`
   width: 100%;

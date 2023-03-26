@@ -4,10 +4,11 @@ import { ButtonInput } from "../parts/InputNoH";
 import KakaoMap from "../postDetail/restaurant/KakaoMap";
 
 interface ImapSearchProp {
+  latLon: { lat: string; lon: string };
   setLatLon: React.Dispatch<React.SetStateAction<{ lat: string; lon: string }>>;
 }
 
-export default function MapSearch({ setLatLon }: ImapSearchProp) {
+export default function MapSearch({ latLon, setLatLon }: ImapSearchProp) {
   const [loc, setLoc] = useState("");
 
   return (
@@ -20,9 +21,17 @@ export default function MapSearch({ setLatLon }: ImapSearchProp) {
           placeholder="장소명"
           handleClick={(value: string) => setLoc(value)}
         />
-        {loc.length !== 0 && (
+        {loc.length !== 0 ? (
           <MapDiv>
             <KakaoMap loc={loc} mode="Search" setLatLon={setLatLon}></KakaoMap>
+          </MapDiv>
+        ) : (
+          <MapDiv>
+            <KakaoMap
+              loc={latLon}
+              mode="Location"
+              setLatLon={setLatLon}
+            ></KakaoMap>
           </MapDiv>
         )}
       </Wrapper>

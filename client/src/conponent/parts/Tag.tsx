@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 interface prop {
-  title: string;
+  title?: string;
+  children?: React.ReactNode;
 }
 
 const StyledSpan = styled.span`
@@ -19,6 +20,6 @@ const StyledSpan = styled.span`
   }
 `;
 
-export default function Tag({ title }: prop) {
-  return <StyledSpan>{title}</StyledSpan>;
+export default function Tag({ title, children }: prop) {
+  return <StyledSpan>{title || children}</StyledSpan>;
 }

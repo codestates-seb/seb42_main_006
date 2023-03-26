@@ -4,26 +4,10 @@ import { SearchInput } from "../conponent/parts/InputNoH";
 import IconBtn from "../conponent/parts/IconButton";
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-import { requestAuth } from "../function/request";
 import PostItem from "../conponent/post/PostItem";
-import { Iurls } from "./AddPost";
 import useIntersectionObserver from "../util/useIntersectorObsevet";
-
-export interface IListItem {
-  id: number;
-  title: string;
-  category: string;
-  content: string;
-  memberId: number;
-  memberName: string;
-  createAt: string;
-  modifiedAt: string;
-  tags: string;
-  urls: Iurls[];
-  imageKey?: string;
-  likeCount?: number;
-  liked?: boolean;
-}
+import { getPostList } from "../util/PostApi";
+import { IItemDetail } from "../util/PostApi";
 
 export default function Posts() {
   const [category, setCategpry] = useState<string>("전체");
@@ -48,10 +32,6 @@ export default function Posts() {
     e.currentTarget.textContent && setCategpry(e.currentTarget.textContent);
   };
 
-  const handleSortClick = (x: number) => {
-    setSort(x);
-  };
-
   const handleSearch = () => {
     setKeyword(searchValue);
   };
@@ -62,18 +42,13 @@ export default function Posts() {
       try {
         setLoading(true);
 
-        const res = await requestAuth.get(
-          `/prf-posts?page=${page}&size=10&sorting=${sort}${
-            category !== "전체" ? `&category=${category}` : ""
-          }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
-        );
+        const res = await getPostList(page, sort, category, keyword);
         console.log(res.data);
         setResult({ ...res.data });
         setList([...list, ...res.data.data]);
       } catch (err) {
         console.log(err);
       }
-
       setLoading(false);
     };
     if (page < (result?.pageInfo.totalPages || 1) + 1) {
@@ -103,9 +78,12 @@ export default function Posts() {
 
   //카테고리 바뀔때 초기화
   useEffect(() => {
-    setPage(1);
-    setList([]);
-    setTrig({});
+    if (!(page === 1 && list.length === 0)) {
+      setPage(1);
+      setList([]);
+      setTrig({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, keyword, sort]);
 
   return (
@@ -134,7 +112,7 @@ export default function Posts() {
             {["최신순", "인기순"].map((x, idx) => (
               <CategoryBtn
                 isSelect={idx === sort - 1}
-                onClick={() => handleSortClick(idx + 1)}
+                onClick={() => setSort(idx + 1)}
                 key={x}
               >
                 {x}
@@ -144,7 +122,7 @@ export default function Posts() {
         </Sort>
       </SearchWrapper>
       {list &&
-        list.map((item: IListItem) => {
+        list.map((item: IItemDetail) => {
           return <PostItem key={item.id} item={item} />;
         })}
       {loading && <Loading />}
@@ -161,7 +139,7 @@ export default function Posts() {
           btnType="full"
           iconType="add"
           border="none"
-          handleClick={() => navigate("/addpost/create/new")}
+          handleClick={() => navigate("/addpost/create")}
         />
       </AddPosition>
     </Content>
@@ -185,7 +163,7 @@ const SearchWrapper = styled.div`
   width: 100%;
   position: sticky;
   top: 3.5rem;
-  background-color: #151515;
+  background-color: rgba(21, 21, 21, 0.5);
 `;
 
 const Sort = styled.div`

@@ -50,6 +50,8 @@ public class RecruitPostService {
                 .ifPresent(recruitStatus -> findRecruitPost.setRecruitStatus(recruitStatus));
         Optional.ofNullable(recruitPost.getRecruitNumber())
                 .ifPresent(recruitNumber -> findRecruitPost.setRecruitNumber(recruitNumber));
+        Optional.ofNullable(recruitPost.getDueDate())
+                .ifPresent(dueDate->findRecruitPost.setDueDate(dueDate));
         Optional.ofNullable(recruitPost.getAge())
                 .ifPresent(age -> findRecruitPost.setAge(age));
         Optional.ofNullable(recruitPost.getTags())

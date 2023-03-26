@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import YoutubeListItem from "./YoutubeListItem";
 
-import { Iurls } from "../../../page/AddPost";
+import { IYoutubeInfo as Iurls } from "../../../util/PostApi";
 
 const Wrapper = styled.div`
   width: 100%;

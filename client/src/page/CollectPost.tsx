@@ -23,9 +23,8 @@ export default function CollectPost() {
   const [recruitNumber, setRecruitNumber] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
-
+  const navigate = useNavigate();
   const [category, setCategory] = useState("");
-
   const query = new URLSearchParams(useLocation().search);
   // 리액트 라우터에 url쿼리로 원글의 아이디랑 category받아옴
 
@@ -71,12 +70,12 @@ export default function CollectPost() {
           title: title,
           content: body,
           recruitNumber: Number(recruitNumber),
-          dueDate: selectedDate.toLocaleDateString(),
+          dueDate: selectedDate.toISOString().slice(0, 10).replace(/-/gi, "."),
           age: ages,
           tags: tags,
         };
         collectPost(data);
-        // navigate("/collectpost");
+        navigate("/collectpost");
         // requestAuth.post("/recruit-posts", data).then((res) => {
         //   console.log(res);
         //   if (res.data.id) navigate("/collectpost");
@@ -90,7 +89,7 @@ export default function CollectPost() {
           title: title,
           content: body,
           recruitNumber: Number(recruitNumber),
-          dueDate: selectedDate.toLocaleDateString(),
+          dueDate: selectedDate.toISOString().slice(0, 10).replace(/-/gi, "."),
           age: ages,
           tags: tags,
         };
@@ -105,8 +104,6 @@ export default function CollectPost() {
   // const handleChange = () => {
   //   setChecked(!checked);
   // };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -148,7 +145,10 @@ export default function CollectPost() {
                 <div>
                   {" "}
                   {selectedDate
-                    ? selectedDate.toLocaleDateString()
+                    ? selectedDate
+                        .toISOString()
+                        .slice(0, 10)
+                        .replace(/-/gi, ".")
                     : "날짜를 선택하세요."}
                 </div>
               </DateContainer>
