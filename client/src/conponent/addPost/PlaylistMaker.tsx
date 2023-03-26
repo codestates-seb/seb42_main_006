@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ButtonInput } from "../parts/InputNoH";
 import YoutubeList from "../postDetail/music/YoutubeList";
-import { Iurls } from "../../page/AddPost";
+import { IYoutubeInfo as Iurls } from "../../util/PostApi";
 
 interface IplaylistMakerProp {
   onAddList: (x: string) => void;

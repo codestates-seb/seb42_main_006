@@ -9,7 +9,7 @@ import { PenIcon, CloseIcon } from "../../icons/MyIcon";
 import logo from "../../icons/logo.svg";
 import Loading from "../parts/Loading";
 import UserModal from "./UserModal";
-import Modal from "../Modal";
+import Modal from "../Modal/Modal";
 
 const MyInfo = styled.section`
   display: flex;

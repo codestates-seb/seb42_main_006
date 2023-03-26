@@ -15,8 +15,10 @@ import Mypage from "./page/Mypage";
 import Main from "./page/Main";
 import PostDetail from "./page/PostDetail";
 import CollectPost from "./page/CollectPost";
+import Modal from "./conponent/Modal/Modal";
+import { ModalContext } from "./conponent/Modal/ModalContextProvider";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -29,6 +31,7 @@ const ContentWrapper = styled.div`
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const modal = useContext(ModalContext);
 
   useEffect(() => {
     if (sessionStorage.getItem("auth") !== null) {
@@ -53,7 +56,7 @@ function App() {
               path="/login"
               element={<Login setIsLogin={setIsLogin} />}
             ></Route>
-            <Route path="/addpost/:mode/:id" element={<AddPost />}></Route>
+            <Route path="/addpost/:mode/" element={<AddPost />}></Route>
             <Route
               path="/collectdeatail/:id"
               element={<CollectDeatail />}
@@ -67,6 +70,15 @@ function App() {
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>
+        {modal?.isModal.display && (
+          <Modal
+            title={modal.isModal.title}
+            text={modal.isModal.text}
+            handleModal={modal.isModal.handleModal}
+            handleClick={modal.isModal.handleClick}
+            btnName={modal.isModal.btnName}
+          />
+        )}
       </MainWrapper>
     </BrowserRouter>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Delete } from "../../../icons/Icon";
-import { Iurls } from "../../../page/AddPost";
+import { IYoutubeInfo as Iurls } from "../../../util/PostApi";
 
 interface ListItemProp {
   item: Iurls;

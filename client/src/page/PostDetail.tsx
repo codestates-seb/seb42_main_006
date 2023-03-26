@@ -7,11 +7,14 @@ import YoutubePlayer from "../conponent/postDetail/movie/YoutubePlayer";
 import CommentCreator from "../conponent/CommentCreator";
 import CommentList from "../conponent/parts/CommentList";
 import { requestAuth } from "../function/request";
-import { Iurls } from "./AddPost";
+
+import { IYoutubeInfo as Iurls } from "../util/PostApi";
 import { useNavigate, useParams } from "react-router";
 import Loading from "../conponent/parts/Loading";
 import Tag from "../conponent/parts/Tag";
 import { StyledBtn } from "../conponent/parts/Button";
+import { likeBtnRequest, submitComment } from "../util/PostApi";
+import { splitTag } from "../function/validFn";
 
 interface IpostDetailData {
   id: number;
@@ -50,6 +53,7 @@ export default function PostDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //! 현제 좋아요된 글들은 삭제 불가
   const handleDelete = () => {
     requestAuth
       .delete(`/prf-posts/${param.id}`)
@@ -62,34 +66,30 @@ export default function PostDetail() {
       });
   };
 
-  const handleLike = () => {
-    if (data?.liked) {
-      requestAuth
-        .delete(`/like/prf-posts/${param.id}`, {})
-        .then((res) => {
-          setData({ ...data, liked: false });
-        })
-        .catch((err) => console.log(err));
-    } else if (data?.liked === false) {
-      requestAuth
-        .post(`/like/prf-posts/${param.id}`, {})
-        .then((res) => {
-          setData({ ...data, liked: true });
-        })
-        .catch((err) => console.log(err));
+  const handleLike = async () => {
+    if (!!data) {
+      try {
+        const res = await likeBtnRequest(
+          data.liked,
+          `/like/prf-posts/${param.id}`,
+        );
+        res.status === 201
+          ? setData({ ...data, liked: true })
+          : setData({ ...data, liked: false });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
-  const handleSubmit = (x: { content: string }) => {
-    requestAuth
-      .post(`/prf-comments/${data?.id}`, x)
-      .then((res) => {
-        setReRender({});
-      })
-      .catch((err) => console.log(err));
+  const handleSubmit = async (x: { content: string }) => {
+    try {
+      const res = await submitComment(`/prf-comments/${data?.id}`, x);
+      if (res.status === 201) setReRender({});
+    } catch (err) {
+      alert(err);
+    }
   };
-
-  const splitTag = (x: string) => x.split("#").splice(1);
 
   return (
     <Container>
@@ -110,7 +110,9 @@ export default function PostDetail() {
                     btnType=""
                     iconType="write"
                     border="none"
-                    handleClick={() => navigate(`/addpost/edit/${param.id}`)}
+                    handleClick={() =>
+                      navigate(`/addpost/edit/`, { state: data })
+                    }
                   />
                   <IconBtn
                     title=""
@@ -196,7 +198,7 @@ export default function PostDetail() {
               </Spre>
               <TagWrap>
                 {splitTag(data.tags).map((x) => (
-                  <Tag title={x} key={x} />
+                  <Tag key={x}>{x}</Tag>
                 ))}
               </TagWrap>
             </ContentBox>

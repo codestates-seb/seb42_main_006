@@ -9,19 +9,22 @@ export const requestAuth = axios.create({
   headers: {
     "Content-type": "application/json",
   },
+  timeout: 30000,
 });
 
 requestAuth.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem("auth");
 
-    config.headers.Authorization = token ? token : "";
+    if (!!token) {
+      config.headers.Authorization = token;
+    }
 
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 requestAuth.interceptors.response.use(
@@ -37,7 +40,7 @@ requestAuth.interceptors.response.use(
       const email = sessionStorage.getItem("user");
       const refresh = sessionStorage.getItem("refresh");
       if (!!refresh === false) {
-        console.log("리프레시 토큰 삭제 또는 만료됨 ");
+        throw new Error("리프레시 토큰 삭제 또는 만료됨");
       } else {
         if (!!email) {
           try {
@@ -61,5 +64,5 @@ requestAuth.interceptors.response.use(
       }
     }
     return Promise.reject(err);
-  }
+  },
 );

@@ -1,43 +1,19 @@
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 import MoviePreview from "../conponent/addPost/MoviePreview";
 import PlaylistMaker from "../conponent/addPost/PlaylistMaker";
 import Selection from "../conponent/parts/Selection";
-import { DefaultInput, Textarea, FileInput } from "../conponent/parts/InputNoH";
 import MapSearch from "../conponent/addPost/MapSearch";
+import { DefaultInput, Textarea, FileInput } from "../conponent/parts/InputNoH";
 import { StyledBtn } from "../conponent/parts/Button";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-
 import { requestAuth } from "../function/request";
-import { UpdateImg, UploadImg } from "../util/PostApi";
-
+import { submitUrl, UpdateImg, UploadImg } from "../util/PostApi";
 import { getVideoId } from "../function/youtubeApi";
-
-export interface Iurls {
-  id?: number;
-  url: string;
-  thumbnail: string;
-  title: string;
-}
-
-interface Idata {
-  title: string;
-  category: string;
-  urls: Iurls[];
-  content: string;
-  tags: string;
-  imageKey?: string;
-}
-
-interface IEditData {
-  title: string;
-  category: string;
-  newUrls: Iurls[];
-  deletedUrls: { urlId: number }[];
-  content: string;
-  tags: string;
-  imageKey?: string;
-}
+import { validFn } from "../function/validFn";
+import { IYoutubeInfo as Iurls } from "../util/PostApi";
+import { IPostSubmitData as Idata } from "../util/PostApi";
+import { IEditData } from "../util/PostApi";
 
 export default function AddPost() {
   const [curCategory, setCurCategory] = useState("");
@@ -47,35 +23,65 @@ export default function AddPost() {
   const [urls, setUrls] = useState<Iurls[]>([]);
   const [origin, setOrigin] = useState<any>(null);
   const [file, setfile] = useState<File>();
+  const [imageKey, setImageKey] = useState<string>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
-    lat: "",
-    lon: "",
+    lat: "37.49652290597856",
+    lon: "127.02479374965135",
   });
 
   const param = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (param.mode === "edit") {
-      requestAuth.get(`/prf-posts/${param.id}`).then((res) => {
-        console.log(res.data);
-        setOrigin(res.data);
-        setTitle(res.data.title);
-        setBody(res.data.content);
-        setTags(res.data.tags);
-        setUrls([...res.data.urls]);
-        setCurCategory(res.data.category);
+      console.log(location.state);
+      setOrigin(location.state);
+      setTitle(location.state.title);
+      setBody(location.state.content);
+      setTags(location.state.tags);
+      setUrls([...location.state.urls]);
+      setCurCategory(location.state.category);
+      setLatLon({
+        lat: location.state.urls[0].url,
+        lon: location.state.urls[0].thumbnail,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (file) {
+      if (param.mode === "create") {
+        UploadImg(file)
+          .then((res) => {
+            console.log(res);
+            setImageKey(res.fileKey);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        UpdateImg(file, origin.imageKey)
+          .then((res) => {
+            console.log(res);
+            setImageKey(res.fileKey);
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [file]);
 
   const handleDelUrls = (item: string) => {
     setUrls([...urls.filter((x) => x.url !== item)]);
   };
 
   const handleAddUrls = (youtubeUrl: string) => {
+    if (!validFn("youtubeUrl")(youtubeUrl)) {
+      alert("Youtube Url만 이용 가능합니다.");
+      return;
+    }
+
     if (urls.filter((x) => x.url === youtubeUrl).length !== 0) {
       alert("중복된 Url은 등록하실 수 없습니다.");
       return;
@@ -86,7 +92,7 @@ export default function AddPost() {
     getVideoId(youtubeUrl)
       .then((res) => {
         url.url = youtubeUrl;
-        url.thumbnail = res.items[0].snippet.thumbnails.medium.url;
+        url.thumbnail = res.items[0].snippet.thumbnails.default.url;
         url.title = res.items[0].snippet.title;
       })
       .then(() => setUrls((prev) => [url, ...prev]))
@@ -95,98 +101,38 @@ export default function AddPost() {
 
   const handleSubmit = async () => {
     if (param.mode === "create") {
-      if (curCategory === "영화") {
-        const data: Idata = {
-          title: title,
-          category: curCategory,
-          urls: [urls[0]],
-          content: body,
-          tags: tags,
-        };
+      const data: Idata = {
+        title: title,
+        category: curCategory,
+        urls: submitUrl("create", curCategory, urls, latLon),
+        content: body,
+        tags: tags,
+      };
+      if (imageKey) data.imageKey = imageKey;
+      try {
         const res = await requestAuth.post("/prf-posts", data);
         console.log(res);
         if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-      } else if (curCategory === "음악") {
-        const data: Idata = {
-          title: title,
-          category: curCategory,
-          urls: urls,
-          content: body,
-          tags: tags,
-        };
-        const res = await requestAuth.post("/prf-posts", data);
-        console.log(res);
-        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-      } else {
-        const imageKey = await UploadImg(file);
-        if (imageKey) {
-          const data: Idata = {
-            title: title,
-            category: curCategory,
-            urls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
-            content: body,
-            tags: tags,
-            imageKey: imageKey.fileKey,
-          };
-          const res = await requestAuth.post("/prf-posts", data);
-          console.log(res);
-          if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-        }
+      } catch (err) {
+        alert(err);
       }
     } else if (param.mode === "edit") {
-      if (curCategory === "영화") {
-        const data: IEditData = {
-          title: title,
-          category: curCategory,
-          newUrls: [urls[0]],
-          deletedUrls: [{ urlId: origin.urls[0]?.id }],
-          content: body,
-          tags: tags,
-        };
-        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
+      const [newUrl, delUrl] = submitUrl("edit", curCategory, urls, latLon, origin);
+      const data: IEditData = {
+        title: title,
+        category: curCategory,
+        newUrls: newUrl,
+        deletedUrls: delUrl,
+        content: body,
+        tags: tags,
+      };
+      if (imageKey) data.imageKey = imageKey;
+      try {
+        const res = await requestAuth.patch(`/prf-posts/${location.state.id}`, data);
         console.log(res);
         if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-      } else if (curCategory === "음악") {
-        const data: IEditData = {
-          title: title,
-          category: curCategory,
-          newUrls: [...urls.filter((x) => !x.id)],
-          deletedUrls: origin.urls
-            .filter((x: Iurls): boolean => {
-              let result = true;
-              for (let item of urls) {
-                if (x.title === item.title) result = false;
-              }
-              return result;
-            })
-            .map((x: Iurls) => {
-              return {
-                urlId: x.id,
-              };
-            }),
-          content: body,
-          tags: tags,
-        };
-        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
-        console.log(res);
-        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-      } else {
-        let Key: any;
-        const data: IEditData = {
-          title: title,
-          category: curCategory,
-          newUrls: [{ title: "", url: latLon.lat, thumbnail: latLon.lon }],
-          deletedUrls: [{ urlId: origin.urls[0].id }],
-          content: body,
-          tags: tags,
-        };
-        if (file) {
-          Key = await UpdateImg(file, origin.imageKey);
-          data.imageKey = Key.fileKey;
-        }
-        const res = await requestAuth.patch(`/prf-posts/${param.id}`, data);
-        console.log(res);
-        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
+      } catch (err) {
+        console.log(err);
       }
     }
   };
@@ -229,13 +175,9 @@ export default function AddPost() {
             case "맛집":
               return (
                 <>
-                  <MapSearch setLatLon={setLatLon} />
+                  <MapSearch latLon={latLon} setLatLon={setLatLon} />
                   <InputTitle>사진</InputTitle>
-                  <FileInput
-                    width="100%"
-                    value={file}
-                    setValue={setfile}
-                  ></FileInput>
+                  <FileInput width="100%" value={file} setValue={setfile}></FileInput>
                 </>
               );
             default:

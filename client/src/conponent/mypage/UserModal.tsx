@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CloseIcon } from "../../icons/MyIcon";
-import { ModalWrap, ModalBox, ModalTitle } from "../Modal";
-import { ModalTxt, ModalBtnBox, CloseBtn, ModalBtn } from "../Modal";
+import { ModalWrap, ModalBox, ModalTitle } from "../Modal/Modal";
+import { ModalTxt, ModalBtnBox, CloseBtn, ModalBtn } from "../Modal/Modal";
 
 interface UserModalProps {
   alert: boolean;
