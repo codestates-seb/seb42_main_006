@@ -1,4 +1,8 @@
+import { useState, useEffect, useContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
 import GlobalStyle from "./style/GlobalStyles";
+import { ModalContext } from "./conponent/Modal/ModalContextProvider";
 import NotFound from "./page/NotFound";
 import Header from "./conponent/Header";
 import Nav from "./conponent/Nav";
@@ -6,8 +10,6 @@ import Example from "./page/Example";
 import Signup from "./page/Signup";
 import Login from "./page/Login";
 import AddPost from "./page/AddPost";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import styled from "styled-components";
 import Posts from "./page/Posts";
 import Collect from "./page/Collect";
 import CollectDeatail from "./page/CollectDeatail";
@@ -16,9 +18,6 @@ import Main from "./page/Main";
 import PostDetail from "./page/PostDetail";
 import CollectPost from "./page/CollectPost";
 import Modal from "./conponent/Modal/Modal";
-import { ModalContext } from "./conponent/Modal/ModalContextProvider";
-
-import { useState, useEffect, useContext } from "react";
 
 const MainWrapper = styled.div`
   display: flex;
