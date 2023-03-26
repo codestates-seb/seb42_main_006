@@ -14,6 +14,9 @@ const PButton = styled.button`
     background-color: #171717;
     cursor: pointer;
   }
+  @media screen and (max-width: 600px) {
+    padding: 0;
+  }
 `;
 
 export default function PageButton({ title, handleClick }: prop) {

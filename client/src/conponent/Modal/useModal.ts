@@ -2,8 +2,12 @@ import { ModalContext } from "./ModalContextProvider";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
+type modal = {
+  type: "" | "가입실패" | "가입성공" | "로그인실패";
+};
+
 export default function useModal() {
-  const [type, setType] = useState({ type: "" });
+  const [type, setType] = useState<modal>({ type: "" });
   const modal = useContext(ModalContext);
   const navigate = useNavigate();
 

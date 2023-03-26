@@ -17,6 +17,20 @@ const Content = styled.div`
   top: 70px;
   left: 0;
   padding-left: 10px;
+
+  @media screen and (max-width: 600px) {
+    position: fixed;
+    width: 100%;
+    height: 5rem;
+    top: unset;
+    bottom: 0;
+    flex-direction: row;
+    padding: 0;
+    justify-content: space-evenly;
+    z-index: 1000;
+    border-radius: 0;
+    border-top: 2px solid #4a4a4a;
+  }
 `;
 
 interface NavType {
@@ -34,16 +48,10 @@ export default function Nav({ isLogin }: NavType) {
 
   return (
     <Content>
-      <PageButton title="Main" handleClick={() => navigate("/")}></PageButton>
-      <PageButton
-        title="Story"
-        handleClick={() => navigate("/posts")}
-      ></PageButton>
-      <PageButton
-        title="Together"
-        handleClick={() => navigate("/collect")}
-      ></PageButton>
-      <PageButton title="My page" handleClick={hadleNav}></PageButton>
+      <PageButton title="Main" handleClick={() => navigate("/")} />
+      <PageButton title="Story" handleClick={() => navigate("/posts")} />
+      <PageButton title="Together" handleClick={() => navigate("/collect")} />
+      <PageButton title="My page" handleClick={hadleNav} />
     </Content>
   );
 }

@@ -66,7 +66,7 @@ export default function Posts() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
-  //로딩중일땐 옵저버 제거(중복요청 방지!!)
+  //로딩중일땐 옵저버 제거(중복요청 방지!!!)
   useEffect(() => {
     if (loading) {
       unobserve(target.current);
