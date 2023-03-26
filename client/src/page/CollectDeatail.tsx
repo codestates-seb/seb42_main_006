@@ -295,17 +295,20 @@ export default function CollectDeatail() {
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   max-width: 800px;
   min-width: 300px;
+  padding: 10px;
   margin: 24px auto;
-  gap: 20px;
 `;
 
 const ContentWapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
+  height: 100%;
   color: white;
 `;
 
@@ -317,6 +320,7 @@ const TopInfo = styled.div`
 
 const TopInfoLeft = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const TopInfoRight = styled.div`
@@ -332,7 +336,8 @@ const DetailPost = styled.div`
   border: 1px solid #4a4a4a;
   border-radius: 5px;
   background-color: #222222;
-  padding: 30px;
+  padding: 1.5rem;
+  margin-top: 5px;
 `;
 
 const TitleContent = styled.div`
@@ -371,7 +376,8 @@ const DetailContent = styled.div`
 
 const UserName = styled.div`
   margin-left: 0.5rem;
-  padding-top: 0.4rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 `;
 
 const UserRetweets = styled.div`

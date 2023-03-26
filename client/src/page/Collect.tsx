@@ -158,12 +158,13 @@ const Content = styled.div`
   flex-direction: column;
   width: 80%;
   max-width: 800px;
-  min-width: 390px;
+  min-width: 370px;
   height: 100%;
   align-items: center;
   padding-top: 24px;
   gap: 10px;
   margin: 0 auto;
+  padding: 10px;
 `;
 
 const Sort = styled.div`
