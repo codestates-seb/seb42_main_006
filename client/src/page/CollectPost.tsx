@@ -25,9 +25,8 @@ export default function CollectPost() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
-  const query = new URLSearchParams(useLocation().search);
   // 리액트 라우터에 url쿼리로 원글의 아이디랑 category받아옴
-
+  const query = new URLSearchParams(useLocation().search);
   const param = useParams();
 
   useEffect(() => {
@@ -42,6 +41,12 @@ export default function CollectPost() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const koreanTime = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Seoul",
+  });
+  const tomorrow = new Date(koreanTime);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
@@ -76,10 +81,8 @@ export default function CollectPost() {
         };
         collectPost(data);
         navigate(-1);
-        // requestAuth.post("/recruit-posts", data).then((res) => {
-        //   console.log(res);
-        //   if (res.data.id) navigate("/collectpost");
-        // });
+      } else {
+        alert("필수 입력 항목을 모두 작성해주세요.");
       }
     }
     if (param.mode === "edit") {
@@ -97,13 +100,11 @@ export default function CollectPost() {
           console.log(res);
           if (res.data.id) navigate(-1);
         });
+      } else {
+        alert("필수 입력 항목을 모두 작성해주세요.");
       }
     }
   };
-
-  // const handleChange = () => {
-  //   setChecked(!checked);
-  // };
 
   return (
     <>
@@ -158,6 +159,7 @@ export default function CollectPost() {
                     selected={selectedDate}
                     onChange={handleDateChange}
                     inline
+                    minDate={tomorrow}
                   />
                 ) : (
                   <IconBtn
