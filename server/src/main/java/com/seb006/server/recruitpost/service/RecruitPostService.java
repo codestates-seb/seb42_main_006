@@ -130,7 +130,6 @@ public class RecruitPostService {
         }
     }
     private void checkRecruitPostStatus(RecruitPost recruitPost) {
-
         if (recruitPost.getRecruitStatus() == RecruitPost.RecruitStatus.CLOSE) {
             throw new BusinessLogicException(ExceptionCode.RECRUITPOST_CLOSED);
         }if(recruitPost.getRecruitStatus() == RecruitPost.RecruitStatus.EXPIRED){
