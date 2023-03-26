@@ -70,7 +70,7 @@ export default function CollectPost() {
 
   const handleSubmit = () => {
     if (param.mode === "create") {
-      if (title && body && recruitNumber && selectedDate) {
+      if (title && body && recruitNumber && selectedDate && ages) {
         const data: IData = {
           prfPostId: Number(param.id),
           category: String(query.get("category")),
@@ -88,7 +88,7 @@ export default function CollectPost() {
       }
     }
     if (param.mode === "edit") {
-      if (title && body && recruitNumber && selectedDate) {
+      if (title && body && recruitNumber && selectedDate && ages) {
         const data = {
           category: category,
           title: title,
@@ -107,6 +107,13 @@ export default function CollectPost() {
       }
     }
   };
+
+  const ageGroups = [
+    { id: "10대", label: "10대" },
+    { id: "20대", label: "20대" },
+    { id: "30대", label: "30대" },
+    { id: "40대", label: "40대" },
+  ];
 
   return (
     <>
@@ -192,38 +199,20 @@ export default function CollectPost() {
             <div>
               <Title>연령대</Title>
               <CheckboxContainer>
-                <input
-                  type="checkbox"
-                  id="10대"
-                  name="age"
-                  value="10대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="10대">10대</label>
-                <input
-                  type="checkbox"
-                  id="20대"
-                  name="age"
-                  value="20대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="20대">20대</label>
-                <input
-                  type="checkbox"
-                  id="30대"
-                  name="age"
-                  value="30대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="30대">30대</label>
-                <input
-                  type="checkbox"
-                  id="40대"
-                  name="age"
-                  value="40대"
-                  onChange={handleAgeChange}
-                />
-                <label htmlFor="40대">40대</label>
+                <>
+                  {ageGroups.map((ageGroup) => (
+                    <div key={ageGroup.id}>
+                      <input
+                        type="checkbox"
+                        id={ageGroup.id}
+                        name="age"
+                        value={ageGroup.label}
+                        onChange={handleAgeChange}
+                      />
+                      <label htmlFor={ageGroup.id}>{ageGroup.label}</label>
+                    </div>
+                  ))}
+                </>
               </CheckboxContainer>
             </div>
           </PersonContainer>
