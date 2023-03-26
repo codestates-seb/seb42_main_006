@@ -13,20 +13,6 @@ export interface Props {
 export default function CollectItem({ item }: Props) {
   const Navigate = useNavigate();
 
-  // const [posts, setPosts] = useState<Props[]>([]);
-
-  // useEffect(() => {
-  //   requestAuth
-  //     .get(`/recruit-posts/all?page=3&size=5&sorting=1`)
-  //     .then((res) => {
-  //       setPosts(res.data.data);
-  //       console.log(res.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
   const isExpired = (x: string): boolean => {
     const dueDate = new Date(x);
     const cur = new Date();

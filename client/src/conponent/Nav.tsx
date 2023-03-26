@@ -48,16 +48,10 @@ export default function Nav({ isLogin }: NavType) {
 
   return (
     <Content>
-      <PageButton title="Main" handleClick={() => navigate("/")}></PageButton>
-      <PageButton
-        title="Story"
-        handleClick={() => navigate("/posts")}
-      ></PageButton>
-      <PageButton
-        title="Together"
-        handleClick={() => navigate("/collect")}
-      ></PageButton>
-      <PageButton title="My page" handleClick={hadleNav}></PageButton>
+      <PageButton title="Main" handleClick={() => navigate("/")} />
+      <PageButton title="Story" handleClick={() => navigate("/posts")} />
+      <PageButton title="Together" handleClick={() => navigate("/collect")} />
+      <PageButton title="My page" handleClick={hadleNav} />
     </Content>
   );
 }

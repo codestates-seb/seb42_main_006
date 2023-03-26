@@ -149,43 +149,40 @@ export default function CollectPost() {
             />
           </div>
           <div>
-            <Title>모집기한</Title>
             <DateWrapper>
-              <DateContainer>
-                <div>
-                  {" "}
-                  {selectedDate
-                    ? selectedDate
-                        .toISOString()
-                        .slice(0, 10)
-                        .replace(/-/gi, ".")
-                    : "날짜를 선택하세요."}
-                </div>
-              </DateContainer>
-              <DatePick>
-                {showDatePicker ? (
+              <Title>모집기한</Title>
+              {showDatePicker ? (
+                <DatePick>
                   <DatePicker
                     selected={selectedDate}
                     onChange={handleDateChange}
                     inline
                     minDate={tomorrow}
                   />
-                ) : (
-                  <IconBtn
-                    title=""
-                    width="30px"
-                    height="30px"
-                    radius="100px"
-                    fontWeight={400}
-                    fontColor=""
-                    btnType=""
-                    iconType="calender"
-                    border="none"
-                    handleClick={handleDateClick}
-                  />
-                )}
-              </DatePick>
+                </DatePick>
+              ) : (
+                <IconBtn
+                  title=""
+                  width="30px"
+                  height="30px"
+                  radius="100px"
+                  fontWeight={400}
+                  fontColor=""
+                  btnType=""
+                  iconType="calender"
+                  border="none"
+                  handleClick={handleDateClick}
+                />
+              )}
             </DateWrapper>
+            <DateContainer>
+              <div>
+                {" "}
+                {selectedDate
+                  ? selectedDate.toISOString().slice(0, 10).replace(/-/gi, ".")
+                  : "날짜를 선택하세요."}
+              </div>
+            </DateContainer>
           </div>
           <PersonContainer>
             <PersonCounter>
@@ -197,7 +194,7 @@ export default function CollectPost() {
               ></Selection>
             </PersonCounter>
             <div>
-              <Title>연령대</Title>
+              <Title>모집 연령</Title>
               <CheckboxContainer>
                 <>
                   {ageGroups.map((ageGroup) => (
@@ -324,7 +321,7 @@ const BtnWrapper = styled.div`
 `;
 
 const DatePick = styled.div`
-  position: relative;
+  position: absolute;
   z-index: 1000px;
 `;
 

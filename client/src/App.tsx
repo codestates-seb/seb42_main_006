@@ -43,7 +43,7 @@ function App() {
       <GlobalStyle />
       <Header />
       <MainWrapper>
-        <Nav isLogin={isLogin}></Nav>
+        <Nav isLogin={isLogin} />
         <ContentWrapper>
           <Routes>
             <Route path="/" element={<Main isLogin={isLogin} />}></Route>
