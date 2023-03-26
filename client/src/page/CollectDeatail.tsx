@@ -84,7 +84,7 @@ export default function CollectDeatail() {
   const handleDelete = () => {
     requestAuth.delete(`recruit-posts/${param.id}`).then(() => {
       setRender({});
-      navigate("/collect");
+      navigate(-1);
     });
   };
 

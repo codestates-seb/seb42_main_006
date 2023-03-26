@@ -75,7 +75,7 @@ export default function CollectPost() {
           tags: tags,
         };
         collectPost(data);
-        navigate("/collectpost");
+        navigate(-1);
         // requestAuth.post("/recruit-posts", data).then((res) => {
         //   console.log(res);
         //   if (res.data.id) navigate("/collectpost");
@@ -95,7 +95,7 @@ export default function CollectPost() {
         };
         requestAuth.patch(`/recruit-posts/${param.id}`, data).then((res) => {
           console.log(res);
-          if (res.data.id) navigate("/collectpost");
+          if (res.data.id) navigate(-1);
         });
       }
     }
