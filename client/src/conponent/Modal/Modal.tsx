@@ -29,6 +29,7 @@ export const ModalTxt = styled.p`
   font-size: 0.85rem;
   line-height: 1.3;
   white-space: pre-line;
+  color: #fff;
 `;
 
 export const ModalTitle = styled.h3`
