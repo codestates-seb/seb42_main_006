@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Loading from "../conponent/parts/Loading";
 import IconBtn from "../conponent/parts/IconButton";
 import { StyledBtn } from "../conponent/parts/Button";
 import Tag from "../conponent/parts/Tag";
@@ -24,7 +25,6 @@ interface Post {
   age: string;
   tags: string;
   liked: boolean;
-  joined?: any;
 }
 
 export default function CollectDeatail() {
@@ -33,30 +33,14 @@ export default function CollectDeatail() {
   // const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
   const [showOption, setShowOption] = useState(false);
-  const [isCount, setIsCount] = useState(false);
 
   // const toggleOptions = () => {
   //   setShowOption((prevState) => !prevState);
   //   setIsEdit(false);
   // };
 
-  const [post, setPost] = useState<Post>({
-    id: 1,
-    title: "",
-    category: "",
-    content: "",
-    recruitNumber: 5,
-    currentNumber: 3,
-    recruitStatus: "",
-    dueDate: "",
-    createAt: "",
-    modifiedAt: "",
-    memberId: 1,
-    nickName: "",
-    age: "",
-    tags: "",
-    liked: false,
-  });
+  const [post, setPost] = useState<Post>();
+  const [isJoined, setIsJoined] = useState<boolean>(false);
   const [render, setRender] = useState({});
 
   useEffect(() => {
@@ -69,7 +53,17 @@ export default function CollectDeatail() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [render]);
+
+  useEffect(() => {
+    requestAuth
+      .get(`recruit-posts/${param.id}/checkParticipation`)
+      .then((res) => {
+        console.log(res.data);
+        setIsJoined(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [render]);
 
   const handleSubmit = (x: { content: string }) => {
     requestAuth
@@ -109,66 +103,76 @@ export default function CollectDeatail() {
   };
 
   const handleJoin = () => {
-    if (post.currentNumber <= post.recruitNumber) {
-      requestAuth
-        .post(`/recruit-posts/${post.id}/participation`, {})
-        .then((res) => {
-          setPost(res.data);
-          setIsCount(true);
-        })
-        .catch((err) => console.log(err));
+    if (!!post) {
+      if (
+        JSON.parse(sessionStorage.getItem("user") as string).id !==
+        post.memberId
+      ) {
+        if (post.currentNumber <= post.recruitNumber) {
+          requestAuth
+            .post(`/recruit-posts/${param.id}/participation`, {})
+            .then((res) => {
+              setPost(res.data);
+              setRender({});
+            })
+            .catch((err) => console.log(err));
+        }
+      }
     }
   };
 
   const handleExit = () => {
-    if (post.currentNumber <= post.recruitNumber) {
-      requestAuth
-        .post(`/recruit-posts/${post.id}/participation`, {})
-        .then((res) => {
-          setPost(res.data);
-          setIsCount(false);
-        })
-        .catch((err) => console.log(err));
+    if (!!post) {
+      if (post.currentNumber <= post.recruitNumber) {
+        requestAuth
+          .delete(`/recruit-posts/${param.id}/cancel`, {})
+          .then((res) => {
+            setRender({});
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
 
   return (
     <Content>
-      <ContentWapper>
-        <TopInfo>
-          <TopInfoLeft>
-            <IconBtn
-              title=""
-              width="30px"
-              height="30px"
-              radius="100px"
-              fontWeight={400}
-              fontColor=""
-              btnType=""
-              iconType="profile"
-              border="none"
-              handleClick={() => console.log("click")}
-            />
-            <UserName>{post.nickName}</UserName>
-          </TopInfoLeft>
-          <TopInfoRight>
-            <TagRight>
+      {!!post ? (
+        <ContentWapper>
+          <TopInfo>
+            <TopInfoLeft>
               <IconBtn
                 title=""
                 width="30px"
                 height="30px"
-                radius="5px"
+                radius="100px"
                 fontWeight={400}
-                fontColor="#f36"
+                fontColor=""
                 btnType=""
-                iconType={post?.liked ? "fullheart" : "heart"}
+                iconType="profile"
                 border="none"
-                handleClick={handleLike}
+                handleClick={() => console.log("click")}
               />
-            </TagRight>
+              <UserName>{post.nickName}</UserName>
+            </TopInfoLeft>
+            <TopInfoRight>
+              <TagRight>
+                <IconBtn
+                  title=""
+                  width="30px"
+                  height="30px"
+                  radius="5px"
+                  fontWeight={400}
+                  fontColor="#f36"
+                  btnType=""
+                  iconType={post?.liked ? "fullheart" : "heart"}
+                  border="none"
+                  handleClick={handleLike}
+                />
+              </TagRight>
 
-            <TagRight>
-              {isCount ? (
+              <TagRight>
                 <StyledBtn
                   title={
                     "함께하기 " + post.currentNumber + "/" + post.recruitNumber
@@ -177,120 +181,133 @@ export default function CollectDeatail() {
                   height="30px"
                   radius="50px"
                   fontWeight={400}
-                  fontColor="pink"
-                  btnType="empty"
+                  fontColor={isJoined === false ? "pink" : "white"}
+                  btnType={isJoined === false ? "empty" : "full"}
                   disabled={post.currentNumber >= post.recruitNumber}
-                  handleClick={handleJoin}
+                  handleClick={isJoined === false ? handleJoin : handleExit}
                 ></StyledBtn>
-              ) : (
+              </TagRight>
+              <TagRight>
                 <StyledBtn
-                  title={
-                    "함께하기 " + post.currentNumber + "/" + post.recruitNumber
-                  }
-                  width="100px"
+                  title="게시물 보러가기"
+                  width="110px"
                   height="30px"
                   radius="50px"
                   fontWeight={400}
-                  fontColor="pink"
-                  btnType="empty"
-                  disabled={post.currentNumber >= post.recruitNumber}
-                  handleClick={handleExit}
+                  fontColor="white"
+                  btnType="full"
+                  handleClick={() => console.log(navigate("/posts"))}
                 ></StyledBtn>
+              </TagRight>
+            </TopInfoRight>
+          </TopInfo>
+          <DetailPost>
+            <TitleContent>
+              <Title>{post.title}</Title>
+              {showOption && (
+                <>
+                  <IconBtn
+                    title=""
+                    width="40px"
+                    height="40px"
+                    radius="5px"
+                    fontWeight={400}
+                    fontColor="red"
+                    btnType=""
+                    iconType="write"
+                    border="none"
+                    handleClick={() =>
+                      navigate(`/collectpost/edit/${param.id}`)
+                    }
+                  />
+                  <IconBtn
+                    title=""
+                    width="40px"
+                    height="40px"
+                    radius="5px"
+                    fontWeight={400}
+                    fontColor="blue"
+                    btnType=""
+                    iconType="delete"
+                    border="none"
+                    handleClick={handleDelete}
+                  />
+                </>
               )}
-            </TagRight>
-            <TagRight>
-              <StyledBtn
-                title="게시물 보러가기"
-                width="110px"
-                height="30px"
-                radius="50px"
-                fontWeight={400}
-                fontColor="white"
-                btnType="full"
-                handleClick={() => console.log(navigate("/posts"))}
-              ></StyledBtn>
-            </TagRight>
-          </TopInfoRight>
-        </TopInfo>
-        <DetailPost>
-          <TitleContent>
-            <Title>{post.title}</Title>
-            {showOption && (
-              <>
+              {JSON.parse(sessionStorage.getItem("user") as string).id ===
+                post.memberId && (
                 <IconBtn
                   title=""
                   width="40px"
                   height="40px"
                   radius="5px"
                   fontWeight={400}
-                  fontColor="red"
+                  fontColor="pink"
                   btnType=""
-                  iconType="write"
+                  iconType="treeDot"
                   border="none"
-                  handleClick={() => navigate(`/collectpost/edit/${param.id}`)}
+                  handleClick={() => setShowOption(!showOption)}
                 />
-                <IconBtn
-                  title=""
-                  width="40px"
-                  height="40px"
-                  radius="5px"
-                  fontWeight={400}
-                  fontColor="blue"
-                  btnType=""
-                  iconType="delete"
-                  border="none"
-                  handleClick={handleDelete}
-                />
-              </>
-            )}
-            {JSON.parse(sessionStorage.getItem("user") as string).id ===
-              post.memberId && (
-              <IconBtn
-                title=""
-                width="40px"
-                height="40px"
-                radius="5px"
-                fontWeight={400}
-                fontColor="pink"
-                btnType=""
-                iconType="treeDot"
-                border="none"
-                handleClick={() => setShowOption(!showOption)}
-              />
-            )}
-          </TitleContent>
-          <DetailContent>{post.content}</DetailContent>
-        </DetailPost>
-        <Tags>
-          <TagInfo>
-            <TagRight>
-              <Tag title={post.category}></Tag>
-            </TagRight>
-            <TagRight>
-              <Tag title={post.age}></Tag>
-            </TagRight>
-            <TagRight>
-              <Tag title={"모집기한:" + post.dueDate}></Tag>
-            </TagRight>
-            <TagRight>
-              <Tag title={post.tags}></Tag>
-            </TagRight>
-          </TagInfo>
-        </Tags>
-        <UserRetweets>
-          <RetweetContainer>
-            <CommentCreator handleSubmit={handleSubmit}></CommentCreator>
-            <CommentList
-              postId={post.id}
-              from="collect"
-              reRender={render}
-            ></CommentList>
-          </RetweetContainer>
-        </UserRetweets>
-      </ContentWapper>
+              )}
+            </TitleContent>
+            <DetailContent>{post.content}</DetailContent>
+          </DetailPost>
+          <Tags>
+            <TagInfo>
+              <TagRight>
+                <Tag title={post.category}></Tag>
+              </TagRight>
+              <TagRight>
+                <Tag title={post.age}></Tag>
+              </TagRight>
+              <TagRight>
+                <Tag title={"모집기한:" + post.dueDate}></Tag>
+              </TagRight>
+              <TagRight>
+                <Tag title={post.tags}></Tag>
+              </TagRight>
+            </TagInfo>
+          </Tags>
+          <UserRetweets>
+            <RetweetContainer>
+              {isJoined ||
+              JSON.parse(sessionStorage.getItem("user") as string).id ===
+                post.memberId ? (
+                <>
+                  <CommentCreator handleSubmit={handleSubmit}></CommentCreator>
+                  <CommentList
+                    postId={post.id}
+                    from="collect"
+                    reRender={render}
+                  ></CommentList>
+                </>
+              ) : (
+                <CommentBlock>
+                  모집에 참여하셔야 댓글을 보실 수 있습니다.
+                </CommentBlock>
+              )}
+            </RetweetContainer>
+          </UserRetweets>
+        </ContentWapper>
+      ) : (
+        <Loading></Loading>
+      )}
     </Content>
   );
 }
+
+const CommentBlock = styled.div`
+  width: 100%;
+  height: 100px;
+  border: 1px solid #4a4a4a;
+  border-radius: 5px;
+  background-color: #222222;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+`;
 
 const Content = styled.div`
   display: flex;
