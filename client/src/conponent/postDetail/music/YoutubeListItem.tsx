@@ -57,7 +57,7 @@ const StyledList = styled.div`
   > div {
     width: 80%;
     overflow: hidden;
-    height: 16px;
+    height: 1rem;
     > div {
       width: 100%;
       color: white;
