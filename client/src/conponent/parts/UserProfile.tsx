@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { UserProfileImg } from "../../icons/Icon";
 import { logoutApi } from "../../util/memberApi";
 import useOuterClick from "../../util/useOuterClick";
+import { LogoutType } from "../Header";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -61,7 +62,7 @@ const LogoutBtn = styled.button`
   }
 `;
 
-function UserProfile() {
+function UserProfile({ setIsLogin }: LogoutType) {
   const [trig, setTrig] = useState(false);
   const innerRef = useOuterClick(() => setTrig(false));
   const navigate = useNavigate();
@@ -69,7 +70,10 @@ function UserProfile() {
   const logout = async () => {
     try {
       const res = await logoutApi();
-      if (res.status === 200) navigate("/");
+      if (res.status === 200) {
+        setIsLogin(false);
+        navigate("/");
+      }
     } catch (err) {
       console.log(err);
     }

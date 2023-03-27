@@ -40,8 +40,6 @@ interface NavType {
 export default function Nav({ isLogin }: NavType) {
   const navigate = useNavigate();
 
-  console.log(isLogin);
-
   const hadleNav = () => {
     isLogin ? navigate("/mypage") : navigate("/login");
   };

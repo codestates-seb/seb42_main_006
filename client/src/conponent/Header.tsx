@@ -34,7 +34,15 @@ const Btn = styled(StyledBtn)`
   padding: 0.5rem 1.5rem;
 `;
 
-export default function Header() {
+const Btn = styled(StyledBtn)`
+  padding: 0.5rem 1.5rem;
+`;
+
+export interface LogoutType {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Header({ setIsLogin }: LogoutType) {
   const navigate = useNavigate();
 
   return (
@@ -42,7 +50,7 @@ export default function Header() {
       <Logo src={logo} alt="logo" onClick={() => navigate("/")} />
 
       {sessionStorage.getItem("auth") ? (
-        <UserProfile></UserProfile>
+        <UserProfile setIsLogin={setIsLogin}></UserProfile>
       ) : (
         <BtnWrapper>
           <Btn

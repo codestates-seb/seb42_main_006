@@ -146,8 +146,8 @@ export default function UserEdit({ userInfo, pending }: UserEditTypes) {
   const [confirm, setConfirm] = useState(false);
   const [change, setChange] = useState(false);
 
-  const [nickValue, nickBind, nickReset] = useInput(userInfo.nickName);
   const [user, setUser] = useState(userInfo.nickName);
+  const [nickValue, nickBind, nickReset] = useInput(user || userInfo.nickName);
   const [passValue, passBind, passReset] = useInput("");
   const [valid, setValid] = useState({ nickname: true, password: true });
 
