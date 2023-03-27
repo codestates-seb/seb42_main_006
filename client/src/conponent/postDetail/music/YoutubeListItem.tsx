@@ -57,10 +57,9 @@ const StyledList = styled.div`
   > div {
     width: 80%;
     overflow: hidden;
-    height: 1.5rem;
-    display: flex;
-    align-items: center;
+    height: 1rem;
     > div {
+      line-height: 2;
       width: 100%;
       color: white;
       font-size: 1rem;
