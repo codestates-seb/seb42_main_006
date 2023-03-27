@@ -99,8 +99,6 @@ public class RecruitPostService {
     public void deleteRecruitPost(long id){
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
 
-        //participationRepository.deleteById(id);
-
         recruitPostRepository.deleteById(id);
     }
     public RecruitPost findVerifiedRecruitPost(long id){
