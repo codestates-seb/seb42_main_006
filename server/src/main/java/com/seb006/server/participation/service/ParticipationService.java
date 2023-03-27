@@ -9,7 +9,7 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.service.RecruitPostService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ParticipationService {
@@ -47,6 +47,13 @@ public class ParticipationService {
         if (participationRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.PARTICIPATIOM_EXISTS);
         }
+    }
+
+    public boolean isParticipation(Member member,RecruitPost recruitPost){
+        if(participationRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()){
+            return true;
+        }
+        return false;
     }
 
     public void range (long id,RecruitPost recruitPost) {
