@@ -246,17 +246,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  max-height: 800px;
-  max-width: 800px;
-  min-height: 300px;
-  min-width: 500px;
+  max-width: 900px;
+  min-width: 300px;
   color: white;
-  /* border: 2px solid #5a5959; */
   border-radius: 10px;
   margin: 0 auto;
-  margin-top: 25rem;
+  padding: 10px;
 `;
 
 const Header = styled.div`
@@ -302,7 +297,8 @@ const PersonContainer = styled.div`
 
 const CheckboxContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  width: 100%;
   font-size: 1.6rem;
   & > input[type="checkbox"] {
     margin-right: 4px;
@@ -310,7 +306,7 @@ const CheckboxContainer = styled.div`
 `;
 
 const PersonCounter = styled.div`
-  width: 400px;
+  width: 50%;
 `;
 
 const BtnWrapper = styled.div`
