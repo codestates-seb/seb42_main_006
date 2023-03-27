@@ -16,7 +16,7 @@ export default function CollectItem({ item }: Props) {
   const isExpired = (x: string): boolean => {
     const dueDate = new Date(x);
     const cur = new Date();
-    return dueDate.valueOf() - cur.valueOf() > 0 ? true : false;
+    return dueDate.valueOf() + 1 - cur.valueOf() < 0 ? true : false;
   };
 
   return (
@@ -82,6 +82,7 @@ const Content = styled.div`
 `;
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
