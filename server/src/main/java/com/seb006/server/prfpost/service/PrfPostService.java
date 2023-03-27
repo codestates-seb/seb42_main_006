@@ -7,7 +7,6 @@ import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.dto.PrfPostDto;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.prfpost.repository.PrfPostRepository;
-import com.seb006.server.recruitpost.repository.RecruitPostRepository;
 import com.seb006.server.url.entity.Urls;
 import com.seb006.server.url.repository.UrlRepository;
 import org.springframework.data.domain.Page;
@@ -23,16 +22,15 @@ import java.util.stream.Collectors;
 @Service
 public class PrfPostService {
     private final PrfPostRepository prfPostRepository;
-    private final RecruitPostRepository recruitPostRepository;
     private final UrlRepository urlRepository;
     private final Sorting sort;
 
-    public PrfPostService(PrfPostRepository prfPostRepository, RecruitPostRepository recruitPostRepository, UrlRepository urlRepository, Sorting sort) {
+    public PrfPostService(PrfPostRepository prfPostRepository, UrlRepository urlRepository, Sorting sort) {
         this.prfPostRepository = prfPostRepository;
-        this.recruitPostRepository = recruitPostRepository;
         this.urlRepository = urlRepository;
         this.sort = sort;
     }
+
 
     public PrfPost createPrfPost(Member member, PrfPost prfPost){
         prfPost.setMember(member);
@@ -97,13 +95,6 @@ public class PrfPostService {
     }
 
     public void deletePrfPost(long postId){
-        // 모집글과의 관계 끊기
-        PrfPost prfPost = findverifiedPrfPost(postId);
-        prfPost.getRecruitPosts().stream().forEach(e -> {
-            e.setPrfPost(null);
-            recruitPostRepository.save(e);
-        });
-
         prfPostRepository.deleteById(postId);
     }
 
