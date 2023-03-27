@@ -59,10 +59,12 @@ const StyledList = styled.div`
     overflow: hidden;
     > div {
       width: 100%;
-      /* white-space: nowrap;
-      text-overflow: ellipsis; */
       color: white;
       font-size: 1rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
     }
     padding: 0 10px;
   }

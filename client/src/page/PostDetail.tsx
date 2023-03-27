@@ -238,7 +238,7 @@ const Container = styled.div`
   align-items: center;
   color: white;
   width: 80%;
-  min-width: 400px;
+  min-width: 350px;
   max-width: 800px;
   margin: 24px auto;
 `;
@@ -268,7 +268,8 @@ const Boxs = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 390px;
+  width: 48%;
+  min-width: 350px;
   border: 2px solid #4a4a4a;
   border-radius: 5px;
   height: 350px;
@@ -278,6 +279,9 @@ const Boxs = styled.div`
 const ContentBox = styled(Boxs)`
   padding: 12px;
   overflow: hidden;
+  @media screen and (max-width: 600px) {
+    height: 150px;
+  }
 `;
 
 const RetweetContainer = styled.div`

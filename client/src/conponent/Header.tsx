@@ -7,8 +7,8 @@ import { StyledBtn } from "./parts/Button";
 import UserProfile from "./parts/UserProfile";
 
 const HeaderStyle = styled.div`
-  height: 3.5rem;
-  padding: 0 20px;
+  height: 3.7rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,6 +27,11 @@ const Logo = styled.img`
 const BtnWrapper = styled.div`
   display: flex;
   gap: 10px;
+  height: 70%;
+`;
+
+const Btn = styled(StyledBtn)`
+  padding: 0.5rem 1.5rem;
 `;
 
 export interface LogoutType {
@@ -38,32 +43,32 @@ export default function Header({ setIsLogin }: LogoutType) {
 
   return (
     <HeaderStyle>
-      <Logo src={logo} alt="logo" />
+      <Logo src={logo} alt="logo" onClick={() => navigate("/")} />
 
       {sessionStorage.getItem("auth") ? (
         <UserProfile setIsLogin={setIsLogin}></UserProfile>
       ) : (
         <BtnWrapper>
-          <StyledBtn
+          <Btn
             title="LOG IN"
-            width="100px"
-            height="36px"
-            radius="10px"
+            width=""
+            height=""
+            radius="0.5rem"
             fontWeight={400}
             fontColor="white"
             btnType="full"
             handleClick={() => navigate("/login")}
-          ></StyledBtn>
-          <StyledBtn
+          ></Btn>
+          <Btn
             title="SIGN UP"
-            width="100px"
-            height="36px"
-            radius="10px"
+            width=""
+            height=""
+            radius="0.5rem"
             fontWeight={400}
             fontColor="pink"
             btnType="empty"
             handleClick={() => navigate("/signup")}
-          ></StyledBtn>
+          ></Btn>
         </BtnWrapper>
       )}
     </HeaderStyle>
