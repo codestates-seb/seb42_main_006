@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/like")
 public class LikeController {
@@ -33,7 +31,7 @@ public class LikeController {
     }
 
     @PostMapping("/prf-posts/{prf-post-id}")
-    public ResponseEntity postPrfPostLike(@AuthenticationPrincipal Member member, @PathVariable("prf-post-id") long prfPostId){
+    public synchronized ResponseEntity postPrfPostLike(@AuthenticationPrincipal Member member, @PathVariable("prf-post-id") long prfPostId) {
         PrfPost prfPost = prfPostService.findverifiedPrfPost(prfPostId);
 
         PrfPostLike prfPostLike = likeService.addPrfPostLike(member, prfPost);
@@ -42,7 +40,7 @@ public class LikeController {
     }
 
     @PostMapping("/recruit-posts/{recruit-post-id}")
-    public ResponseEntity postRecruitPostLike(@AuthenticationPrincipal Member member, @PathVariable("recruit-post-id") long recruitPostId){
+    public synchronized ResponseEntity postRecruitPostLike(@AuthenticationPrincipal Member member, @PathVariable("recruit-post-id") long recruitPostId){
         RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
 
         RecruitPostLike recruitPostLike = likeService.addRecruitPostLike(member, recruitPost);
