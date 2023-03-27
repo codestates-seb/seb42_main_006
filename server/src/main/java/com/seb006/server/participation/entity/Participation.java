@@ -7,6 +7,8 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -24,6 +26,7 @@ public class Participation extends Auditable {
     @JsonManagedReference
     @JoinColumn(name = "member_id")
     private Member member;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference

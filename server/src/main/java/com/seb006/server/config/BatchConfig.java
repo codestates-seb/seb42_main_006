@@ -1,5 +1,6 @@
 package com.seb006.server.config;
 
+import com.seb006.server.member.entity.Member;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.repository.RecruitPostRepository;
 import com.seb006.server.recruitpost.service.RecruitPostService;
@@ -57,7 +58,7 @@ public class BatchConfig {
                     log.info("step!");
 
                     LocalDateTime now = LocalDateTime.now();
-                    LocalDateTime day = now.minusDays(1);
+                    LocalDateTime day = now.plusMinutes(1);
                     List<RecruitPost> recruitPostList = recruitPostRepository.findByModifiedAtLessThan(day);
 
 
@@ -79,7 +80,7 @@ public class BatchConfig {
                     log.info("step!");
 
                     LocalDateTime now = LocalDateTime.now();
-                    LocalDateTime day = now.minusDays(1);
+                    LocalDateTime day = now.plusMinutes(1);
                     List<RecruitPost> recruitPostList = recruitPostRepository.findByModifiedAtLessThan(day);
 
 

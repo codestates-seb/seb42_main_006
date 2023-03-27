@@ -29,7 +29,9 @@ public enum ExceptionCode {
 
     PARTICIPATIOM_EXISTS(409, "이미 참여한 모집글 입니다."),
 
-    PARTICIPATION_FULL(404,"모집정원이 마감되었습니다.");
+    PARTICIPATION_FULL(404,"모집정원이 마감되었습니다."),
+
+    PARTICIPATION_NOT_FOUND(404,"모집에 참여하지 않았습니다.");
 
     @Getter
     private int status;

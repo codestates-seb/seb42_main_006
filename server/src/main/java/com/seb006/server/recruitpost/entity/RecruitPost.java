@@ -3,7 +3,9 @@ package com.seb006.server.recruitpost.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seb006.server.global.audit.Auditable;
+import com.seb006.server.like.entity.RecruitPostLike;
 import com.seb006.server.member.entity.Member;
+import com.seb006.server.participation.entity.Participation;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.prfpostcomment.entity.PrfPostComment;
 import com.seb006.server.recruitpostcomment.entity.RecruitPostComment;
@@ -100,6 +102,14 @@ public class RecruitPost extends Auditable {
     @JsonBackReference
     private List<RecruitPostComment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "recruitPost", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<RecruitPostLike> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recruitPost", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Participation> participationList = new ArrayList<>();
+
     public void likeCountUp() {
         this.likeCount++;
     }
@@ -111,6 +121,7 @@ public class RecruitPost extends Auditable {
         this.currentNumber++;
     }
 
+    public void currentNumberDown() {this.currentNumber--;}
     public void setDueDate(String dueDate)  {
         this.dueDate = dueDate;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");

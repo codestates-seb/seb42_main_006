@@ -25,5 +25,6 @@ public interface RecruitPostRepository extends JpaRepository<RecruitPost,Long> {
     Page<RecruitPost> findByCategoryAndKeyword(Pageable pageable, String category, String keyword);
 
     List<RecruitPost> findByModifiedAtLessThan(LocalDateTime day);
+
 }
 
