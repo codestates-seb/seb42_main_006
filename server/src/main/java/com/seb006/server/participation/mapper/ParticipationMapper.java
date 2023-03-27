@@ -8,6 +8,8 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.mapstruct.Mapper;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ParticipationMapper {
@@ -36,4 +38,5 @@ public interface ParticipationMapper {
 
         return responseDto;
     }
+
 }
