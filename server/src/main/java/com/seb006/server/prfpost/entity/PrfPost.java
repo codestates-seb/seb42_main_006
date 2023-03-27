@@ -3,10 +3,8 @@ package com.seb006.server.prfpost.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seb006.server.global.audit.Auditable;
-import com.seb006.server.like.entity.PrfPostLike;
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpostcomment.entity.PrfPostComment;
-import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.url.entity.Urls;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,14 +58,6 @@ public class PrfPost extends Auditable {
     @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<PrfPostComment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "prfPost", cascade = CascadeType.REMOVE)
-    @JsonBackReference
-    private List<PrfPostLike> likes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "prfPost", cascade = CascadeType.PERSIST)
-    @JsonBackReference
-    private List<RecruitPost> recruitPosts = new ArrayList<>();
 
     public void likeCountUp() {
         this.likeCount++;
