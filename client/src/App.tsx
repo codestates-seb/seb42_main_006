@@ -41,7 +41,7 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <Header />
+      <Header setIsLogin={setIsLogin} />
       <MainWrapper>
         <Nav isLogin={isLogin} />
         <ContentWrapper>

@@ -29,7 +29,11 @@ const BtnWrapper = styled.div`
   gap: 10px;
 `;
 
-export default function Header() {
+export interface LogoutType {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Header({ setIsLogin }: LogoutType) {
   const navigate = useNavigate();
 
   return (
@@ -37,7 +41,7 @@ export default function Header() {
       <Logo src={logo} alt="logo" />
 
       {sessionStorage.getItem("auth") ? (
-        <UserProfile></UserProfile>
+        <UserProfile setIsLogin={setIsLogin}></UserProfile>
       ) : (
         <BtnWrapper>
           <StyledBtn
