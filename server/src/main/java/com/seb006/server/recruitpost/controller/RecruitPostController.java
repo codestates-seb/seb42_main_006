@@ -58,7 +58,7 @@ public class RecruitPostController {
     }
 
     @PatchMapping("/{recruit-post-id}")
-    public ResponseEntity patchRecruitPost(@PathVariable("recruit-post-id")long id,
+    public ResponseEntity patchRecruitPost(@PathVariable("recruit-post-id") long id,
                                            @RequestBody RecruitPostPatchDto recruitPostPatchDto){
         recruitPostPatchDto.setId(id);
         RecruitPost recruitPost = service.updateRecruitPost(mapper.recruitPostPatchDtoToRecruitPost(recruitPostPatchDto));
