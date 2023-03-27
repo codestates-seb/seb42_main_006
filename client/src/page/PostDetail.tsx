@@ -274,6 +274,10 @@ const Boxs = styled.div`
   border-radius: 5px;
   height: 350px;
   margin-bottom: 5px;
+
+  @media screen and (max-width: 1040px) {
+    width: 100%;
+  }
 `;
 
 const ContentBox = styled(Boxs)`
