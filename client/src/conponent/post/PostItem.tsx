@@ -36,7 +36,9 @@ function PostItem({ item }: Props) {
         <TitleWrapper>
           <Title>{item.title}</Title>
         </TitleWrapper>
-        <Summary>{item.content}</Summary>
+        <Summary>
+          <div>{item.content}</div>
+        </Summary>
         <TagWrapper>
           {splitTag(item.tags).map((x) => (
             <Tag key={x}>{x}</Tag>
@@ -79,6 +81,8 @@ const PostDetail = styled.div`
 const TitleWrapper = styled.div`
   width: 100%;
   overflow: hidden;
+  /* white-space: nowrap;
+  text-overflow: ellipsis; */
 `;
 
 const ImgWrapper = styled.div`
@@ -101,23 +105,28 @@ const ImgWrapper = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  width: 100%;
-  font-size: 20px;
+const Title = styled.div`
+  /* width: 100%; */
+  font-size: 1.5rem;
   font-weight: bold;
   color: white;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
   overflow: hidden;
-  white-space: pre;
-  text-overflow: ellipsis;
-  /* text-overflow: clip; */
 `;
 const Summary = styled.div`
-  font-size: 13px;
+  font-size: 0.9rem;
   color: #5a5959;
   margin-bottom: 5px;
   height: 70px;
   margin-top: 5px;
-  overflow: hidden;
+  > div {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
 `;
 
 const PostsSort = styled.div`

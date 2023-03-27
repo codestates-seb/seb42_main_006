@@ -28,14 +28,14 @@ const UserProfileWrapper = styled.div`
 `;
 
 interface IlogoutContainer {
-  display: boolean;
+  displays: boolean;
 }
 const LogoutContainer = styled.div<IlogoutContainer>`
   position: absolute;
   right: 0;
   top: 100%;
   width: 100%;
-  height: ${(props) => (props.display ? "200%" : "0px")};
+  height: ${(props) => (props.displays ? "200%" : "0px")};
   background-color: #151515;
   box-shadow: inset 0 2px 4px -2px #f36;
   border: 2px solid #f36;
@@ -50,6 +50,7 @@ const LogoutBtn = styled.button`
   outline: none;
   bottom: 0;
   width: 100%;
+  height: 40%;
   padding: 12px;
   background-color: transparent;
   font-size: 1rem;
@@ -82,7 +83,7 @@ function UserProfile() {
           {JSON.parse(sessionStorage.getItem("user") as string).nickName}
         </span>
       </UserProfileWrapper>
-      <LogoutContainer display={trig}>
+      <LogoutContainer displays={trig}>
         <LogoutBtn onClick={() => navigate("/mypage")}>My Page</LogoutBtn>
         <LogoutBtn onClick={logout}>Log Out</LogoutBtn>
       </LogoutContainer>
