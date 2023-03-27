@@ -106,9 +106,9 @@ public class RecruitPost extends Auditable {
     @JsonBackReference
     private List<RecruitPostLike> likes = new ArrayList<>();
 
-    //@OneToMany(mappedBy = "recruitPost", cascade = CascadeType.REMOVE)
-    //@JsonBackReference
-    //private List<Participation> participationList = new ArrayList<>();
+    @OneToMany(mappedBy = "recruitPost", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Participation> participationList = new ArrayList<>();
 
     public void likeCountUp() {
         this.likeCount++;
