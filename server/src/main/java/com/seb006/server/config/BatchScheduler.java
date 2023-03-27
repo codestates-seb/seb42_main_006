@@ -24,7 +24,7 @@ public class BatchScheduler {
     @Autowired
     private BatchConfig batchConfig;
 
-    @Scheduled(cron = "0 0 18 * * *")
+    @Scheduled(cron = "0 11 22 * * *")
     public void runJob() {
 
         Map<String, JobParameter> map = new HashMap<>();
@@ -39,7 +39,7 @@ public class BatchScheduler {
             log.error(e.getMessage());
         }
     }
-    @Scheduled(cron = "0 0 19 * * *")
+    @Scheduled(cron = "0 13 22 * * *")
     public void runJob2() {
 
         Map<String, JobParameter> map = new HashMap<>();

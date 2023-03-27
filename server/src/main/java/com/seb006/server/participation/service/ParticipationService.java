@@ -9,6 +9,8 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.service.RecruitPostService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ParticipationService {
 
@@ -22,21 +24,31 @@ public class ParticipationService {
     }
 
     //모집글 참여
-    public Participation addParticipation(Member member, RecruitPost recruitPost){
+    public Participation addParticipation(Member member, RecruitPost recruitPost) {
         existParticipation(member, recruitPost);
 
-        Participation participation = new Participation(member,recruitPost);
+        Participation participation = new Participation(member, recruitPost);
         recruitPost.currentNumberUp();
-        range(recruitPost.getId(),recruitPost);
+        range(recruitPost.getId(), recruitPost);
 
         return participationRepository.save(participation);
     }
 
-    public void existParticipation(Member member, RecruitPost recruitPost){
-        if(participationRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()){
+    //모집글 참여취소
+    public void cancelParticipation(Member member, RecruitPost recruitPost) {
+        recruitPost.currentNumberDown();
+
+        Participation participation = participationRepository.findByMemberAndRecruitPost(member, recruitPost)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PARTICIPATION_NOT_FOUND));
+        participationRepository.delete(participation);
+    }
+
+    public void existParticipation(Member member, RecruitPost recruitPost) {
+        if (participationRepository.findByMemberAndRecruitPost(member, recruitPost).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.PARTICIPATIOM_EXISTS);
         }
     }
+
     public void range (long id,RecruitPost recruitPost) {
         RecruitPost findRecruitPost = recruitPostService.findVerifiedRecruitPost(id);
 
