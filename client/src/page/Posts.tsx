@@ -151,19 +151,22 @@ const Content = styled.div`
   flex-direction: column;
   width: 80%;
   max-width: 800px;
-  min-width: 390px;
+  min-width: 350px;
   height: 100%;
   align-items: center;
-  padding-top: 24px;
   gap: 10px;
   margin: 0 auto;
+  padding-bottom: 10px;
 `;
 
 const SearchWrapper = styled.div`
   width: 100%;
   position: sticky;
   top: 3.5rem;
-  background-color: rgba(21, 21, 21, 0.5);
+  padding-top: 24px;
+  background-color: rgba(21, 21, 21, 1);
+  border-radius: 0 0 5px 5px;
+  border-bottom: 1px solid #4a4a4a;
 `;
 
 const Sort = styled.div`
@@ -176,7 +179,7 @@ const Sort = styled.div`
 
 const AddPosition = styled.div`
   position: fixed;
-  bottom: 50px;
+  bottom: 70px;
   right: 50px;
 `;
 

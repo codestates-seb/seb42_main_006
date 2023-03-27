@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import IconBtn from "../../parts/IconButton";
 import { keyframes } from "styled-components";
