@@ -34,10 +34,6 @@ const Btn = styled(StyledBtn)`
   padding: 0.5rem 1.5rem;
 `;
 
-const Btn = styled(StyledBtn)`
-  padding: 0.5rem 1.5rem;
-`;
-
 export interface LogoutType {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
