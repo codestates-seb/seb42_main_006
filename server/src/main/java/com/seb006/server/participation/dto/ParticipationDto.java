@@ -2,16 +2,13 @@ package com.seb006.server.participation.dto;
 
 import com.seb006.server.member.entity.Member;
 import com.seb006.server.recruitpost.entity.RecruitPost;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 
 public class ParticipationDto {
-
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @Setter

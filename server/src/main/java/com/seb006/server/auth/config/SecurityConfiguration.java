@@ -96,6 +96,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.DELETE, "/like/prf-posts/**").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/like/recruit-posts/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/like/recruit-posts/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET,"/recruit-posts/*/checkParticipation").hasRole("USER")
 
                         .anyRequest().permitAll()
                 );
