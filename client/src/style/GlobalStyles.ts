@@ -44,10 +44,10 @@ const GlobalStyles = createGlobalStyle`
       font-weight: 300;
       
       ${media.pc`
-      font-size: 80%;
+      font-size: 90%;
       `}
       ${media.mobile`
-      font-size: 60%;
+      font-size: 80%;
       `}
     }
 

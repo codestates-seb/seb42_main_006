@@ -3,14 +3,14 @@ import { useNavigate } from "react-router";
 import { requestAuth } from "../function/request";
 
 type UserFetchTypes = [
-  any[],
+  any,
   boolean,
   React.Dispatch<React.SetStateAction<string>>
 ];
 
 export const useFetch = (URL: string): UserFetchTypes => {
   const [url, setUrl] = useState(URL);
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState<any>({});
   const [pending, setPending] = useState(true);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const useFetch = (URL: string): UserFetchTypes => {
   return [value, pending, setUrl];
 };
 
-type UserInfoReturnTypes = [any[], boolean];
+type UserInfoReturnTypes = [any, boolean];
 
 export interface UserInfoItemTypes {
   createdAt: string;

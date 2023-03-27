@@ -39,6 +39,7 @@ const MyTabLi = styled.li<MyTabLiStyleProps>`
     color: #ff3366;
   }
   ${media.mobile`
+    padding: 0.85rem 0;
     flex-grow:1;
     white-space: pre-wrap;
     text-align:center;
@@ -136,10 +137,7 @@ const LoadingBox = styled.div`
 `;
 
 export default function Mypage() {
-  const [info, infoPending] = useUserInfo(`/members/mypage`);
-
-  let userInfo: any = {};
-  userInfo = info;
+  const [userInfo, infoPending] = useUserInfo(`/members/mypage`);
 
   const tabArray = [
     {
@@ -160,12 +158,9 @@ export default function Mypage() {
     },
   ];
   const [tab, setTab] = useState(tabArray[0].title);
-  const [list, listPending, setUrl] = useFetch(
+  const [listData, listPending, setUrl] = useFetch(
     `${tabArray[0].url}?page=1&size=10`
   );
-
-  let listData: any = [];
-  listData = list;
 
   const limit = 5;
   const totalPage = listData.pageInfo && listData.pageInfo.totalPages;
