@@ -56,13 +56,17 @@ export default function CollectDeatail() {
   }, [render]);
 
   useEffect(() => {
-    requestAuth
-      .get(`recruit-posts/${param.id}/checkParticipation`)
-      .then((res) => {
-        console.log(res.data);
-        setIsJoined(res.data);
-      })
-      .catch((err) => console.log(err));
+    if (sessionStorage.getItem("user")) {
+      requestAuth
+        .get(`recruit-posts/${param.id}/checkParticipation`)
+        .then((res) => {
+          console.log(res.data);
+          setIsJoined(res.data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      navigate("/");
+    }
   }, [render]);
 
   const handleSubmit = (x: { content: string }) => {
@@ -253,21 +257,22 @@ export default function CollectDeatail() {
                   />
                 </ButtonWrap>
               )}
-              {JSON.parse(sessionStorage.getItem("user") as string).id ===
-                post.memberId && (
-                <IconBtn
-                  title=""
-                  width="40px"
-                  height="40px"
-                  radius="5px"
-                  fontWeight={400}
-                  fontColor="pink"
-                  btnType=""
-                  iconType="treeDot"
-                  border="none"
-                  handleClick={() => setShowOption(!showOption)}
-                />
-              )}
+              {sessionStorage.getItem("user") &&
+                JSON.parse(sessionStorage.getItem("user") as string).id ===
+                  post.memberId && (
+                  <IconBtn
+                    title=""
+                    width="40px"
+                    height="40px"
+                    radius="5px"
+                    fontWeight={400}
+                    fontColor="pink"
+                    btnType=""
+                    iconType="treeDot"
+                    border="none"
+                    handleClick={() => setShowOption(!showOption)}
+                  />
+                )}
             </TitleContent>
             <DetailContent>{post.content}</DetailContent>
           </DetailPost>
