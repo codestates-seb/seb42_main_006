@@ -1,9 +1,8 @@
 import CollectItem from "../conponent/collect/CollectItem";
 import { SearchInput } from "../conponent/parts/InputNoH";
-import { useNavigate } from "react-router";
 import Loading from "../conponent/parts/Loading";
 import styled from "styled-components";
-import { useEffect, useState, useRef, LegacyRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { requestAuth } from "../function/request";
 import useIntersectionObserver from "../util/useIntersectorObsevet";
 

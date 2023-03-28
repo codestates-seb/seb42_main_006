@@ -136,6 +136,15 @@ export default function CollectDeatail() {
     }
   };
 
+  const handleClose = () => {
+    requestAuth
+      .patch(`/recruit-posts/${param.id}/close`)
+      .then((res) => {
+        navigate("/collect");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Content>
       {!!post ? (
@@ -205,7 +214,17 @@ export default function CollectDeatail() {
             <TitleContent>
               <Title>{post.title}</Title>
               {showOption && (
-                <>
+                <ButtonWrap>
+                  <StyledBtn
+                    title="모집글 닫기"
+                    width="100px"
+                    height="30px"
+                    radius="50px"
+                    fontWeight={400}
+                    fontColor="pink"
+                    btnType="empty"
+                    handleClick={handleClose}
+                  ></StyledBtn>
                   <IconBtn
                     title=""
                     width="40px"
@@ -232,7 +251,7 @@ export default function CollectDeatail() {
                     border="none"
                     handleClick={handleDelete}
                   />
-                </>
+                </ButtonWrap>
               )}
               {JSON.parse(sessionStorage.getItem("user") as string).id ===
                 post.memberId && (
@@ -295,6 +314,11 @@ export default function CollectDeatail() {
     </Content>
   );
 }
+
+const ButtonWrap = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const CommentBlock = styled.div`
   width: 100%;
@@ -389,6 +413,7 @@ const DetailContent = styled.div`
   display: flex;
   width: 100%;
   padding-left: 10px;
+  font-size: 1rem;
 `;
 
 const UserName = styled.div`

@@ -61,7 +61,9 @@ export default function CollectItem({ item }: Props) {
               handleClick={() => {}}
             />
           </IconSort>
-          {item.recruitStatus !== "ACTIVE" && <Cover />}
+          {item.recruitStatus !== "ACTIVE" && (
+            <Cover>모집이 종료되었습니다.</Cover>
+          )}
         </Wrapper>
       </Content>
     </>
@@ -94,8 +96,13 @@ const Cover = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  color: #ff336696;
 `;
 
 const PostDetail = styled.div`

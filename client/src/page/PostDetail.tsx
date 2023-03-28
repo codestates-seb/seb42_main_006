@@ -304,6 +304,7 @@ const Spre = styled.pre`
   overflow-y: scroll;
   word-break: break-word;
   white-space: pre-wrap;
+  font-size: 1rem;
 `;
 
 const TagWrap = styled.div`
