@@ -68,7 +68,7 @@ export const MainText = styled.p`
   font-size: 0.85rem;
   font-weight: 400;
   line-height: 1.4;
-  color: #3c3c3c;
+  color: #696868;
   .break {
     ${media.mobile`
       display: none;

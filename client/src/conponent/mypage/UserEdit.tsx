@@ -56,7 +56,7 @@ const MyTitleBg = styled.h4`
 const MyTitleSm = styled.h5`
   font-size: 0.75rem;
   font-weight: 500;
-  color: #3c3c3c;
+  color: #696868;
 `;
 
 const MyEditItem = styled.div`
@@ -99,9 +99,9 @@ const MyInput = styled.input`
   border-radius: 0.25rem;
   font-size: 0.7rem;
   font-weight: 500;
-  color: #3c3c3c;
+  color: #696868;
   &::placeholder {
-    color: #3c3c3c;
+    color: #696868;
     font-weight: 500;
   }
   &:focus {
