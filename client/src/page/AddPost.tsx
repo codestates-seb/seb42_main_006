@@ -55,20 +55,29 @@ export default function AddPost() {
 
   useEffect(() => {
     if (file) {
+      modal({ type: "uploadImg" });
       if (param.mode === "create") {
         UploadImg(file)
           .then((res) => {
             console.log(res);
+            modal({ type: "default" });
             setImageKey(res.fileKey);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            modal({ type: "uploadImgFail" });
+          });
       } else {
         UpdateImg(file, origin.imageKey)
           .then((res) => {
             console.log(res);
+            modal({ type: "default" });
             setImageKey(res.fileKey);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            modal({ type: "uploadImgFail" });
+          });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

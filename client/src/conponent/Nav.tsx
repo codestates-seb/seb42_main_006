@@ -1,6 +1,7 @@
 import PageButton from "./parts/PageButton";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Content = styled.div`
   display: flex;
@@ -43,6 +44,10 @@ export default function Nav({ isLogin }: NavType) {
   const hadleNav = () => {
     isLogin ? navigate("/mypage") : navigate("/login");
   };
+
+  useEffect(() => {
+    console.log("nav");
+  });
 
   return (
     <Content>
