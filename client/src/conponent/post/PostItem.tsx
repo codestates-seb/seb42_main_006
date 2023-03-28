@@ -27,10 +27,20 @@ function PostItem({ item }: Props) {
       navigate("/login");
     }
   };
+
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.style.display = "none";
+  };
   return (
     <PostsSort onClick={onEnterPost}>
       <ImgWrapper>
-        {thumbnailUrl(item) && <img src={thumbnailUrl(item)} alt="thumbnail" />}
+        {thumbnailUrl(item) && (
+          <img
+            src={thumbnailUrl(item)}
+            alt="thumbnail"
+            onError={handleImgError}
+          />
+        )}
       </ImgWrapper>
       <PostDetail>
         <TitleWrapper>

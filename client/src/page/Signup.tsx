@@ -44,6 +44,7 @@ const InputTitle = styled.span`
   color: #ffffff;
   margin-bottom: 10px;
   font-weight: 500;
+  font-size: 1.3rem;
 `;
 
 function Signup() {
