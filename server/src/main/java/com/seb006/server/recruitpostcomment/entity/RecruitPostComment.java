@@ -32,7 +32,7 @@ public class RecruitPostComment extends Auditable {
     //모집글 연관관계 매핑
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
-    @JoinColumn(name = "prf_post_id")
+    @JoinColumn(name = "recruit_post_id")
     private RecruitPost recruitPost;
 
 }

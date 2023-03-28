@@ -10,12 +10,11 @@ import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.service.RecruitPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/recruit-posts")
@@ -40,13 +39,33 @@ public class ParticipationController {
     }
 
     @PostMapping("/{recruit-post-id}/participation")
-    public ResponseEntity postParticipation(Principal principal,
+    public ResponseEntity postParticipation(@AuthenticationPrincipal Member member,
                                             @PathVariable("recruit-post-id")long recruitPostId){
-        Member member = memberService.findVerifiedMember(principal.getName());
+
         RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
 
         Participation participation = participationService.addParticipation(member,recruitPost);
 
         return new ResponseEntity<>(mapper.participationToParticipationResponseDto(recruitPost,participation),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{recruit-post-id}/cancel")
+    public ResponseEntity deleteParticipation(@AuthenticationPrincipal Member member,
+                                              @PathVariable("recruit-post-id")long recruitPostId){
+        RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
+
+        participationService.cancelParticipation(member, recruitPost);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{recruit-post-id}/checkParticipation")
+    public ResponseEntity getParticipations(@AuthenticationPrincipal Member member,
+                                            @PathVariable("recruit-post-id")long recruitPostId){
+
+        RecruitPost recruitPost = recruitPostService.findVerifiedRecruitPost(recruitPostId);
+
+        boolean result = participationService.isParticipation(member,recruitPost);
+
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }

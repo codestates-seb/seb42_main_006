@@ -4,8 +4,12 @@ import com.seb006.server.global.Sorting;
 import com.seb006.server.global.exception.BusinessLogicException;
 import com.seb006.server.global.exception.ExceptionCode;
 import com.seb006.server.member.entity.Member;
+import com.seb006.server.participation.entity.Participation;
+import com.seb006.server.participation.repository.ParticipationRepository;
+import com.seb006.server.participation.service.ParticipationService;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import com.seb006.server.recruitpost.repository.RecruitPostRepository;
+import com.seb006.server.recruitpostcomment.entity.RecruitPostComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -24,13 +28,17 @@ public class RecruitPostService {
     private final RecruitPostRepository recruitPostRepository;
     private final Sorting sort;
 
-    public RecruitPostService(RecruitPostRepository recruitPostRepository, Sorting sort) {
+    private final ParticipationRepository participationRepository;
 
+
+
+    public RecruitPostService(RecruitPostRepository recruitPostRepository, Sorting sort, ParticipationRepository participationRepository) {
         this.recruitPostRepository = recruitPostRepository;
         this.sort = sort;
+        this.participationRepository = participationRepository;
     }
 
-    public RecruitPost createRecruitPost(Member member,RecruitPost recruitPost){
+    public RecruitPost createRecruitPost(Member member, RecruitPost recruitPost){
 
         recruitPost.setMember(member);
 
@@ -90,6 +98,7 @@ public class RecruitPostService {
 
     public void deleteRecruitPost(long id){
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
+
         recruitPostRepository.deleteById(id);
     }
     public RecruitPost findVerifiedRecruitPost(long id){
@@ -110,6 +119,7 @@ public class RecruitPostService {
         recruitPostRepository.save(findRecruitPost);
 
     }
+
     public void expiredRecruitPost(long id) {
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
         findRecruitPost.getDueDate();
@@ -117,7 +127,7 @@ public class RecruitPostService {
         LocalDate dateTime = LocalDate.parse(findRecruitPost.getDueDate(),formatter);
 
 
-        if (findRecruitPost.getCurrentNumber() == 0 && LocalDate.now().isAfter(dateTime)) {
+        if (findRecruitPost.getCurrentNumber() < findRecruitPost.getRecruitNumber() && LocalDate.now().isAfter(dateTime)) {
             findRecruitPost.setRecruitStatus(RecruitPost.RecruitStatus.EXPIRED);
 
         }
@@ -125,10 +135,11 @@ public class RecruitPostService {
 
     public void  dbExpiredRecruitPost(long id) {
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
+        findRecruitPost.setCurrentNumber(null);
         int status = findRecruitPost.getRecruitStatus().getStatusNumber();
-        if(findRecruitPost.getCurrentNumber() == 0 && status >= 3){
-            recruitPostRepository.deleteById(id);
+        if(status >= 3){
 
+            recruitPostRepository.deleteById(id);
         }
     }
     private void checkRecruitPostStatus(RecruitPost recruitPost) {
@@ -139,5 +150,4 @@ public class RecruitPostService {
             throw new BusinessLogicException(ExceptionCode.RECRUITPOST_EXPIRED);
         }
     }
-
 }

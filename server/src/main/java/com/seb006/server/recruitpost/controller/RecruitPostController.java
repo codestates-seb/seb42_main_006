@@ -118,7 +118,7 @@ public class RecruitPostController {
                                               @RequestParam(required = false, defaultValue = "") String category,
                                               @RequestParam(required = false, defaultValue = "") String keyword){
 
-        Page<RecruitPost> recruitPostPage = service.findRecruitPosts(page-1,size,sorting);
+        Page<RecruitPost> recruitPostPage = service.searchRecruitPosts(page-1,size,sorting,category,keyword);
         List<RecruitPost> recruitPosts = recruitPostPage.getContent();
 
         if(member == null){ // 비로그인 시에
