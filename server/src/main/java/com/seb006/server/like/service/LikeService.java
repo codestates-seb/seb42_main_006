@@ -10,6 +10,7 @@ import com.seb006.server.member.entity.Member;
 import com.seb006.server.prfpost.entity.PrfPost;
 import com.seb006.server.recruitpost.entity.RecruitPost;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class LikeService {
     }
 
     // 게시글 좋아요
+    @Transactional
     public PrfPostLike addPrfPostLike(Member member, PrfPost prfPost){
         checkExistPrfPostLike(member, prfPost); // 이미 좋아요한 경우
 
@@ -36,6 +38,7 @@ public class LikeService {
     }
 
     // 게시글 좋아요 취소
+    @Transactional
     public void cancelPrfPostLike(Member member, PrfPost prfPost){
         prfPost.likeCountDown();
         PrfPostLike prfPostLike = prfPostLikeRepository.findByMemberAndPrfPost(member, prfPost)
@@ -45,6 +48,7 @@ public class LikeService {
     }
 
     // 모집글 좋아요
+    @Transactional
     public RecruitPostLike addRecruitPostLike(Member member, RecruitPost recruitPost){
         checkExistRecruitPostLike(member, recruitPost); // 이미 좋아요한 경우
 
@@ -55,6 +59,7 @@ public class LikeService {
     }
 
     // 모집글 좋아요 취소
+    @Transactional
     public void cancelRecruitPostLike(Member member, RecruitPost recruitPost){
         recruitPost.likeCountDown();
 
