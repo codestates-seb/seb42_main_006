@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 type modal = {
-  type: "" | "가입실패" | "가입성공" | "로그인실패";
+  type: "" | "가입실패" | "가입성공" | "로그인실패" | "submitFail";
 };
 
 export default function useModal() {
@@ -40,6 +40,16 @@ export default function useModal() {
       display: true,
       title: "로그인 에러",
       text: "아이디와 비밀번호를 확인하세요.",
+      btnName: "닫기",
+      handleClick: () =>
+        modal?.setIsModal({ ...modal.isModal, display: false }),
+      handleModal: () =>
+        modal?.setIsModal({ ...modal.isModal, display: false }),
+    },
+    submitFail: {
+      display: true,
+      title: "유효성 에러",
+      text: "필수 입력칸을 모두 채워주세요.",
       btnName: "닫기",
       handleClick: () =>
         modal?.setIsModal({ ...modal.isModal, display: false }),

@@ -19,7 +19,7 @@ function PlaylistMaker({
 }: IplaylistMakerProp) {
   return (
     <>
-      <InputTitle>플레이리스트</InputTitle>
+      <InputTitle>플레이리스트※</InputTitle>
       <ButtonInput
         title="Add list"
         width="100%"

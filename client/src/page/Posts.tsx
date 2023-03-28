@@ -91,7 +91,7 @@ export default function Posts() {
       <SearchWrapper>
         <Search
           width="100%"
-          placeholder="키워드를 입력해주세요."
+          placeholder="제목 또는 태그로 검색..."
           value={searchValue}
           setValue={setSearchValue}
           onSearch={handleSearch}

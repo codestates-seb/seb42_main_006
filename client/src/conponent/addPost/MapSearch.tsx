@@ -13,7 +13,7 @@ export default function MapSearch({ latLon, setLatLon }: ImapSearchProp) {
 
   return (
     <>
-      <InputTitle>위치</InputTitle>
+      <InputTitle>위치※</InputTitle>
       <Wrapper>
         <ButtonInput
           width="100%"

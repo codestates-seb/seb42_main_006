@@ -14,6 +14,7 @@ import { validFn } from "../function/validFn";
 import { IYoutubeInfo as Iurls } from "../util/PostApi";
 import { IPostSubmitData as Idata } from "../util/PostApi";
 import { IEditData } from "../util/PostApi";
+import useModal from "../conponent/Modal/useModal";
 
 export default function AddPost() {
   const [curCategory, setCurCategory] = useState("");
@@ -30,6 +31,7 @@ export default function AddPost() {
     lon: "127.02479374965135",
   });
 
+  const [modal] = useModal();
   const param = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,41 +101,65 @@ export default function AddPost() {
       .catch((err) => console.log(err));
   };
 
+  const isValid = () => {
+    return (
+      title.length > 0 &&
+      curCategory.length > 0 &&
+      body.length > 0 &&
+      tags.length > 0
+    );
+  };
+
   const handleSubmit = async () => {
-    if (param.mode === "create") {
-      const data: Idata = {
-        title: title,
-        category: curCategory,
-        urls: submitUrl("create", curCategory, urls, latLon),
-        content: body,
-        tags: tags,
-      };
-      if (imageKey) data.imageKey = imageKey;
-      try {
-        const res = await requestAuth.post("/prf-posts", data);
-        console.log(res);
-        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-      } catch (err) {
-        alert(err);
+    if (isValid()) {
+      if (param.mode === "create") {
+        const data: Idata = {
+          title: title,
+          category: curCategory,
+          urls: submitUrl("create", curCategory, urls, latLon),
+          content: body,
+          tags: tags[0] !== "#" ? `#${tags}` : tags,
+        };
+        if (imageKey) data.imageKey = imageKey;
+        try {
+          const res = await requestAuth.post("/prf-posts", data);
+          console.log(res);
+          if (res.data.id) navigate(`/postdetail/${res.data.id}`);
+        } catch (err) {
+          console.log(err);
+          modal({ type: "submitFail" });
+        }
+      } else if (param.mode === "edit") {
+        const [newUrl, delUrl] = submitUrl(
+          "edit",
+          curCategory,
+          urls,
+          latLon,
+          origin,
+        );
+        const data: IEditData = {
+          title: title,
+          category: curCategory,
+          newUrls: newUrl,
+          deletedUrls: delUrl,
+          content: body,
+          tags: tags,
+        };
+        if (imageKey) data.imageKey = imageKey;
+        try {
+          const res = await requestAuth.patch(
+            `/prf-posts/${location.state.id}`,
+            data,
+          );
+          console.log(res);
+          if (res.data.id) navigate(`/postdetail/${res.data.id}`);
+        } catch (err) {
+          console.log(err);
+          modal({ type: "submitFail" });
+        }
       }
-    } else if (param.mode === "edit") {
-      const [newUrl, delUrl] = submitUrl("edit", curCategory, urls, latLon, origin);
-      const data: IEditData = {
-        title: title,
-        category: curCategory,
-        newUrls: newUrl,
-        deletedUrls: delUrl,
-        content: body,
-        tags: tags,
-      };
-      if (imageKey) data.imageKey = imageKey;
-      try {
-        const res = await requestAuth.patch(`/prf-posts/${location.state.id}`, data);
-        console.log(res);
-        if (res.data.id) navigate(`/postdetail/${res.data.id}`);
-      } catch (err) {
-        console.log(err);
-      }
+    } else {
+      modal({ type: "submitFail" });
     }
   };
 
@@ -142,7 +168,7 @@ export default function AddPost() {
       <Category>
         <Title>게시글 작성하기</Title>
         <CategoryWrapper>
-          <CategoryTitle>카테고리</CategoryTitle>
+          <CategoryTitle>카테고리※ </CategoryTitle>
           <Selection
             width=""
             value={curCategory}
@@ -152,7 +178,7 @@ export default function AddPost() {
         </CategoryWrapper>
       </Category>
       <FormWrapper>
-        <InputTitle>제목</InputTitle>
+        <InputTitle>제목※</InputTitle>
         <DefaultInput
           width="100%"
           placeholder="제목"
@@ -176,15 +202,19 @@ export default function AddPost() {
               return (
                 <>
                   <MapSearch latLon={latLon} setLatLon={setLatLon} />
-                  <InputTitle>사진</InputTitle>
-                  <FileInput width="100%" value={file} setValue={setfile}></FileInput>
+                  <InputTitle>사진※</InputTitle>
+                  <FileInput
+                    width="100%"
+                    value={file}
+                    setValue={setfile}
+                  ></FileInput>
                 </>
               );
             default:
               return;
           }
         })()}
-        <InputTitle>내용</InputTitle>
+        <InputTitle>내용※</InputTitle>
         <Textarea
           width="100%"
           value={body}
@@ -192,7 +222,7 @@ export default function AddPost() {
           placeholder="내용을 입력해주세요."
           row={10}
         ></Textarea>
-        <InputTitle>태그</InputTitle>
+        <InputTitle>태그※</InputTitle>
         <DefaultInput
           width="100%"
           value={tags}
@@ -278,12 +308,14 @@ const FormWrapper = styled.div`
 const CategoryTitle = styled.span`
   color: #fff;
   font-weight: 500;
+  font-size: 1.3rem;
 `;
 
 const InputTitle = styled.span`
   color: #ffffff;
   margin-bottom: 10px;
   font-weight: 500;
+  font-size: 1.3rem;
 `;
 
 const BtnWrapper = styled.div`
