@@ -1,13 +1,14 @@
-import React, { createContext, SetStateAction, useState } from "react";
+import React, { createContext, SetStateAction, useMemo, useState } from "react";
 import { ModalProps } from "./Modal";
+import Modal from "./Modal";
 
 interface IModalState extends ModalProps {
   display: boolean;
 }
 
 export const ModalContext = createContext<{
-  isModal: IModalState;
-  setIsModal: React.Dispatch<SetStateAction<IModalState>>;
+  modal: IModalState;
+  setModal: React.Dispatch<SetStateAction<IModalState>>;
 } | null>(null);
 
 interface IModalProp {
@@ -15,22 +16,33 @@ interface IModalProp {
 }
 
 export default function ModalContextProvider({ children }: IModalProp) {
-  const [isModal, setIsModal] = useState<IModalState>({
+  const [modal, setModal] = useState<IModalState>({
     display: false,
     title: "",
     text: "",
     handleClick: () => {
-      setIsModal({ ...isModal, display: false });
+      setModal({ ...modal, display: false });
     },
     handleModal: () => {
-      setIsModal({ ...isModal, display: false });
+      setModal({ ...modal, display: false });
     },
     btnName: "",
   });
 
+  const value = useMemo(() => ({ modal, setModal }), [modal, setModal]);
+
   return (
-    <ModalContext.Provider value={{ isModal, setIsModal }}>
+    <ModalContext.Provider value={value}>
       {children}
+      {modal.display && (
+        <Modal
+          title={modal.title}
+          btnName={modal.btnName}
+          text={modal.text}
+          handleClick={modal.handleClick}
+          handleModal={modal.handleModal}
+        />
+      )}
     </ModalContext.Provider>
   );
 }

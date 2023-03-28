@@ -53,6 +53,7 @@ export default function CollectDeatail() {
       .catch((error) => {
         console.log(error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [render]);
 
   useEffect(() => {
@@ -65,8 +66,9 @@ export default function CollectDeatail() {
         })
         .catch((err) => console.log(err));
     } else {
-      navigate("/");
+      navigate("/login");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [render]);
 
   const handleSubmit = (x: { content: string }) => {

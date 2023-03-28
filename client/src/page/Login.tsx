@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
@@ -38,6 +38,10 @@ function Login({ setIsLogin }: LoginType) {
       }
     }
   };
+
+  useEffect(() => {
+    console.log("render");
+  });
 
   return (
     <Wrapper>

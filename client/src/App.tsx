@@ -1,8 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyle from "./style/GlobalStyles";
-import { ModalContext } from "./conponent/Modal/ModalContextProvider";
 import NotFound from "./page/NotFound";
 import Header from "./conponent/Header";
 import Nav from "./conponent/Nav";
@@ -17,7 +16,6 @@ import Mypage from "./page/Mypage";
 import Main from "./page/Main";
 import PostDetail from "./page/PostDetail";
 import CollectPost from "./page/CollectPost";
-import Modal from "./conponent/Modal/Modal";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -30,7 +28,6 @@ const ContentWrapper = styled.div`
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const modal = useContext(ModalContext);
 
   useEffect(() => {
     if (sessionStorage.getItem("auth") !== null) {
@@ -69,15 +66,6 @@ function App() {
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </ContentWrapper>
-        {modal?.isModal.display && (
-          <Modal
-            title={modal.isModal.title}
-            text={modal.isModal.text}
-            handleModal={modal.isModal.handleModal}
-            handleClick={modal.isModal.handleClick}
-            btnName={modal.isModal.btnName}
-          />
-        )}
       </MainWrapper>
     </BrowserRouter>
   );
