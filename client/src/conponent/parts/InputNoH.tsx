@@ -176,6 +176,7 @@ const ValidInputWrapper = styled(InputWrapper)`
 
   & ~ span {
     color: red;
+    font-size: 0.9rem;
     padding-left: 10px;
   }
 `;
