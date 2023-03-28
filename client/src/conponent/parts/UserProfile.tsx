@@ -17,6 +17,7 @@ const UserProfileWrapper = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   > svg {
     height: 70%;
@@ -52,7 +53,7 @@ const LogoutBtn = styled.button`
   bottom: 0;
   width: 100%;
   height: 40%;
-  padding: 12px;
+  padding: 4px auto;
   background-color: transparent;
   font-size: 1rem;
   color: #f36;
