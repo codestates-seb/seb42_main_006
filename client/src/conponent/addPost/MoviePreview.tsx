@@ -23,7 +23,7 @@ interface IMoviePreviewProp {
 function MoviePreview({ handleAddUrls, urls }: IMoviePreviewProp) {
   return (
     <>
-      <InputTitle>영화 Urls</InputTitle>
+      <InputTitle>영화 Urls※</InputTitle>
       <ButtonInput
         title="Add list"
         width="100%"

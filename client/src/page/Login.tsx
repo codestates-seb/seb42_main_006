@@ -74,7 +74,7 @@ function Login({ setIsLogin }: LoginType) {
           <StyledBtn
             width="100%"
             height="40px"
-            title={"Sign Up"}
+            title={"Log In"}
             radius="4px"
             handleClick={handleLogin}
             btnType={"full"}
