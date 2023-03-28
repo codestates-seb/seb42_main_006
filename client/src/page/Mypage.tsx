@@ -176,8 +176,6 @@ export default function Mypage() {
     )
   );
 
-  console.log(listData);
-
   const handleTab = (item: string, url: string) => {
     setTab(item);
     setUrl(`${url}?page=1&size=10`);
