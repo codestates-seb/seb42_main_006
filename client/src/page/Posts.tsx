@@ -164,7 +164,7 @@ const SearchWrapper = styled.div`
   position: sticky;
   top: 3.5rem;
   padding-top: 24px;
-  background-color: rgba(21, 21, 21, 1);
+  background-color: rgb(21, 21, 21);
   border-radius: 0 0 5px 5px;
   border-bottom: 1px solid #4a4a4a;
 `;
