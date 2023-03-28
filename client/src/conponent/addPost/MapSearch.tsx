@@ -63,5 +63,6 @@ const MapDiv = styled.div`
 const InputTitle = styled.span`
   color: #ffffff;
   margin-bottom: 10px;
+  font-size: 1.3rem;
   font-weight: 500;
 `;
