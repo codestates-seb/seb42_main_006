@@ -2,6 +2,7 @@ import KakaoMap from "./KakaoMap";
 import styled, { css } from "styled-components";
 import { DownArrow } from "../../../icons/Icon";
 import { useState } from "react";
+import defaultImg from "../../../icons/logo.svg";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,7 +23,10 @@ const ContentWrapper = styled.div<{ current: number }>`
 const ContentBox = styled.div`
   width: 50%;
   height: 100%;
-
+  background-image: url(${defaultImg});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
   > img {
     width: 100%;
     height: 100%;
@@ -67,11 +71,15 @@ interface SlideProp {
 function Slide({ url, loc }: SlideProp) {
   const [curSlide, setCurSlide] = useState<0 | 1>(0);
 
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.style.display = "none";
+  };
+
   return (
     <Wrapper>
       <ContentWrapper current={curSlide}>
         <ContentBox>
-          <img src={url} alt="user_image" />
+          <img src={url} alt="user_image" onError={handleImgError} />
         </ContentBox>
         <ContentBox>
           <KakaoMap loc={loc} mode="Location"></KakaoMap>
