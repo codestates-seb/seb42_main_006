@@ -27,7 +27,6 @@ public class Participation extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "recruit_post_id")
