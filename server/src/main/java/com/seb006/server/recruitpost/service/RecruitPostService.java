@@ -135,7 +135,7 @@ public class RecruitPostService {
 
     public void  dbExpiredRecruitPost(long id) {
         RecruitPost findRecruitPost = findVerifiedRecruitPost(id);
-        findRecruitPost.setCurrentNumber(null);
+
         int status = findRecruitPost.getRecruitStatus().getStatusNumber();
         if(status >= 3){
 
