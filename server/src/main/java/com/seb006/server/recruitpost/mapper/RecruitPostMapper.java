@@ -105,6 +105,7 @@ public interface RecruitPostMapper {
         recruitPostDetailResponseDto.setAge(recruitPost.getAge());
         recruitPostDetailResponseDto.setTags(recruitPost.getTags());
         recruitPostDetailResponseDto.setLikeCount(recruitPost.getLikeCount());
+        recruitPostDetailResponseDto.setPrfPostId(recruitPost.getPrfPost().getId());
 
         recruitPostDetailResponseDto.setComments(recruitPost.getComments().stream()
                 .map(comment-> {

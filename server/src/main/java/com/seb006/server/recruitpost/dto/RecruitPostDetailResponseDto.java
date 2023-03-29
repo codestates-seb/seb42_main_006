@@ -19,6 +19,8 @@ public class RecruitPostDetailResponseDto {
 
     private Long id;
 
+    private Long prfPostId;
+
     private String title;
 
     private String category;
