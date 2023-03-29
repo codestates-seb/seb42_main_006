@@ -58,7 +58,7 @@ function Signup() {
   const [passwordRepeatValid, setPasswordRepeatValid] = useState(true);
   const [emailCheck, setEmailCheck] = useState<boolean>();
 
-  const [modal] = useModal();
+  const modal = useModal();
 
   const handleSubmit = async () => {
     const valid =

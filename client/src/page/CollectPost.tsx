@@ -68,7 +68,7 @@ export default function CollectPost() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (param.mode === "create") {
       if (title && body && recruitNumber && selectedDate && ages) {
         const data: IData = {
@@ -81,10 +81,12 @@ export default function CollectPost() {
           age: ages,
           tags: tags,
         };
-        collectPost(data);
-        navigate(-1);
+        const res = await collectPost(data);
+        if (res) {
+          navigate("/collect");
+        }
       } else {
-        alert("필수 입력 항목을 모두 작성해주세요.");
+        alert("*필수 입력 항목을 모두 작성해주세요.");
       }
     }
     if (param.mode === "edit") {
@@ -123,7 +125,7 @@ export default function CollectPost() {
           <Title>제목</Title>
           <DefaultInput
             width="100%"
-            placeholder="제목"
+            placeholder="*제목"
             value={title}
             setValue={setTitle}
           ></DefaultInput>
@@ -134,7 +136,7 @@ export default function CollectPost() {
             width="100%"
             value={body}
             setValue={setBody}
-            placeholder="내용을 입력해주세요."
+            placeholder="*내용을 입력해주세요."
             row={10}
           ></Textarea>
         </ContainerWrapper>
@@ -180,7 +182,7 @@ export default function CollectPost() {
                 {" "}
                 {selectedDate
                   ? selectedDate.toISOString().slice(0, 10).replace(/-/gi, ".")
-                  : "날짜를 선택하세요."}
+                  : "*날짜를 선택하세요."}
               </div>
             </DateContainer>
           </div>
@@ -189,7 +191,7 @@ export default function CollectPost() {
               <Title>모집인원</Title>
               <Selection
                 width="80%"
-                opt={["인원", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+                opt={["*인원", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                 setCategory={setRecruitNumber}
               ></Selection>
             </PersonCounter>

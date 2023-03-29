@@ -31,7 +31,7 @@ export default function AddPost() {
     lon: "127.02479374965135",
   });
 
-  const [modal] = useModal();
+  const modal = useModal();
   const param = useParams();
   const navigate = useNavigate();
   const location = useLocation();
