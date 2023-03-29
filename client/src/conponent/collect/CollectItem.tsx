@@ -102,7 +102,7 @@ const Cover = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 3rem;
-  color: #ff336696;
+  color: #ff3366;
 `;
 
 const PostDetail = styled.div`

@@ -16,6 +16,7 @@ import Mypage from "./page/Mypage";
 import Main from "./page/Main";
 import PostDetail from "./page/PostDetail";
 import CollectPost from "./page/CollectPost";
+import ModalContextProvider from "./conponent/Modal/ModalContextProvider";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -36,38 +37,40 @@ function App() {
   }, [setIsLogin]);
 
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Header setIsLogin={setIsLogin} />
-      <MainWrapper>
-        <Nav isLogin={isLogin} />
-        <ContentWrapper>
-          <Routes>
-            <Route path="/" element={<Main isLogin={isLogin} />}></Route>
-            <Route path="/example" element={<Example />}></Route>
-            <Route path="/posts" element={<Posts />}></Route>
-            <Route path="/collect" element={<Collect />}></Route>
-            <Route path="/signup" element={<Signup />}></Route>
-            <Route
-              path="/login"
-              element={<Login setIsLogin={setIsLogin} />}
-            ></Route>
-            <Route path="/addpost/:mode/" element={<AddPost />}></Route>
-            <Route
-              path="/collectdeatail/:id"
-              element={<CollectDeatail />}
-            ></Route>
-            <Route path="/mypage" element={<Mypage />}></Route>
-            <Route path="/postdetail/:id" element={<PostDetail />}></Route>
-            <Route
-              path="/collectpost/:mode/:id"
-              element={<CollectPost />}
-            ></Route>
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </ContentWrapper>
-      </MainWrapper>
-    </BrowserRouter>
+    <ModalContextProvider>
+      <BrowserRouter>
+        <GlobalStyle />
+        <Header setIsLogin={setIsLogin} />
+        <MainWrapper>
+          <Nav isLogin={isLogin} />
+          <ContentWrapper>
+            <Routes>
+              <Route path="/" element={<Main isLogin={isLogin} />}></Route>
+              <Route path="/example" element={<Example />}></Route>
+              <Route path="/posts" element={<Posts />}></Route>
+              <Route path="/collect" element={<Collect />}></Route>
+              <Route path="/signup" element={<Signup />}></Route>
+              <Route
+                path="/login"
+                element={<Login setIsLogin={setIsLogin} />}
+              ></Route>
+              <Route path="/addpost/:mode/" element={<AddPost />}></Route>
+              <Route
+                path="/collectdeatail/:id"
+                element={<CollectDeatail />}
+              ></Route>
+              <Route path="/mypage" element={<Mypage />}></Route>
+              <Route path="/postdetail/:id" element={<PostDetail />}></Route>
+              <Route
+                path="/collectpost/:mode/:id"
+                element={<CollectPost />}
+              ></Route>
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </ContentWrapper>
+        </MainWrapper>
+      </BrowserRouter>
+    </ModalContextProvider>
   );
 }
 
