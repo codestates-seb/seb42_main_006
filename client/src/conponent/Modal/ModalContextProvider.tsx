@@ -6,14 +6,14 @@ interface IModalState extends ModalProps {
   display: boolean;
 }
 
+interface IModalProp {
+  children: React.ReactNode;
+}
+
 export const ModalContext = createContext<{
   modal: IModalState;
   setModal: React.Dispatch<SetStateAction<IModalState>>;
 } | null>(null);
-
-interface IModalProp {
-  children: React.ReactNode;
-}
 
 export default function ModalContextProvider({ children }: IModalProp) {
   const [modal, setModal] = useState<IModalState>({

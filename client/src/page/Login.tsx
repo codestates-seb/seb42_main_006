@@ -20,7 +20,7 @@ function Login({ setIsLogin }: LoginType) {
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(true);
 
-  const [modal] = useModal();
+  const modal = useModal();
 
   const navigate = useNavigate();
 

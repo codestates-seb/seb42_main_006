@@ -211,7 +211,7 @@ export default function CollectDeatail() {
                   fontWeight={400}
                   fontColor="white"
                   btnType="full"
-                  handleClick={() => console.log(navigate("/posts"))}
+                  handleClick={() => navigate(`/postdetail/${param.id}`)}
                 ></StyledBtn>
               </TagRight>
             </TopInfoRight>
