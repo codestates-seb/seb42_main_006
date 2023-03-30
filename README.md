@@ -61,16 +61,15 @@
 |**음악 게시글**|**맛집 게시글**|
 |<img width="390" alt="음악게시글작성+음악재생" src="https://user-images.githubusercontent.com/64332359/228789784-3b2be956-cf1b-4383-ae4a-7ecd6d3d84e0.gif"/>|<img width="390" alt="맛집게시글작성+사진넣기+API사용하기" src="https://user-images.githubusercontent.com/64332359/228789449-41aaa748-e3ec-4143-8a5a-607949873481.gif"/>|
 |**카테고리 검색**|**키워드 검색**|
-|<img width="390" alt="카테고리검색"/>|<img width="390" alt="키워드 검색"/>|
+|<img width="390" alt="카테고리검색" src="https://user-images.githubusercontent.com/64332359/228794535-ca86f867-a016-4e01-a067-1ee01203d81e.gif"/>|<img width="390" alt="키워드 검색" src="https://user-images.githubusercontent.com/64332359/228797513-5af3361c-38b0-4ecb-a217-b60d95747afe.gif"/>|
 |**좋아요 기능**|**정렬**|
-|<img width="390" alt="좋아요누르기+마이페이지에서보여주기"/>|<img width="390" alt="정렬"/>|
+|<img width="390" alt="좋아요누르기+마이페이지에서보여주기" src="https://user-images.githubusercontent.com/64332359/228793960-abc17252-103a-4ce7-b4f6-85186eca22c2.gif"/>|<img width="390" alt="정렬"/>|
 |**모집글 페이지**|**모집글 참여하기**|
-|<img width="390" alt="게시글페이지+무한스크롤+정렬"/>|<img width="390" alt="모집글참여버튼클릭+참여하면댓글작성가능한것보여주기" src="https://user-images.githubusercontent.com/64332359/228790089-5e7ec5da-8105-4432-ae43-b96d95408955.gif"/>|
+|<img width="390" alt="게시글페이지+무한스크롤+정렬" src="https://user-images.githubusercontent.com/64332359/228794803-270829a2-1c1b-4040-839a-ae76c181b5d7.gif"/>|<img width="390" alt="모집글참여버튼클릭+참여하면댓글작성가능한것보여주기" src="https://user-images.githubusercontent.com/64332359/228790089-5e7ec5da-8105-4432-ae43-b96d95408955.gif"/>|
 |**댓글 작성**|**마이페이지**|
-|<img width="390" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228785002-c37b79a6-93ab-41cf-b337-8be5d73456bc.gif"/>|<img width="390" alt="마이페이지"/>|
+|<img width="390" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228795078-b28abf7d-8f57-4acf-90f6-f03d237bfd7a.gif"/>|<img width="390" alt="마이페이지"/>|
 |**회원 탈퇴**|**반응형**|
-|<img width="390" alt="회원탈퇴"/>|<img width="390" alt="회원탈퇴"/>|
-
+|<img width="390" alt="회원탈퇴"/>|<img width="390" alt="반응형" src="https://user-images.githubusercontent.com/64332359/228796890-b830c952-b39e-4f16-97f5-158ed0e8193e.gif"/>|
 
 
 
