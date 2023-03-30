@@ -13,10 +13,17 @@
 - **팀원 :** 신창용, 구교석, 김남경, 박채은, 김수경, 정은아
 - **노션 링크 :** [Notion](https://www.notion.so/codestates/d9a0ee3dfe5047a18b67da8631bdd159?pvs=4)
 - **배포 링크 :** [MOHAE](http://mohea.s3-website-ap-southeast-2.amazonaws.com)
+<br>
 
 ## 💁‍♂️ Introduction
+> 당신의 취미 생활을 더욱 즐기고, 새로운 인연을 만나고 싶다면 MOHAE 서비스를 만나보세요!
+지금 바로 MOHAE 에 가입하여, 편안한 공간에서 취미를 공유하는 즐거움을 느껴보세요!
+
+- 자신의 취향과 관심사에 맞는 그룹을 찾아 함께 즐길 수 있습니다. 
+- 개인의 취미/취향이 중요화된 현대 사회에서, MOHAE 와 함께 취미 생활을 새롭게 발견하고 즐길 수 있습니다. 
 
 
+<br>
 
 ## 👨‍👩‍👧‍👦 Team
 | 신창용<br>(FE, 팀장) | 구교석<br>(FE) | 김남경<br>(FE) | 박채은<br>(BE) | 김수경<br>(BE) | 정은아<br>(BE) |
@@ -40,10 +47,25 @@
 ![mohae-arch](https://user-images.githubusercontent.com/64332359/228714643-c63c886f-8463-4c95-8ff2-5a0cc1173a80.png)
 
 
-## 📝 Documents
-- [Flow Chart](https://github.com/codestates-seb/seb42_main_006/wiki/%08Flow-Chart)
-- 
+## 📹 Demo
 
+
+
+## 💡 Feature
+
+
+<br />
+
+## 📝 Documents
+- [사용자 요구사항 정의서](https://github.com/codestates-seb/seb42_main_006/wiki/%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EC%A0%95%EC%9D%98%EC%84%9C)
+- [Flow Chart](https://github.com/codestates-seb/seb42_main_006/wiki/%08Flow-Chart)
+- [화면 정의서](https://github.com/codestates-seb/seb42_main_006/wiki/%ED%99%94%EB%A9%B4-%EC%A0%95%EC%9D%98%EC%84%9C)
+- [테이블 명세서](https://github.com/codestates-seb/seb42_main_006/wiki/%ED%85%8C%EC%9D%B4%EB%B8%94-%EB%AA%85%EC%84%B8%EC%84%9C)
+- [API 명세서](https://github.com/codestates-seb/seb42_main_006/wiki/API-%EB%AA%85%EC%84%B8%EC%84%9C)
+- [개발자 테스트](https://github.com/codestates-seb/seb42_main_006/wiki/%EA%B0%9C%EB%B0%9C%EC%9E%90-%ED%85%8C%EC%8A%A4%ED%8A%B8)
+- [프로젝트 메뉴얼](https://github.com/codestates-seb/seb42_main_006/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EC%96%BC)
+
+<br>
 
 ## 📌 Git
 ### Branch
