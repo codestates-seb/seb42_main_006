@@ -55,19 +55,19 @@
 
 |메인 페이지|회원가입/로그인/로그아웃|
 |:---:|:---:|
-|<img width="450" alt="메인 페이지"/>|<img width="450" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228782935-8098bf13-99b0-426a-9d47-6c9e23f4ccf8.gif"/>|
+|<img width="400" alt="메인 페이지"/>|<img width="400" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228782935-8098bf13-99b0-426a-9d47-6c9e23f4ccf8.gif"/>|
 |**게시글 페이지**|**영화 게시글**|
-|<img width="450" alt="게시글페이지+무한스크롤+정렬" src="https://user-images.githubusercontent.com/64332359/228783311-dec6b368-6337-4134-80c7-b01bd515f5c0.gif"/>|<img width="450" alt="영화게시글작성+영상틀기"/>|
+|<img width="400" alt="게시글페이지+무한스크롤+정렬" src="https://user-images.githubusercontent.com/64332359/228783311-dec6b368-6337-4134-80c7-b01bd515f5c0.gif"/>|<img width="400" alt="영화게시글작성+영상틀기"/>|
 |**음악 게시글**|**맛집 게시글**|
-|<img width="450" alt="음악게시글작성+음악재생"/>|<img width="450" alt="맛집게시글작성+사진넣기+API사용하기"/>|
+|<img width="400" alt="음악게시글작성+음악재생"/>|<img width="400" alt="맛집게시글작성+사진넣기+API사용하기"/>|
 |**검색 기능**|**정렬**|
-|<img width="450" alt="카테고리/키워드검색"/>|<img width="450" alt="최신순/인기순정렬"/>|
+|<img width="400" alt="카테고리/키워드검색"/>|<img width="400" alt="최신순/인기순정렬"/>|
 |**모집글 페이지**|**모집글 참여하기**|
-|<img width="450" alt="게시글페이지+무한스크롤+정렬"/>|<img width="450" alt="모집글참여버튼클릭+참여하면댓글작성가능한것보여주기"/>|
+|<img width="400" alt="게시글페이지+무한스크롤+정렬"/>|<img width="400" alt="모집글참여버튼클릭+참여하면댓글작성가능한것보여주기"/>|
 |**댓글 작성**|**마이페이지**|
-|<img width="450" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228785002-c37b79a6-93ab-41cf-b337-8be5d73456bc.gif"/>|<img width="450" alt="마이페이지"/>|
+|<img width="400" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228785002-c37b79a6-93ab-41cf-b337-8be5d73456bc.gif"/>|<img width="400" alt="마이페이지"/>|
 |**좋아요 기능**|**회원 탈퇴**|
-|<img width="450" alt="좋아요누르기+마이페이지에서보여주기"/>|<img width="450" alt="회원탈퇴"/>|
+|<img width="400" alt="좋아요누르기+마이페이지에서보여주기"/>|<img width="400" alt="회원탈퇴"/>|
 
 
 
