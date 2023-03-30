@@ -89,6 +89,7 @@ const PostDetail = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  height: 1.5rem;
   width: 100%;
   overflow: hidden;
 `;
@@ -139,15 +140,16 @@ const Summary = styled.div`
 const PostsSort = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between; /* space-between으로 변경 */
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 150px;
   border: 1px solid #4a4a4a;
   border-radius: 5px;
   background-color: #222222;
-  padding: 16px; /* 3개의 간격을 주기 위해 padding을 추가 */
+  padding: 16px;
   gap: 16px;
+  cursor: pointer;
 `;
 
 const IconSort = styled.div`
@@ -160,6 +162,14 @@ const IconSort = styled.div`
 
 const TagWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  width: 100%;
+  gap: 4px;
   overflow: hidden;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;

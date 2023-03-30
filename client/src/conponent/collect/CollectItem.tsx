@@ -33,8 +33,12 @@ export default function CollectItem({ item }: Props) {
           </UserIcon>
           <PostWapper>
             <PostDetail onClick={() => Navigate(`/collectdeatail/${item.id}`)}>
-              <Title>{item.title}</Title>
-              <Summary>{item.content}</Summary>
+              <TitleWrapper>
+                <Title>{item.title}</Title>
+              </TitleWrapper>
+              <Summary>
+                <div>{item.content}</div>
+              </Summary>
             </PostDetail>
             <TagInfo>
               <TagRight>
@@ -75,6 +79,12 @@ const Content = styled.div`
   width: 100%;
 `;
 
+const TitleWrapper = styled.div`
+  height: 1.5rem;
+  width: 100%;
+  overflow: hidden;
+`;
+
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -101,12 +111,14 @@ const Cover = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #ff3366;
 `;
 
 const PostDetail = styled.div`
   cursor: pointer;
+  width: 100%;
+  height: 90%;
 `;
 
 const PostWapper = styled.div`
@@ -120,11 +132,11 @@ const PostWapper = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: white;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
   overflow: hidden;
   margin-bottom: 5px;
 `;
@@ -134,8 +146,13 @@ const Summary = styled.div`
   font-size: 1.1rem;
   color: #5a5959;
   height: 60px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+
+  > div {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
 `;
 const IconSort = styled.div`
   display: flex;
@@ -157,17 +174,15 @@ const UserIcon = styled.div`
 
 const TagInfo = styled.div`
   display: flex;
-  max-width: 15rem;
-  overflow-x: auto;
+  width: 15rem;
+  overflow: hidden;
+  overflow-x: scroll;
 `;
 
 const TagRight = styled.div`
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  width: 100%;
   height: 2rem;
-  white-space: nowrap;
-  flex-wrap: nowrap;
+
   gap: 3px;
 `;

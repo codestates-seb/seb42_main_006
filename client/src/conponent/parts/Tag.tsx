@@ -13,6 +13,7 @@ const StyledSpan = styled.span`
   color: white;
   transition: 0.2s ease-in-out;
   font-size: 0.8rem;
+  min-width: max-content;
 
   &:hover {
     background-color: transparent;
