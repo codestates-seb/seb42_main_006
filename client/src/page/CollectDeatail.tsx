@@ -25,6 +25,7 @@ interface Post {
   age: string;
   tags: string;
   liked: boolean;
+  prfPostId: number;
 }
 
 export default function CollectDeatail() {
@@ -211,7 +212,7 @@ export default function CollectDeatail() {
                   fontWeight={400}
                   fontColor="white"
                   btnType="full"
-                  handleClick={() => navigate(`/postdetail/${param.id}`)}
+                  handleClick={() => navigate(`/postdetail/${post.prfPostId}`)}
                 ></StyledBtn>
               </TagRight>
             </TopInfoRight>
