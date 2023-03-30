@@ -120,7 +120,7 @@ const PostWapper = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: bold;
   color: white;
   white-space: nowrap;
@@ -157,7 +157,7 @@ const UserIcon = styled.div`
 
 const TagInfo = styled.div`
   display: flex;
-  max-width: 21rem;
+  max-width: 15rem;
   overflow-x: auto;
 `;
 
