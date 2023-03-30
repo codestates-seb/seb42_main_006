@@ -114,7 +114,7 @@ function Signup() {
               <InputTitle>Nickname</InputTitle>
               <ValidInput
                 width="100%"
-                placeholder="Nickname (영어 소문자, 숫자, 한글로 구성된 2~16글자)"
+                placeholder="영어 소문자, 숫자, 한글 2~16글자"
                 value={nickName}
                 setValue={setNickName}
                 valid={nickValid}
@@ -125,7 +125,7 @@ function Signup() {
               <InputTitle>Password</InputTitle>
               <ValidInput
                 width="100%"
-                placeholder="(영문자, 숫자, 특수기호를 모두 한개씩 포함한 8~16자)"
+                placeholder="영문자, 숫자, 특수기호 모두 포함 8~16자"
                 type="password"
                 value={password}
                 setValue={setPassword}
