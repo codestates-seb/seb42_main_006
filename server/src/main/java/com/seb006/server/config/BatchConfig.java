@@ -58,9 +58,8 @@ public class BatchConfig {
                     log.info("step!");
 
                     LocalDateTime now = LocalDateTime.now();
-                    LocalDateTime day = now.plusMinutes(1);
+                    LocalDateTime day = now.minusDays(7);
                     List<RecruitPost> recruitPostList = recruitPostRepository.findByModifiedAtLessThan(day);
-
 
                     if(recruitPostList.size() > 0 && recruitPostList != null){
                         for (RecruitPost recruitPost : recruitPostList) {
@@ -80,9 +79,8 @@ public class BatchConfig {
                     log.info("step!");
 
                     LocalDateTime now = LocalDateTime.now();
-                    LocalDateTime day = now.plusMinutes(1);
+                    LocalDateTime day = now.minusDays(7);
                     List<RecruitPost> recruitPostList = recruitPostRepository.findByModifiedAtLessThan(day);
-
 
                     if(recruitPostList.size() > 0 && recruitPostList != null){
                         for (RecruitPost recruitPost : recruitPostList) {
