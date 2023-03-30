@@ -75,7 +75,7 @@
 
 <br>
 
-### Commit & Pull-Request Message
+### Commit Convention
 | Message | 설명 |
 | :--- | :--- |
 | feat | 새로운 기능 추가 |
