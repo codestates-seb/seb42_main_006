@@ -46,10 +46,7 @@
 ## 🔧 Skills
 ![mohae-arch](https://user-images.githubusercontent.com/64332359/228714643-c63c886f-8463-4c95-8ff2-5a0cc1173a80.png)
 
-
-## 📹 Demo
-
-
+<br>
 
 ## 💡 Feature
 
@@ -63,15 +60,15 @@
 |**카테고리 검색**|**키워드 검색**|
 |<img width="390" alt="카테고리검색" src="https://user-images.githubusercontent.com/64332359/228794535-ca86f867-a016-4e01-a067-1ee01203d81e.gif"/>|<img width="390" alt="키워드 검색" src="https://user-images.githubusercontent.com/64332359/228797513-5af3361c-38b0-4ecb-a217-b60d95747afe.gif"/>|
 |**좋아요 기능**|**정렬**|
-|<img width="390" alt="좋아요누르기+마이페이지에서보여주기" src="https://user-images.githubusercontent.com/64332359/228793960-abc17252-103a-4ce7-b4f6-85186eca22c2.gif"/>|<img width="390" alt="정렬"/>|
+|<img width="390" alt="좋아요누르기+마이페이지에서보여주기" src="https://user-images.githubusercontent.com/64332359/228793960-abc17252-103a-4ce7-b4f6-85186eca22c2.gif"/>|<img width="390" alt="정렬" src="https://user-images.githubusercontent.com/64332359/228800626-5ddb8adc-8ddc-420d-8189-f10999f2875d.gif"/>|
 |**모집글 페이지**|**모집글 참여하기**|
 |<img width="390" alt="게시글페이지+무한스크롤+정렬" src="https://user-images.githubusercontent.com/64332359/228794803-270829a2-1c1b-4040-839a-ae76c181b5d7.gif"/>|<img width="390" alt="모집글참여버튼클릭+참여하면댓글작성가능한것보여주기" src="https://user-images.githubusercontent.com/64332359/228790089-5e7ec5da-8105-4432-ae43-b96d95408955.gif"/>|
 |**댓글 작성**|**마이페이지**|
-|<img width="390" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228795078-b28abf7d-8f57-4acf-90f6-f03d237bfd7a.gif"/>|<img width="390" alt="마이페이지"/>|
+|<img width="390" alt="회원가입/로그인/로그아웃" src="https://user-images.githubusercontent.com/64332359/228795078-b28abf7d-8f57-4acf-90f6-f03d237bfd7a.gif"/>|<img width="390" alt="마이페이지" src="https://user-images.githubusercontent.com/64332359/228801791-23682e5a-208b-4fa1-9844-2713afc082ae.gif"/>|
 |**회원 탈퇴**|**반응형**|
-|<img width="390" alt="회원탈퇴"/>|<img width="390" alt="반응형" src="https://user-images.githubusercontent.com/64332359/228796890-b830c952-b39e-4f16-97f5-158ed0e8193e.gif"/>|
+|<img width="390" alt="회원탈퇴" src="https://user-images.githubusercontent.com/64332359/228801168-718d7a87-c3ca-455c-8781-11a1e90a169d.gif"/>|<img width="390" alt="반응형" src="https://user-images.githubusercontent.com/64332359/228796890-b830c952-b39e-4f16-97f5-158ed0e8193e.gif"/>|
 
-
+<br>
 
 
 ## 📝 Documents
