@@ -61,7 +61,7 @@ export default function Collect() {
         const res = await requestAuth.get(
           `/recruit-posts?page=${page}&size=10&sorting=${sort}${
             category !== "전체" ? `&category=${category}` : ""
-          }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`,
+          }${searchValue !== "" ? `&keyword=${searchValue}` : ""}`
         );
         console.log(res.data);
         setResult({ ...res.data });
@@ -184,6 +184,7 @@ const PostsContent = styled.div`
 `;
 
 const SearchWrapper = styled.div`
+  z-index: 500;
   width: 100%;
   position: sticky;
   top: 3.5rem;

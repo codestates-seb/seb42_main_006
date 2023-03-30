@@ -338,7 +338,7 @@ const CommentBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1.6rem;
 `;
 
 const Content = styled.div`
@@ -427,7 +427,7 @@ const DetailContent = styled.div`
 const UserName = styled.div`
   margin-left: 0.5rem;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 `;
 
 const UserRetweets = styled.div`

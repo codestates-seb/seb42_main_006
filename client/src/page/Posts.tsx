@@ -131,8 +131,8 @@ export default function Posts() {
       <AddPosition>
         <IconBtn
           title=""
-          width="30px"
-          height="30px"
+          width="40px"
+          height="40px"
           radius="100px"
           fontWeight={400}
           fontColor=""
@@ -156,7 +156,7 @@ const Content = styled.div`
   align-items: center;
   gap: 10px;
   margin: 0 auto;
-  padding-bottom: 10px;
+  padding-bottom: 2rem;
 `;
 
 const SearchWrapper = styled.div`
@@ -179,8 +179,14 @@ const Sort = styled.div`
 
 const AddPosition = styled.div`
   position: fixed;
-  bottom: 70px;
-  right: 50px;
+  bottom: 3rem;
+  right: 3rem;
+  cursor: pointer;
+
+  @media screen and (max-width: 600px) {
+    right: 1.5rem;
+    bottom: 6rem;
+  }
 `;
 
 interface CategoryBtnProp {

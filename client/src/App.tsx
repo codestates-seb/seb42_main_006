@@ -24,6 +24,7 @@ const MainWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   width: 100%;
+  margin-bottom: 4rem;
   min-height: calc(100vh - 3.5rem);
 `;
 
