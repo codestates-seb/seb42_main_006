@@ -84,15 +84,13 @@ const PostDetail = styled.div`
   align-items: flex-start;
   height: 100%;
   width: 70%;
-  margin-left: 10px; /* 왼쪽 여백을 20px로 설정 */
+  margin-left: 10px;
   overflow: hidden;
 `;
 
 const TitleWrapper = styled.div`
   width: 100%;
   overflow: hidden;
-  /* white-space: nowrap;
-  text-overflow: ellipsis; */
 `;
 
 const ImgWrapper = styled.div`
@@ -116,7 +114,6 @@ const ImgWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  /* width: 100%; */
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
