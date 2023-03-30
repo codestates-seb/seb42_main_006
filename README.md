@@ -14,7 +14,7 @@
 - **노션 링크 :** [Notion](https://www.notion.so/codestates/d9a0ee3dfe5047a18b67da8631bdd159?pvs=4)
 - **배포 링크 :** [MOHAE](http://mohea.s3-website-ap-southeast-2.amazonaws.com)
 
-## Intro
+## 💁‍♂️ Introduction
 
 
 
@@ -22,7 +22,7 @@
 | 신창용<br>(FE, 팀장) | 구교석<br>(FE) | 김남경<br>(FE) | 박채은<br>(BE) | 김수경<br>(BE) | 정은아<br>(BE) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | <img alt="신창용" src="https://avatars.githubusercontent.com/SHINCHANGYOUNG" height="100" width="100"> | <img alt="구교석" src="https://avatars.githubusercontent.com/josephgs-koo" height="100" width="100"> | <img alt="김남경" src="https://avatars.githubusercontent.com/annkim7" height="100" width="100"> | <img alt="박채은" src="https://avatars.githubusercontent.com/cherry2030" height="100" width="100"> | <img alt="김수경" src="https://avatars.githubusercontent.com/SOOSOO37" height="100" width="100"> | <img alt="정은아" src="https://avatars.githubusercontent.com/kdsmd62" height="100" width="100"> |
-|[@SHINCHANGYOUNG](https://github.com/SHINCHANGYOUNG)|[@josephgs-koo](https://github.com/josephgs-koo)| [@annkim7](https://github.com/annkim7)| [@cherry2030](https://github.com/cherry2030) | [@SOOSOO37](https://github.com/SOOSOO37)|[@kdsmd62](https://github.com/kdsmd62) |
+|[@SHINCHANG<br/>YOUNG](https://github.com/SHINCHANGYOUNG)|[@josephgs-<br/>koo](https://github.com/josephgs-koo)| [@annkim7](https://github.com/annkim7)| [@cherry2030](https://github.com/cherry2030) | [@SOOSOO37](https://github.com/SOOSOO37)|[@kdsmd62](https://github.com/kdsmd62) |
 |<p align="left">- 헤더, 네비 레이아웃 & 기능<br/>- 모집글 레이아웃 & CRUD<br/>- 댓글 레이아웃 & CRUD</p>|<p align="left">- 로고 제작, 기본 컴포넌트 구성 <br/>- 회원가입 <br/>-로그인/로그아웃, JWT 관리   <br/>- 게시글 레이아웃 & CRUD</p>|<p align="left">- 디자인 컨셉<br/>- 반응형 설정<br/>- 메인, 마이페이지 레이아웃<br/>- 회원 게시글 리스트 기능<br/>- 회원 정보 수정 기능</p>|<p align="left">- 게시글 CRUD 기능 <br/>- 키워드/카테고리 검색 기능 <br/>- 좋아요 기능<br/> - 성능 최적화 작업<br/> </p>|<p align="left">- 모집글 CRUD<br/> - 게시글/모집글 댓글 CRUD<br/> - 모집 참여하기 기능<br/>- 스프링 배치 & 스케줄러 <br/></p>|<p align="left">- 회원가입 기능<br/>- 로그인/로그아웃 기능<br/>- 서버 인프라 구축<br/>- 배포 자동화<br/></p>| 
 
 <br>
@@ -33,6 +33,8 @@
 - 오전 10시(스탠드업 미팅)에는 오늘 할 일, 목표에 대해서 간단하게 이야기합니다.
 - 오후 2시에는 중간 상황 점검 및 진척도에 대한 보고, 팀원들에게 궁금한 점에 대해 질문을 합니다. 
 - 오후 5시에는 이슈 쉐어링 및 하루동안 진행한 상황을 전달합니다. 
+
+<br />
 
 ## 🔧 Skills
 ![mohae-arch](https://user-images.githubusercontent.com/64332359/228714643-c63c886f-8463-4c95-8ff2-5a0cc1173a80.png)
