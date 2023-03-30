@@ -12,7 +12,6 @@
 - **한줄 소개 :** 나만의 취향을 공유하고, 같은 취향을 가진 사람끼리 모여보세요!
 - **팀원 :** 신창용, 구교석, 김남경, 박채은, 김수경, 정은아
 - **노션 링크 :** [Notion](https://www.notion.so/codestates/d9a0ee3dfe5047a18b67da8631bdd159?pvs=4)
-- **발표 문서 :**
 - **배포 링크 :** [MOHAE](http://mohea.s3-website-ap-southeast-2.amazonaws.com)
 
 ## Intro
