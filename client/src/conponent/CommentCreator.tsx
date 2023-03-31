@@ -31,8 +31,10 @@ export default function CommentCreator({ handleSubmit }: IcommentCreatorProp) {
   const [commentValue, setCommetValue] = useState("");
 
   const handleClick = () => {
-    handleSubmit({ content: commentValue });
-    setCommetValue("");
+    if (commentValue.length > 0) {
+      handleSubmit({ content: commentValue });
+      setCommetValue("");
+    }
   };
 
   return (
