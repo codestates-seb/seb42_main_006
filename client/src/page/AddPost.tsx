@@ -1,35 +1,45 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import styled from "styled-components";
-import MoviePreview from "../conponent/addPost/MoviePreview";
-import PlaylistMaker from "../conponent/addPost/PlaylistMaker";
-import Selection from "../conponent/parts/Selection";
-import MapSearch from "../conponent/addPost/MapSearch";
-import { DefaultInput, Textarea, FileInput } from "../conponent/parts/InputNoH";
-import { StyledBtn } from "../conponent/parts/Button";
-import { requestAuth } from "../function/request";
-import { submitUrl, UpdateImg, UploadImg } from "../util/PostApi";
-import { getVideoId } from "../function/youtubeApi";
-import { validFn } from "../function/validFn";
-import { IYoutubeInfo as Iurls } from "../util/PostApi";
-import { IPostSubmitData as Idata } from "../util/PostApi";
-import { IEditData } from "../util/PostApi";
-import useModal from "../conponent/Modal/useModal";
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
+import styled from 'styled-components';
+import MoviePreview from '../conponent/addPost/MoviePreview';
+import PlaylistMaker from '../conponent/addPost/PlaylistMaker';
+import Selection from '../conponent/parts/Selection';
+import MapSearch from '../conponent/addPost/MapSearch';
+import { DefaultInput, Textarea, FileInput } from '../conponent/parts/InputNoH';
+import { StyledBtn } from '../conponent/parts/Button';
+import { requestAuth } from '../function/request';
+import { submitUrl, UpdateImg, UploadImg } from '../util/PostApi';
+import { getVideoId } from '../function/youtubeApi';
+import { validFn } from '../function/validFn';
+import { IYoutubeInfo as Iurls, IPostSubmitData as Idata, IEditData } from '../util/PostApi';
+import useModal from '../conponent/Modal/useModal';
 
 export default function AddPost() {
-  const [curCategory, setCurCategory] = useState("");
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [tags, setTags] = useState<string>("");
+  const [curCategory, setCurCategory] = useState('');
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [tags, setTags] = useState<string>('');
   const [urls, setUrls] = useState<Iurls[]>([]);
   const [origin, setOrigin] = useState<any>(null);
   const [file, setfile] = useState<File>();
   const [imageKey, setImageKey] = useState<string>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
-    lat: "37.49652290597856",
-    lon: "127.02479374965135",
+    lat: '37.49652290597856',
+    lon: '127.02479374965135',
   });
+  const [post, setPost] = useState<Idata>({
+    category: '',
+    content: '',
+    tags: '',
+    title: '',
+    urls: [],
+  });
+
+  const handlePostChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setPost((prev) => ({ ...prev, [name]: value }));
+  };
 
   const modal = useModal();
   const param = useParams();
@@ -37,7 +47,7 @@ export default function AddPost() {
   const location = useLocation();
 
   useEffect(() => {
-    if (param.mode === "edit") {
+    if (param.mode === 'edit') {
       console.log(location.state);
       setOrigin(location.state);
       setTitle(location.state.title);
@@ -53,52 +63,54 @@ export default function AddPost() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //이미지 바뀌면 이미지 업로드하고 키 받아옴
   useEffect(() => {
     if (file) {
-      modal({ type: "uploadImg" });
-      if (param.mode === "create") {
+      modal({ type: 'uploadImg' });
+      if (param.mode === 'create') {
         UploadImg(file)
           .then((res) => {
             console.log(res);
-            modal({ type: "default" });
+            modal({ type: 'default' });
             setImageKey(res.fileKey);
           })
           .catch((err) => {
             console.log(err);
-            modal({ type: "uploadImgFail" });
+            modal({ type: 'uploadImgFail' });
           });
       } else {
         UpdateImg(file, origin.imageKey)
           .then((res) => {
             console.log(res);
-            modal({ type: "default" });
+            modal({ type: 'default' });
             setImageKey(res.fileKey);
           })
           .catch((err) => {
             console.log(err);
-            modal({ type: "uploadImgFail" });
+            modal({ type: 'uploadImgFail' });
           });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
+  //urlr관련 함수들(삭제, 추가, 순서바꾸기)
   const handleDelUrls = (item: string) => {
-    setUrls([...urls.filter((x) => x.url !== item)]);
+    setPost((prev) => ({ ...prev, urls: [...prev.urls.filter((x) => x.url !== item)] }));
   };
 
   const handleAddUrls = (youtubeUrl: string) => {
-    if (!validFn("youtubeUrl")(youtubeUrl)) {
-      alert("Youtube Url만 이용 가능합니다.");
+    if (!validFn('youtubeUrl')(youtubeUrl)) {
+      alert('Youtube Url만 이용 가능합니다.');
       return;
     }
 
-    if (urls.filter((x) => x.url === youtubeUrl).length !== 0) {
-      alert("중복된 Url은 등록하실 수 없습니다.");
+    if (post.urls.filter((x) => x.url === youtubeUrl).length !== 0) {
+      alert('중복된 Url은 등록하실 수 없습니다.');
       return;
     }
 
-    const url: Iurls = { url: "", thumbnail: "", title: "" };
+    const url: Iurls = { url: '', thumbnail: '', title: '' };
 
     getVideoId(youtubeUrl)
       .then((res) => {
@@ -106,46 +118,40 @@ export default function AddPost() {
         url.thumbnail = res.items[0].snippet.thumbnails.default.url;
         url.title = res.items[0].snippet.title;
       })
-      .then(() => setUrls((prev) => [url, ...prev]))
+      .then(() => setPost((prev) => ({ ...prev, urls: [url, ...prev.urls] })))
       .catch((err) => console.log(err));
   };
 
+  const handleChangeUrlList = (list: Iurls[]) => {
+    setPost((prev) => ({ ...prev, urls: [...list] }));
+  };
+
+  //post 요청 관련
   const isValid = () => {
-    return (
-      title.length > 0 &&
-      curCategory.length > 0 &&
-      body.length > 0 &&
-      tags.length > 0
-    );
+    return title.length > 0 && curCategory.length > 0 && body.length > 0 && tags.length > 0;
   };
 
   const handleSubmit = async () => {
     if (isValid()) {
-      if (param.mode === "create") {
+      if (param.mode === 'create') {
         const data: Idata = {
           title: title,
           category: curCategory,
-          urls: submitUrl("create", curCategory, urls, latLon),
+          urls: submitUrl('create', curCategory, urls, latLon),
           content: body,
-          tags: tags[0] !== "#" ? `#${tags}` : tags,
+          tags: tags[0] !== '#' ? `#${tags}` : tags,
         };
         if (imageKey) data.imageKey = imageKey;
         try {
-          const res = await requestAuth.post("/prf-posts", data);
+          const res = await requestAuth.post('/prf-posts', data);
           console.log(res);
           if (res.data.id) navigate(`/postdetail/${res.data.id}`);
         } catch (err) {
           console.log(err);
-          modal({ type: "submitFail" });
+          modal({ type: 'submitFail' });
         }
-      } else if (param.mode === "edit") {
-        const [newUrl, delUrl] = submitUrl(
-          "edit",
-          curCategory,
-          urls,
-          latLon,
-          origin,
-        );
+      } else if (param.mode === 'edit') {
+        const [newUrl, delUrl] = submitUrl('edit', curCategory, urls, latLon, origin);
         const data: IEditData = {
           title: title,
           category: curCategory,
@@ -156,19 +162,16 @@ export default function AddPost() {
         };
         if (imageKey) data.imageKey = imageKey;
         try {
-          const res = await requestAuth.patch(
-            `/prf-posts/${location.state.id}`,
-            data,
-          );
+          const res = await requestAuth.patch(`/prf-posts/${location.state.id}`, data);
           console.log(res);
           if (res.data.id) navigate(`/postdetail/${res.data.id}`);
         } catch (err) {
           console.log(err);
-          modal({ type: "submitFail" });
+          modal({ type: 'submitFail' });
         }
       }
     } else {
-      modal({ type: "submitFail" });
+      modal({ type: 'submitFail' });
     }
   };
 
@@ -181,7 +184,7 @@ export default function AddPost() {
           <Selection
             width=""
             value={curCategory}
-            opt={["영화", "음악", "맛집"]}
+            opt={['영화', '음악', '맛집']}
             setCategory={setCurCategory}
           ></Selection>
         </CategoryWrapper>
@@ -191,51 +194,45 @@ export default function AddPost() {
         <DefaultInput
           width="100%"
           placeholder="제목"
-          value={title}
-          setValue={setTitle}
+          name="title"
+          value={post.title}
+          onChange={handlePostChange}
         ></DefaultInput>
-        {(() => {
-          switch (curCategory) {
-            case "영화":
-              return <MoviePreview urls={urls} handleAddUrls={handleAddUrls} />;
-            case "음악":
-              return (
-                <PlaylistMaker
-                  urls={urls}
-                  setUrls={setUrls}
-                  onAddList={handleAddUrls}
-                  onDelList={handleDelUrls}
-                />
-              );
-            case "맛집":
-              return (
-                <>
-                  <MapSearch latLon={latLon} setLatLon={setLatLon} />
-                  <InputTitle>사진※</InputTitle>
-                  <FileInput
-                    width="100%"
-                    value={file}
-                    setValue={setfile}
-                  ></FileInput>
-                </>
-              );
-            default:
-              return;
-          }
-        })()}
+
+        {curCategory === '영화' ? (
+          <MoviePreview urls={post.urls} handleAddUrls={handleAddUrls} />
+        ) : curCategory === '음악' ? (
+          <PlaylistMaker
+            urls={post.urls}
+            setUrls={handleChangeUrlList}
+            onAddList={handleAddUrls}
+            onDelList={handleDelUrls}
+          />
+        ) : (
+          curCategory === '맛집' && (
+            <>
+              <MapSearch latLon={latLon} setLatLon={setLatLon} />
+              <InputTitle>사진※</InputTitle>
+              <FileInput width="100%" value={file} setValue={setfile}></FileInput>
+            </>
+          )
+        )}
+
         <InputTitle>내용※</InputTitle>
         <Textarea
           width="100%"
-          value={body}
-          setValue={setBody}
+          name="content"
+          value={post.content}
+          onChange={handlePostChange}
           placeholder="내용을 입력해주세요."
           row={10}
         ></Textarea>
         <InputTitle>태그※</InputTitle>
         <DefaultInput
           width="100%"
-          value={tags}
-          setValue={setTags}
+          name="tags"
+          value={post.tags}
+          onChange={handlePostChange}
           placeholder="#tag1#tag2#tag3 ..."
         ></DefaultInput>
       </FormWrapper>
@@ -269,8 +266,6 @@ const Background = styled.div`
   margin: 24px auto;
   max-width: 900px;
   min-width: 300px;
-  /* border: 2px solid #5a5959; */
-  /* background-color: #222222; */
   border-radius: 15px;
   padding: 20px;
   display: flex;

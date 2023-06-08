@@ -1,39 +1,24 @@
-import React from "react";
-import styled from "styled-components";
-import { ButtonInput } from "../parts/InputNoH";
-import YoutubeList from "../postDetail/music/YoutubeList";
-import { IYoutubeInfo as Iurls } from "../../util/PostApi";
+import React from 'react';
+import styled from 'styled-components';
+import { ButtonInput } from '../parts/InputNoH';
+import YoutubeList from '../postDetail/music/YoutubeList';
+import { IYoutubeInfo as Iurls } from '../../util/PostApi';
 
 interface IplaylistMakerProp {
   onAddList: (x: string) => void;
   urls: Iurls[];
-  setUrls: React.Dispatch<React.SetStateAction<Iurls[]>>;
+  setUrls: (list: Iurls[]) => void;
   onDelList: (x: string) => void;
 }
 
-function PlaylistMaker({
-  urls,
-  setUrls,
-  onAddList,
-  onDelList,
-}: IplaylistMakerProp) {
+function PlaylistMaker({ urls, setUrls, onAddList, onDelList }: IplaylistMakerProp) {
   return (
     <>
       <InputTitle>플레이리스트※</InputTitle>
-      <ButtonInput
-        title="Add list"
-        width="100%"
-        placeholder="Urls ..."
-        handleClick={onAddList}
-      ></ButtonInput>
+      <ButtonInput title="Add list" width="100%" placeholder="Urls ..." handleClick={onAddList}></ButtonInput>
       {urls.length !== 0 && (
         <PlaylistWrapper>
-          <YoutubeList
-            list={urls}
-            setList={setUrls}
-            mode="edit"
-            onDelete={onDelList}
-          ></YoutubeList>
+          <YoutubeList list={urls} setList={setUrls} mode="edit" onDelete={onDelList}></YoutubeList>
         </PlaylistWrapper>
       )}
     </>

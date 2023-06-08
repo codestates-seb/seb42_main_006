@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import styled from 'styled-components';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-import YoutubeListItem from "./YoutubeListItem";
+import YoutubeListItem from './YoutubeListItem';
 
-import { IYoutubeInfo as Iurls } from "../../../util/PostApi";
+import { IYoutubeInfo as Iurls } from '../../../util/PostApi';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,19 +14,13 @@ const Wrapper = styled.div`
 
 interface YoutubeListProp {
   list: Iurls[];
-  setList: React.Dispatch<React.SetStateAction<Iurls[]>>;
-  mode: "read" | "edit";
+  setList: (list: Iurls[]) => void;
+  mode: 'read' | 'edit';
   onDelete?: (x: string) => void;
   onSelect?: (x: Iurls) => void;
 }
 
-export default function YoutubeList({
-  list,
-  setList,
-  mode,
-  onDelete,
-  onSelect,
-}: YoutubeListProp) {
+export default function YoutubeList({ list, setList, mode, onDelete, onSelect }: YoutubeListProp) {
   const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
@@ -47,17 +41,9 @@ export default function YoutubeList({
               {(provided) => (
                 <ul {...provided.droppableProps} ref={provided.innerRef}>
                   {list.map((item, index) => (
-                    <Draggable
-                      key={item.url}
-                      draggableId={item.url}
-                      index={index}
-                    >
+                    <Draggable key={item.url} draggableId={item.url} index={index}>
                       {(provided) => (
-                        <li
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                        >
+                        <li {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                           <YoutubeListItem
                             item={item}
                             key={index}

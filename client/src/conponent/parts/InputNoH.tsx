@@ -1,8 +1,8 @@
-import React, { useRef, useCallback, useState, SetStateAction } from "react";
-import styled from "styled-components";
+import React, { useRef, useCallback, useState, SetStateAction } from 'react';
+import styled from 'styled-components';
 
-import { StyledBtn } from "./Button";
-import { SearchIcon } from "../../icons/Icon";
+import { StyledBtn } from './Button';
+import { SearchIcon } from '../../icons/Icon';
 
 interface InputWrapperProp {
   width: string;
@@ -36,7 +36,7 @@ const SInput = styled.input`
 
   color: white;
 
-  &[type="file"] {
+  &[type='file'] {
     display: none;
   }
 `;
@@ -70,16 +70,9 @@ interface searchInputProp extends InputWrapperProp {
   setValue: React.Dispatch<SetStateAction<string>>;
   onSearch: () => void;
 }
-export function SearchInput({
-  width,
-  placeholder,
-  value,
-  setValue,
-  className,
-  onSearch,
-}: searchInputProp) {
+export function SearchInput({ width, placeholder, value, setValue, className, onSearch }: searchInputProp) {
   const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onSearch();
     }
   };
@@ -106,22 +99,14 @@ interface buttonInputProp extends InputWrapperProp {
   style?: React.CSSProperties;
 }
 
-export function ButtonInput({
-  title,
-  width,
-  placeholder,
-  handleClick,
-  style,
-}: buttonInputProp) {
-  const [value, setValue] = useState("");
+export function ButtonInput({ title, width, placeholder, handleClick, style }: buttonInputProp) {
+  const [value, setValue] = useState('');
   return (
     <InputWrapper width={width} style={style}>
       <SInput
         type="text"
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setValue(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
         placeholder={placeholder}
       />
       <StyledBtn
@@ -132,10 +117,10 @@ export function ButtonInput({
         btnType="full"
         fontColor="white"
         fontWeight={400}
-        style={{ padding: "0 8px" }}
+        style={{ padding: '0 8px' }}
         handleClick={() => {
           handleClick(value);
-          setValue("");
+          setValue('');
         }}
       ></StyledBtn>
     </InputWrapper>
@@ -144,27 +129,22 @@ export function ButtonInput({
 
 interface DefaultInputProp extends InputWrapperProp {
   placeholder: string;
+  name?: string;
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function DefaultInput({
-  width,
-  placeholder,
-  value,
-  setValue,
-  onBlur,
-}: DefaultInputProp) {
+export function DefaultInput({ width, placeholder, name, value, setValue, onChange, onBlur }: DefaultInputProp) {
   return (
     <InputWrapper width={width}>
       <SInput
         type="text"
+        name={name}
         placeholder={placeholder}
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setValue(e.target.value)
-        }
+        onChange={setValue ? (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value) : onChange}
         onBlur={() => onBlur && onBlur(true)}
       />
     </InputWrapper>
@@ -210,11 +190,9 @@ export function ValidInput({
       <ValidInputWrapper width={width}>
         <SInput
           value={value}
-          type={type || "text"}
+          type={type || 'text'}
           placeholder={placeholder}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setValue(e.target.value)
-          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
           onBlur={() => setValid(validFn(value))}
           disabled={!!disable}
         />
@@ -226,7 +204,9 @@ export function ValidInput({
 
 interface textAreaProp extends InputWrapperProp {
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  name?: string;
+  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   row: number;
   placeholder: string;
 }
@@ -242,19 +222,12 @@ const StyledTextarea = styled.textarea`
   resize: vertical;
 `;
 
-export function Textarea({
-  width,
-  value,
-  setValue,
-  placeholder,
-  row,
-}: textAreaProp) {
+export function Textarea({ width, name, value, setValue, onChange, placeholder, row }: textAreaProp) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleResizeHeight = useCallback(() => {
     if (textAreaRef.current !== null) {
-      textAreaRef.current.style.height =
-        textAreaRef.current.scrollHeight + "px";
+      textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px';
     }
   }, []);
 
@@ -262,9 +235,10 @@ export function Textarea({
     <InputWrapper width={width}>
       <StyledTextarea
         ref={textAreaRef}
+        name={name}
         placeholder={placeholder}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={setValue ? (e) => setValue(e.target.value) : onChange}
         onInput={handleResizeHeight}
         rows={row}
       ></StyledTextarea>
@@ -278,21 +252,16 @@ interface TagInputProp extends InputWrapperProp {
   deleteTags: () => void;
 }
 
-export function TagInput({
-  width,
-  addTags,
-  deleteTags,
-  children,
-}: TagInputProp) {
-  const [value, setValue] = useState("");
+export function TagInput({ width, addTags, deleteTags, children }: TagInputProp) {
+  const [value, setValue] = useState('');
 
   const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (value.length !== 0 && e.key === "#") {
+    if (value.length !== 0 && e.key === '#') {
       console.log(e.currentTarget.value);
       e.preventDefault();
       addTags(e.currentTarget.value);
-      setValue("");
-    } else if (value.length === 0 && e.key === "Backspace") {
+      setValue('');
+    } else if (value.length === 0 && e.key === 'Backspace') {
       e.preventDefault();
       deleteTags();
     }
@@ -305,9 +274,7 @@ export function TagInput({
         type="text"
         value={value}
         placeholder="Tags ..."
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setValue(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
         onKeyUp={keyPressHandler}
       />
     </InputWrapper>
@@ -320,7 +287,7 @@ interface FileInputProp extends InputWrapperProp {
 }
 
 export function FileInput({ width, value, setValue }: FileInputProp) {
-  const [filename, setFilename] = useState("");
+  const [filename, setFilename] = useState('');
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget;
     const files = (target.files as FileList)[0];
@@ -335,11 +302,7 @@ export function FileInput({ width, value, setValue }: FileInputProp) {
   return (
     <InputWrapper width={width}>
       <SLabel htmlFor="SInput-file">업로드하기</SLabel>
-      <SInput
-        type="text"
-        placeholder={value ? filename : "사진을 업로드해주세요"}
-        disabled
-      />
+      <SInput type="text" placeholder={value ? filename : '사진을 업로드해주세요'} disabled />
       <SInput id="SInput-file" type="file" onChange={handleFileChange} />
     </InputWrapper>
   );
