@@ -94,7 +94,8 @@ public class PrfPostService {
             urlRepository.saveAll(urls);
         }
 
-        return verifiedPost;
+        // TODO - 수정한 내용이 반영이 안 됨 (save가 빠져있었기 때문에)
+        return prfPostRepository.save(verifiedPost);
     }
 
     public void deletePrfPost(long postId){
