@@ -6,32 +6,41 @@ import { Props } from "./CommentList";
 import { requestAuth } from "../../function/request";
 
 interface Iitem {
-  item: Props;
-  from: "posts" | "collect";
-  parentId: number;
-  setRender: React.Dispatch<SetStateAction<{}>>;
+  item: Props; // Comment 컴포넌트에서 사용할 데이터 객체
+  from: "posts" | "collect"; // Comment 컴포넌트가 어떤 종류의 데이터에 대한 댓글인지를 나타냄
+  parentId: number; //Comment 컴포넌트가 어떤 부모 엔티티에 대한 댓글인지를 식별하기 위한 값
+  setRender: React.Dispatch<SetStateAction<{}>>; // 렌더링을 갱신하기 위한 React 디스패치 함수 타입
 }
 
 function Comment({ item, from, parentId, setRender }: Iitem) {
-  const [showOptions, setShowOptions] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [showOptions, setShowOptions] = useState(false); // showOptions 상태 값과 해당 값을 변경하는 setShowOptions 함수 선언
+  const [isEdit, setIsEdit] = useState(false); // isEdit 상태 값과 해당 값을 변경하는 setIsEdit 함수 선언
 
+  // threedot 옵션
   const toggleOptions = () => {
-    setShowOptions((prevState) => !prevState);
-    setIsEdit(false);
+    setShowOptions((prevState) => !prevState); // showOptions 값을 이전 상태의 반대 값으로 토글
+    setIsEdit(false); // isEdit 값을 false로 설정
   };
 
   const handleSubmit = (x: { content: string }) => {
+    // 요청이 오는 곳이 posts 일경우
     if (from === "posts") {
+      // 엔드포인트로 PATCH 요청을 보냄
       requestAuth.patch(`/prf-comments/${parentId}/${item.id}`, x).then(() => {
+        // 랜더링 갱신
         setRender({});
+        // 편집 모드 종료
         setIsEdit(false);
       });
+      // 요청 오는 곳의 from값이 colloect 일경우
     } else if (from === "collect") {
       requestAuth
+        // 엔드포인트로 PATCH 요청을 보냄
         .patch(`/recruit-comments/${parentId}/${item.id}`, x)
         .then(() => {
+          // 랜더링 갱신
           setRender({});
+          // 편집 모드 종료
           setIsEdit(false);
         });
     }
@@ -39,14 +48,18 @@ function Comment({ item, from, parentId, setRender }: Iitem) {
 
   // 쓰레기통 누르면 삭제되는 요청 보내기
   const handleDelete = () => {
+    // 요청 오는 곳의 from값이 posts 일경우
     if (from === "posts") {
       requestAuth.delete(`/prf-comments/${parentId}/${item.id}`).then(() => {
         setRender({});
       });
     } else if (from === "collect") {
+      // 요청 오는 곳의 from값이 colloect 일경우
       requestAuth
+        // 댓글 삭제
         .delete(`/recruit-comments/${parentId}/${item.id}`)
         .then(() => {
+          // 이후 재랜더링
           setRender({});
         });
     }

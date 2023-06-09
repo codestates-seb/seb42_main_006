@@ -30,15 +30,8 @@ interface Post {
 
 export default function CollectDeatail() {
   const param = useParams();
-  // const [showOptions, setShowOptions] = useState(false);
-  // const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
   const [showOption, setShowOption] = useState(false);
-
-  // const toggleOptions = () => {
-  //   setShowOption((prevState) => !prevState);
-  //   setIsEdit(false);
-  // };
 
   const [post, setPost] = useState<Post>();
   const [isJoined, setIsJoined] = useState<boolean>(false);
