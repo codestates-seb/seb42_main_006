@@ -8,22 +8,16 @@ import MapSearch from '../conponent/addPost/MapSearch';
 import { DefaultInput, Textarea, FileInput } from '../conponent/parts/InputNoH';
 import { StyledBtn } from '../conponent/parts/Button';
 import { requestAuth } from '../function/request';
-import { submitUrl, UpdateImg, UploadImg } from '../util/PostApi';
+import { submitUrl, UpdateImg, UploadImg, createPatchData } from '../util/PostApi';
 import { getVideoId } from '../function/youtubeApi';
 import { validFn } from '../function/validFn';
-import { IYoutubeInfo as Iurls, IPostSubmitData as Idata, IEditData } from '../util/PostApi';
+import { IYoutubeInfo as Iurls, IPostSubmitData as Idata } from '../util/PostApi';
 import useModal from '../conponent/Modal/useModal';
 
 export default function AddPost() {
-  const [curCategory, setCurCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [tags, setTags] = useState<string>('');
-  const [urls, setUrls] = useState<Iurls[]>([]);
   const [origin, setOrigin] = useState<any>(null);
   const [file, setfile] = useState<File>();
   const [imageKey, setImageKey] = useState<string>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [latLon, setLatLon] = useState<{ lat: string; lon: string }>({
     lat: '37.49652290597856',
     lon: '127.02479374965135',
@@ -36,7 +30,7 @@ export default function AddPost() {
     urls: [],
   });
 
-  const handlePostChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handlePostChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setPost((prev) => ({ ...prev, [name]: value }));
   };
@@ -48,13 +42,8 @@ export default function AddPost() {
 
   useEffect(() => {
     if (param.mode === 'edit') {
-      console.log(location.state);
       setOrigin(location.state);
-      setTitle(location.state.title);
-      setBody(location.state.content);
-      setTags(location.state.tags);
-      setUrls([...location.state.urls]);
-      setCurCategory(location.state.category);
+      setPost(location.state);
       setLatLon({
         lat: location.state.urls[0].url,
         lon: location.state.urls[0].thumbnail,
@@ -70,23 +59,19 @@ export default function AddPost() {
       if (param.mode === 'create') {
         UploadImg(file)
           .then((res) => {
-            console.log(res);
             modal({ type: 'default' });
             setImageKey(res.fileKey);
           })
           .catch((err) => {
-            console.log(err);
             modal({ type: 'uploadImgFail' });
           });
       } else {
         UpdateImg(file, origin.imageKey)
           .then((res) => {
-            console.log(res);
             modal({ type: 'default' });
             setImageKey(res.fileKey);
           })
           .catch((err) => {
-            console.log(err);
             modal({ type: 'uploadImgFail' });
           });
       }
@@ -128,45 +113,35 @@ export default function AddPost() {
 
   //post 요청 관련
   const isValid = () => {
-    return title.length > 0 && curCategory.length > 0 && body.length > 0 && tags.length > 0;
+    return post.title.length > 0 && post.category.length > 0 && post.content.length > 0 && post.tags.length > 0;
   };
 
   const handleSubmit = async () => {
     if (isValid()) {
       if (param.mode === 'create') {
         const data: Idata = {
-          title: title,
-          category: curCategory,
-          urls: submitUrl('create', curCategory, urls, latLon),
-          content: body,
-          tags: tags[0] !== '#' ? `#${tags}` : tags,
+          ...post,
+          urls: submitUrl('create', post.category, post.urls, latLon),
+          tags: post.tags[0] !== '#' ? `#${post.tags}` : post.tags,
         };
         if (imageKey) data.imageKey = imageKey;
         try {
           const res = await requestAuth.post('/prf-posts', data);
-          console.log(res);
           if (res.data.id) navigate(`/postdetail/${res.data.id}`);
         } catch (err) {
-          console.log(err);
           modal({ type: 'submitFail' });
         }
       } else if (param.mode === 'edit') {
-        const [newUrl, delUrl] = submitUrl('edit', curCategory, urls, latLon, origin);
-        const data: IEditData = {
-          title: title,
-          category: curCategory,
-          newUrls: newUrl,
-          deletedUrls: delUrl,
-          content: body,
-          tags: tags,
-        };
+        const [newUrl, delUrl] = submitUrl('edit', post.category, post.urls, latLon, origin);
+        const data = createPatchData(origin, post);
+        newUrl && (data.newUrls = newUrl);
+        delUrl && (data.deletedUrls = delUrl);
         if (imageKey) data.imageKey = imageKey;
         try {
+          console.log(data);
           const res = await requestAuth.patch(`/prf-posts/${location.state.id}`, data);
-          console.log(res);
           if (res.data.id) navigate(`/postdetail/${res.data.id}`);
         } catch (err) {
-          console.log(err);
           modal({ type: 'submitFail' });
         }
       }
@@ -183,9 +158,10 @@ export default function AddPost() {
           <CategoryTitle>카테고리※ </CategoryTitle>
           <Selection
             width=""
-            value={curCategory}
+            name="category"
+            value={post.category}
             opt={['영화', '음악', '맛집']}
-            setCategory={setCurCategory}
+            onChange={handlePostChange}
           ></Selection>
         </CategoryWrapper>
       </Category>
@@ -199,23 +175,21 @@ export default function AddPost() {
           onChange={handlePostChange}
         ></DefaultInput>
 
-        {curCategory === '영화' ? (
-          <MoviePreview urls={post.urls} handleAddUrls={handleAddUrls} />
-        ) : curCategory === '음악' ? (
+        {post.category === '영화' && <MoviePreview urls={post.urls} handleAddUrls={handleAddUrls} />}
+        {post.category === '음악' && (
           <PlaylistMaker
             urls={post.urls}
             setUrls={handleChangeUrlList}
             onAddList={handleAddUrls}
             onDelList={handleDelUrls}
           />
-        ) : (
-          curCategory === '맛집' && (
-            <>
-              <MapSearch latLon={latLon} setLatLon={setLatLon} />
-              <InputTitle>사진※</InputTitle>
-              <FileInput width="100%" value={file} setValue={setfile}></FileInput>
-            </>
-          )
+        )}
+        {post.category === '맛집' && (
+          <>
+            <MapSearch latLon={latLon} setLatLon={setLatLon} />
+            <InputTitle>사진※</InputTitle>
+            <FileInput width="100%" value={file} setValue={setfile}></FileInput>
+          </>
         )}
 
         <InputTitle>내용※</InputTitle>

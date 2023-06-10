@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 interface styledSelectProp {
   width: string;
@@ -17,18 +17,19 @@ const StyledSelect = styled.select<styledSelectProp>`
 
 interface selectionProp extends styledSelectProp {
   value?: string;
+  name?: string;
   opt: string[];
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  setCategory?: React.Dispatch<React.SetStateAction<string>>;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-function Selection({ value, width, opt, setCategory }: selectionProp) {
+function Selection({ value, name, width, opt, setCategory, onChange }: selectionProp) {
   return (
     <StyledSelect
+      name={name}
       value={value}
       width={width}
-      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-        setCategory(e.target.value)
-      }
+      onChange={setCategory ? (e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value) : onChange}
     >
       <option value="" disabled hidden>
         선택해주세요.
