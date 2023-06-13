@@ -138,7 +138,6 @@ export default function AddPost() {
         delUrl && (data.deletedUrls = delUrl);
         if (imageKey) data.imageKey = imageKey;
         try {
-          console.log(data);
           const res = await requestAuth.patch(`/prf-posts/${location.state.id}`, data);
           if (res.data.id) navigate(`/postdetail/${res.data.id}`);
         } catch (err) {

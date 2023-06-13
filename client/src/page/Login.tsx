@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 
-import { ValidInput } from "../conponent/parts/Input";
-import { StyledBtn } from "../conponent/parts/Button";
+import { ValidInput } from '../conponent/parts/Input';
+import { StyledBtn } from '../conponent/parts/Button';
 
-import { validFn } from "../function/validFn";
-import { loginApi } from "../util/memberApi";
+import { validFn } from '../function/validFn';
+import { loginApi } from '../util/memberApi';
 
-import useModal from "../conponent/Modal/useModal";
+import { AuthContext } from '../util/context/AuthContext';
+import useModal from '../conponent/Modal/useModal';
 
-interface LoginType {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Login({ setIsLogin }: LoginType) {
-  const [email, setEmail] = useState("");
+function Login() {
+  const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(true);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [passwordValid, setPasswordValid] = useState(true);
 
   const modal = useModal();
+  const auth = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -29,18 +27,18 @@ function Login({ setIsLogin }: LoginType) {
       try {
         const res = await loginApi({ username: email, password });
         if (res.status === 200) {
-          setIsLogin(true);
-          navigate("/posts");
+          auth?.setIsLogin(true);
+          navigate('/posts');
         }
       } catch (err) {
         console.log(err);
-        modal({ type: "로그인실패" });
+        modal({ type: '로그인실패' });
       }
     }
   };
 
   useEffect(() => {
-    console.log("render");
+    console.log('render');
   });
 
   return (
@@ -57,8 +55,8 @@ function Login({ setIsLogin }: LoginType) {
             setValue={setEmail}
             valid={emailValid}
             setValid={setEmailValid}
-            errorMsg={"이메일을 확인해주세요."}
-            validFn={(x) => validFn("email")(x)}
+            errorMsg={'이메일을 확인해주세요.'}
+            validFn={(x) => validFn('email')(x)}
           ></ValidInput>
 
           <InputTitle>Password</InputTitle>
@@ -72,17 +70,17 @@ function Login({ setIsLogin }: LoginType) {
             valid={passwordValid}
             setValid={setPasswordValid}
             errorMsg="비밀번호를 확인해주세요."
-            validFn={(x) => validFn("password")(x)}
+            validFn={(x) => validFn('password')(x)}
           ></ValidInput>
 
           <StyledBtn
             width="100%"
             height="40px"
-            title={"Log In"}
+            title={'Log In'}
             radius="4px"
             handleClick={handleLogin}
-            btnType={"full"}
-            fontColor={"white"}
+            btnType={'full'}
+            fontColor={'white'}
             fontWeight={600}
           ></StyledBtn>
         </FormWrapper>

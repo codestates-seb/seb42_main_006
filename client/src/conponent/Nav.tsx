@@ -1,6 +1,26 @@
-import PageButton from "./parts/PageButton";
-import styled from "styled-components";
-import { useNavigate } from "react-router";
+import PageButton from './parts/PageButton';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../util/context/AuthContext';
+import { useContext } from 'react';
+
+export default function Nav() {
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+
+  const hadleNav = () => {
+    auth?.isLogin ? navigate('/mypage') : navigate('/login');
+  };
+
+  return (
+    <Content>
+      <PageButton title="Main" handleClick={() => navigate('/')} />
+      <PageButton title="Story" handleClick={() => navigate('/posts')} />
+      <PageButton title="Together" handleClick={() => navigate('/collect')} />
+      <PageButton title="My page" handleClick={hadleNav} />
+    </Content>
+  );
+}
 
 const Content = styled.div`
   display: flex;
@@ -32,24 +52,3 @@ const Content = styled.div`
     border-top: 2px solid #4a4a4a;
   }
 `;
-
-interface NavType {
-  isLogin: boolean;
-}
-
-export default function Nav({ isLogin }: NavType) {
-  const navigate = useNavigate();
-
-  const hadleNav = () => {
-    isLogin ? navigate("/mypage") : navigate("/login");
-  };
-
-  return (
-    <Content>
-      <PageButton title="Main" handleClick={() => navigate("/")} />
-      <PageButton title="Story" handleClick={() => navigate("/posts")} />
-      <PageButton title="Together" handleClick={() => navigate("/collect")} />
-      <PageButton title="My page" handleClick={hadleNav} />
-    </Content>
-  );
-}

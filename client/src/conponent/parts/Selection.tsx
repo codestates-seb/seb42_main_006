@@ -4,17 +4,6 @@ interface styledSelectProp {
   width: string;
 }
 
-const StyledSelect = styled.select<styledSelectProp>`
-  background-color: #282828;
-  border: 2px solid #4a4a4a;
-  border-radius: 4px;
-  padding: 4px 8px;
-  width: ${(props) => props.width};
-  outline: none;
-  font-size: 1rem;
-  color: #ffffff;
-`;
-
 interface selectionProp extends styledSelectProp {
   value?: string;
   name?: string;
@@ -46,3 +35,14 @@ function Selection({ value, name, width, opt, setCategory, onChange }: selection
 }
 
 export default Selection;
+
+const StyledSelect = styled.select<styledSelectProp>`
+  background-color: #282828;
+  border: 2px solid #4a4a4a;
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: ${(props) => props.width};
+  outline: none;
+  font-size: 1rem;
+  color: #ffffff;
+`;

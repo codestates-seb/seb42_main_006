@@ -5,13 +5,6 @@ import YoutubeListItem from './YoutubeListItem';
 
 import { IYoutubeInfo as Iurls } from '../../../util/PostApi';
 
-const Wrapper = styled.div`
-  width: 100%;
-  height: calc(100% - 100px);
-
-  overflow: overlay;
-`;
-
 interface YoutubeListProp {
   list: Iurls[];
   setList: (list: Iurls[]) => void;
@@ -65,3 +58,10 @@ export default function YoutubeList({ list, setList, mode, onDelete, onSelect }:
     </>
   );
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: calc(100% - 100px);
+
+  overflow: overlay;
+`;

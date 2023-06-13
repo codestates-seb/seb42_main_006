@@ -1,10 +1,50 @@
-import logo from "../icons/logo.svg";
+import logo from '../icons/logo.svg';
 
-import { useNavigate } from "react-router";
-import styled from "styled-components";
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 
-import { StyledBtn } from "./parts/Button";
-import UserProfile from "./parts/UserProfile";
+import { StyledBtn } from './parts/Button';
+import UserProfile from './parts/UserProfile';
+import { AuthContext } from '../util/context/AuthContext';
+import { useContext } from 'react';
+
+export default function Header() {
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+
+  return (
+    <HeaderStyle>
+      <Logo src={logo} alt="logo" onClick={() => navigate('/')} />
+
+      {auth?.isLogin ? (
+        <UserProfile></UserProfile>
+      ) : (
+        <BtnWrapper>
+          <Btn
+            title="LOG IN"
+            width=""
+            height=""
+            radius="0.5rem"
+            fontWeight={400}
+            fontColor="white"
+            btnType="full"
+            handleClick={() => navigate('/login')}
+          ></Btn>
+          <Btn
+            title="SIGN UP"
+            width=""
+            height=""
+            radius="0.5rem"
+            fontWeight={400}
+            fontColor="pink"
+            btnType="empty"
+            handleClick={() => navigate('/signup')}
+          ></Btn>
+        </BtnWrapper>
+      )}
+    </HeaderStyle>
+  );
+}
 
 const HeaderStyle = styled.div`
   height: 3.7rem;
@@ -33,44 +73,3 @@ const BtnWrapper = styled.div`
 const Btn = styled(StyledBtn)`
   padding: 0.5rem 1.5rem;
 `;
-
-export interface LogoutType {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function Header({ setIsLogin }: LogoutType) {
-  const navigate = useNavigate();
-
-  return (
-    <HeaderStyle>
-      <Logo src={logo} alt="logo" onClick={() => navigate("/")} />
-
-      {sessionStorage.getItem("auth") ? (
-        <UserProfile setIsLogin={setIsLogin}></UserProfile>
-      ) : (
-        <BtnWrapper>
-          <Btn
-            title="LOG IN"
-            width=""
-            height=""
-            radius="0.5rem"
-            fontWeight={400}
-            fontColor="white"
-            btnType="full"
-            handleClick={() => navigate("/login")}
-          ></Btn>
-          <Btn
-            title="SIGN UP"
-            width=""
-            height=""
-            radius="0.5rem"
-            fontWeight={400}
-            fontColor="pink"
-            btnType="empty"
-            handleClick={() => navigate("/signup")}
-          ></Btn>
-        </BtnWrapper>
-      )}
-    </HeaderStyle>
-  );
-}
